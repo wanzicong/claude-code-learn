@@ -1,0 +1,3 @@
+[submodule "python-dev-assistant"]
+	path = python-dev-assistant
+	url = https://github.com/wanzicong/python-dev-assistant.git
