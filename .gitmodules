@@ -1,3 +1,12 @@
-[submodule "python-dev-assistant"]
-	path = python-dev-assistant
+[submodule "plugins/anthropic-agent-skills"]
+	path = plugins/anthropic-agent-skills
+	url = https://github.com/anthropics/skills.git
+[submodule "plugins/claude-code-plugins"]
+	path = plugins/claude-code-plugins
+	url = https://github.com/anthropics/claude-code.git
+[submodule "plugins/claude-plugins-official"]
+	path = plugins/claude-plugins-official
+	url = https://github.com/anthropics/claude-plugins-official.git
+[submodule "plugins/python-dev-assistant"]
+	path = plugins/python-dev-assistant
 	url = https://github.com/wanzicong/python-dev-assistant.git
