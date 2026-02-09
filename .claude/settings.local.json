@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git commit -m \"$\\(cat <<''EOF''\n重构: 移除 python-dev-assistant 子模块，添加 plugins 目录结构\n\n- 删除 python-dev-assistant 子模块\n- 新增 plugins 目录，包含多个插件集合\n- 添加 plugins/README.md 说明文档\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+    ]
+  }
+}
