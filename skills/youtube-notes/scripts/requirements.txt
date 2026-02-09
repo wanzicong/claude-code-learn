@@ -1,0 +1,7 @@
+# 方式一：youtube-transcript-api（推荐用于简单场景）
+# 安装：pip install youtube-transcript-api
+youtube-transcript-api>=1.0.0
+
+# 方式二：yt-dlp（推荐用于复杂场景，支持更多网站）
+# 安装：pip install yt-dlp
+# 或访问：https://github.com/yt-dlp/yt-dlp
