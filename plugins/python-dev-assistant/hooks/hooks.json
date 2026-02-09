@@ -1,0 +1,17 @@
+{
+  "description": "Python 代码质量检查钩子 - 在保存 Python 文件前自动检查代码风格",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Check if the file being written/edited is a Python file (.py extension). If it is a Python file, validate the code quality using ruff or similar tools. Check for: 1) PEP 8 compliance, 2) Common errors (unused imports, undefined variables), 3) Code complexity. If issues are found, return a systemMessage with warnings but allow the operation (permissionDecision: allow). If the file is not a Python file, allow without checking. Read the user's configuration from .claude/python-dev-assistant.local.md to check if enable_hook is true (default: true). If enable_hook is false, skip the check.",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

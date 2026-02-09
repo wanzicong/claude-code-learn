@@ -1,0 +1,35 @@
+{
+  "name": "python-dev-assistant",
+  "owner": {
+    "name": "Jason Wang",
+    "email": "jason.wang@gmail.com"
+  },
+  "metadata": {
+    "description": "Python development assistant",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "python-dev-helper",
+      "description": "Python development assistant",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/python-best-practices",
+        "./skills/django-flask-architecture",
+        "./skills/python-documentation"
+      ],
+      "commands": [
+        "./commands/py-check",
+        "./commands/py-django",
+        "./commands/py-flask",
+        "./commands/py-docs",
+        "./commands/py-snippet"
+      ],
+      "agents": [
+        "./agents/python-code-analyzer.md"
+      ],
+      "hooks": "./hooks/hooks.json"
+    }
+  ]
+}
