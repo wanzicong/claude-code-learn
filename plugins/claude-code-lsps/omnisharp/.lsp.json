@@ -1,0 +1,16 @@
+{
+    "csharp": {
+        "command": "OmniSharp",
+        "args": [
+            "--languageserver"
+        ],
+        "extensionToLanguage": {
+            ".cs": "csharp",
+            ".csx": "csharp"
+        },
+        "transport": "stdio",
+        "initializationOptions": {},
+        "settings": {},
+        "maxRestarts": 3
+    }
+}

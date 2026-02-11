@@ -1,0 +1,17 @@
+{
+  "name": "kotlin-lsp",
+  "version": "0.1.0",
+  "description": "Kotlin language server by JetBrains",
+  "author": {
+    "name": "Piebald LLC",
+    "email": "support@piebald.ai"
+  },
+  "repository": "https://github.com/Kotlin/kotlin-lsp",
+  "license": "Apache-2.0",
+  "keywords": [
+    "kotlin",
+    "lsp",
+    "language-server",
+    "jetbrains"
+  ]
+}

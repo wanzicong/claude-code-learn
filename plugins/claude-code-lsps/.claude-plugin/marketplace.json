@@ -1,0 +1,333 @@
+{
+  "name": "claude-code-lsps",
+  "owner": {
+    "name": "Piebald LLC",
+    "email": "support@piebald.ai"
+  },
+  "plugins": [
+    {
+      "name": "vtsls",
+      "version": "0.1.0",
+      "source": "./vtsls",
+      "description": "TypeScript and JavaScript language server integration (using vtsls)",
+      "category": "development",
+      "tags": [
+        "typescript",
+        "javascript",
+        "lsp",
+        "language-server",
+        "vtsls"
+      ],
+      "author": {
+        "name": "Piebald LLC",
+        "email": "support@piebald.ai"
+      }
+    },
+    {
+      "name": "rust-analyzer",
+      "version": "0.1.0",
+      "source": "./rust-analyzer",
+      "description": "Rust language server integration with rust-analyzer",
+      "category": "development",
+      "tags": [
+        "rust",
+        "lsp"
+      ],
+      "author": {
+        "name": "Piebald LLC",
+        "email": "support@piebald.ai"
+      }
+    },
+    {
+      "name": "pyright",
+      "version": "0.1.0",
+      "source": "./pyright",
+      "description": "Python language server with excellent type checking",
+      "category": "development",
+      "tags": [
+        "python",
+        "lsp",
+        "language-server",
+        "type-checking"
+      ],
+      "author": {
+        "name": "Piebald LLC",
+        "email": "support@piebald.ai"
+      }
+    },
+    {
+      "name": "basedpyright",
+      "version": "0.1.0",
+      "source": "./basedpyright",
+      "description": "Python language server using basedpyright with stricter type checking",
+      "category": "development",
+      "tags": [
+        "python",
+        "lsp",
+        "language-server",
+        "type-checking",
+        "basedpyright"
+      ],
+      "author": {
+        "name": "Tyler Laprade",
+        "email": "tyler@tylerlaprade.com"
+      }
+    },
+    {
+      "name": "gopls",
+      "version": "0.1.0",
+      "source": "./gopls",
+      "description": "Official Go language server",
+      "category": "development",
+      "tags": [
+        "go",
+        "golang",
+        "lsp",
+        "language-server"
+      ],
+      "author": {
+        "name": "Piebald LLC",
+        "email": "support@piebald.ai"
+      }
+    },
+    {
+      "name": "jdtls",
+      "version": "0.1.0",
+      "source": "./jdtls",
+      "description": "Eclipse JDT Language Server for Java",
+      "category": "development",
+      "tags": [
+        "java",
+        "lsp",
+        "language-server",
+        "eclipse"
+      ],
+      "author": {
+        "name": "Piebald LLC",
+        "email": "support@piebald.ai"
+      }
+    },
+    {
+      "name": "clangd",
+      "version": "0.1.0",
+      "source": "./clangd",
+      "description": "LLVM-based language server for C and C++",
+      "category": "development",
+      "tags": [
+        "c",
+        "cpp",
+        "c++",
+        "lsp",
+        "language-server",
+        "llvm",
+        "clang"
+      ],
+      "author": {
+        "name": "Piebald LLC",
+        "email": "support@piebald.ai"
+      }
+    },
+    {
+      "name": "ruby-lsp",
+      "version": "0.1.0",
+      "source": "./ruby-lsp",
+      "description": "Modern Ruby language server by Shopify",
+      "category": "development",
+      "tags": [
+        "ruby",
+        "lsp",
+        "language-server"
+      ],
+      "author": {
+        "name": "Piebald LLC",
+        "email": "support@piebald.ai"
+      }
+    },
+    {
+      "name": "vscode-langservers",
+      "version": "0.1.0",
+      "source": "./vscode-langservers",
+      "description": "HTML and CSS language servers from VS Code",
+      "category": "development",
+      "tags": [
+        "html",
+        "css",
+        "lsp",
+        "language-server",
+        "vscode"
+      ],
+      "author": {
+        "name": "Piebald LLC",
+        "email": "support@piebald.ai"
+      }
+    },
+    {
+      "name": "phpactor",
+      "version": "0.1.0",
+      "source": "./phpactor",
+      "description": "Intelligent PHP completion and refactoring language server",
+      "category": "development",
+      "tags": [
+        "php",
+        "lsp",
+        "language-server"
+      ],
+      "author": {
+        "name": "Piebald LLC",
+        "email": "support@piebald.ai"
+      }
+    },
+    {
+      "name": "omnisharp",
+      "version": "0.1.0",
+      "source": "./omnisharp",
+      "description": "Official .NET language server with rich C# support",
+      "category": "development",
+      "tags": [
+        "csharp",
+        "c#",
+        "dotnet",
+        "lsp",
+        "language-server"
+      ],
+      "author": {
+        "name": "Piebald LLC",
+        "email": "support@piebald.ai"
+      }
+    },
+    {
+      "name": "powershell-editor-services",
+      "version": "0.1.0",
+      "source": "./powershell-editor-services",
+      "description": "Official PowerShell language server by Microsoft",
+      "category": "development",
+      "tags": [
+        "powershell",
+        "ps1",
+        "lsp",
+        "language-server",
+        "microsoft",
+        "scripting"
+      ],
+      "author": {
+        "name": "Piebald LLC",
+        "email": "support@piebald.ai"
+      }
+    },
+    {
+      "name": "kotlin-lsp",
+      "version": "0.1.0",
+      "source": "./kotlin-lsp",
+      "description": "Kotlin language server by JetBrains",
+      "category": "development",
+      "tags": [
+        "kotlin",
+        "lsp",
+        "language-server",
+        "jetbrains"
+      ],
+      "author": {
+        "name": "Piebald LLC",
+        "email": "support@piebald.ai"
+      }
+    },
+    {
+      "name": "texlab",
+      "version": "0.1.0",
+      "source": "./texlab",
+      "description": "LaTeX language server with completion, references, and document symbols",
+      "category": "development",
+      "tags": [
+        "latex",
+        "tex",
+        "lsp",
+        "language-server",
+        "texlab"
+      ],
+      "author": {
+        "name": "Micah Stubbs",
+        "email": "git@micah.fyi"
+      }
+    },
+    {
+      "name": "bsl-lsp",
+      "version": "0.1.0",
+      "source": "./bsl-lsp",
+      "description": "BSL Language Server for 1C:Enterprise and OneScript",
+      "category": "development",
+      "tags": [
+        "bsl",
+        "1c",
+        "onescript",
+        "lsp",
+        "language-server"
+      ],
+      "author": {
+        "name": "Nikita Fedkin",
+        "email": "nixel2007@gmail.com"
+      },
+      "lspServers": {
+        "bsl-language-server": {
+          "command": "bsl-language-server",
+          "extensionToLanguage": {
+            ".bsl": "bsl",
+            ".os": "bsl"
+          }
+        }
+      }
+    },
+    {
+      "name": "julia-lsp",
+      "version": "0.1.0",
+      "source": "./julia-lsp",
+      "description": "Julia language server using LanguageServer.jl",
+      "category": "development",
+      "tags": [
+        "julia",
+        "lsp",
+        "language-server",
+        "scientific-computing"
+      ],
+      "author": {
+        "name": "Piebald LLC",
+        "email": "support@piebald.ai"
+      }
+    },
+    {
+      "name": "vue-volar",
+      "version": "0.1.0",
+      "source": "./vue-volar",
+      "description": "Vue.js language server integration (Volar)",
+      "category": "development",
+      "tags": [
+        "vue",
+        "volar",
+        "lsp",
+        "language-server",
+        "vue3"
+      ],
+      "author": {
+        "name": "Piebald LLC",
+        "email": "support@piebald.ai"
+      }
+    },
+    {
+      "name": "ocaml-lsp",
+      "version": "0.1.0",
+      "source": "./ocaml-lsp",
+      "description": "OCaml language server (ocaml-lsp-server)",
+      "category": "development",
+      "tags": [
+        "ocaml",
+        "ml",
+        "functional",
+        "lsp",
+        "language-server"
+      ],
+      "author": {
+        "name": "yousleepwhen",
+        "email": "yousleepwhen@gmail.com"
+      }
+    }
+  ]
+}
