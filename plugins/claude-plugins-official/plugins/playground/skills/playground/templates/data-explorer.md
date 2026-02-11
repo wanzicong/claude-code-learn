@@ -1,45 +1,45 @@
-# Data Explorer Template
+# 数据探索器模板
 
-Use this template when the playground is about data queries, APIs, pipelines, or structured configuration: SQL builders, API designers, regex builders, pipeline visuals, cron schedules.
+当 playground 是关于数据查询、API、管道或结构化配置时使用此模板：SQL 构建器、API 设计器、正则表达式构建器、管道可视化、cron 计划。
 
-## Layout
+## 布局
 
 ```
 +-------------------+----------------------+
 |                   |                      |
-|  Controls         |  Formatted output    |
-|  grouped by:      |  (syntax-highlighted |
-|  • Source/tables  |   code, or a         |
-|  • Columns/fields |   visual diagram)    |
-|  • Filters        |                      |
-|  • Grouping       |                      |
-|  • Ordering       |                      |
-|  • Limits         |                      |
+|  控件             |  格式化输出          |
+|  按以下分组:      |  (语法高亮          |
+|  • 源/表           |   代码，或          |
+|  • 列/字段         |   可视化图表)        |
+|  • 过滤器          |                      |
+|  • 分组            |                      |
+|  • 排序            |                      |
+|  • 限制            |                      |
 |                   +----------------------+
-|                   |  Prompt output       |
-|                   |  [ Copy Prompt ]     |
+|                   |  提示词输出          |
+|                   |  [ 复制提示词 ]      |
 +-------------------+----------------------+
 ```
 
-## Control types by decision
+## 按决策分类的控件类型
 
-| Decision | Control | Example |
+| 决策 | 控件 | 示例 |
 |---|---|---|
-| Select from available items | Clickable cards/chips | table names, columns, HTTP methods |
-| Add filter/condition rows | Add button → row of dropdowns + input | WHERE column op value |
-| Join type or aggregation | Dropdown per row | INNER/LEFT/RIGHT, COUNT/SUM/AVG |
-| Limit/offset | Slider | result count 1–500 |
-| Ordering | Dropdown + ASC/DESC toggle | order by column |
-| On/off features | Toggle | show descriptions, include header |
+| 从可用项中选择 | 可点击的卡片/芯片 | 表名、列、HTTP 方法 |
+| 添加过滤器/条件行 | 添加按钮 → 下拉列表 + 输入的行 | WHERE 列 操作符 值 |
+| 连接类型或聚合 | 每行的下拉列表 | INNER/LEFT/RIGHT、COUNT/SUM/AVG |
+| 限制/偏移 | 滑块 | 结果数量 1–500 |
+| 排序 | 下拉列表 + ASC/DESC 切换 | 按列排序 |
+| 开/关功能 | 切换开关 | 显示描述、包含标题 |
 
-## Preview rendering
+## 预览渲染
 
-Render syntax-highlighted output using `<span>` tags with color classes:
+使用带有颜色类的 `<span>` 标签渲染语法高亮输出：
 
 ```javascript
 function renderPreview() {
   const el = document.getElementById('preview');
-  // Color-code by token type
+  // 按标记类型着色
   el.innerHTML = sql
     .replace(/\b(SELECT|FROM|WHERE|JOIN|ON|GROUP BY|ORDER BY|LIMIT)\b/g, '<span class="kw">$1</span>')
     .replace(/\b(users|orders|products)\b/g, '<span class="tbl">$1</span>')
@@ -47,21 +47,21 @@ function renderPreview() {
 }
 ```
 
-For pipeline-style playgrounds, render a horizontal or vertical flow diagram using positioned divs with arrow connectors.
+对于管道风格的 playground，使用带有箭头连接器的定位 div 渲染水平或垂直流程图。
 
-## Prompt output for data
+## 数据的提示词输出
 
-Frame it as a specification of what to build, not the raw query itself:
+将其构建为要构建内容的规范，而不是原始查询本身：
 
-> "Write a SQL query that joins orders to users on user_id, filters for orders after 2024-01-01 with total > $50, groups by user, and returns the top 10 users by order count."
+> "编写一个 SQL 查询，将订单与用户按 user_id 连接，过滤 2024-01-01 之后且总额 > $50 的订单，按用户分组，并返回按订单数排名的前 10 位用户。"
 
-Include the schema context (table names, column types) so the prompt is self-contained.
+包含架构上下文（表名、列类型），使提示词自包含。
 
-## Example topics
+## 示例主题
 
-- SQL query builder (tables, joins, filters, group by, order by, limit)
-- API endpoint designer (routes, methods, request/response field builder)
-- Data transformation pipeline (source → filter → map → aggregate → output)
-- Regex builder (sample strings, match groups, live highlight)
-- Cron schedule builder (visual timeline, interval, day toggles)
-- GraphQL query builder (type selection, field picker, nested resolvers)
+- SQL 查询构建器（表、连接、过滤器、分组、排序、限制）
+- API 端点设计器（路由、方法、请求/响应字段构建器）
+- 数据转换管道（源 → 过滤器 → 映射 → 聚合 → 输出）
+- 正则表达式构建器（示例字符串、匹配组、实时高亮）
+- Cron 计划构建器（可视化时间线、间隔、日期切换）
+- GraphQL 查询构建器（类型选择、字段选择器、嵌套解析器）

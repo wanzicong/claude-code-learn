@@ -1,10 +1,10 @@
-# Common Hook Patterns
+# 常见 Hook 模式
 
-This reference provides common, proven patterns for implementing Claude Code hooks. Use these patterns as starting points for typical hook use cases.
+本参考文档提供了实现 Claude Code hook 的常见且经过验证的模式。使用这些模式作为典型 hook 用例的起点。
 
-## Pattern 1: Security Validation
+## 模式 1：安全验证
 
-Block dangerous file writes using prompt-based hooks:
+使用基于 prompt 的 hook 阻止危险的文件写入：
 
 ```json
 {
@@ -14,7 +14,7 @@ Block dangerous file writes using prompt-based hooks:
       "hooks": [
         {
           "type": "prompt",
-          "prompt": "File path: $TOOL_INPUT.file_path. Verify: 1) Not in /etc or system directories 2) Not .env or credentials 3) Path doesn't contain '..' traversal. Return 'approve' or 'deny'."
+          "prompt": "文件路径：$TOOL_INPUT.file_path。验证：1) 不在 /etc 或系统目录中 2) 不是 .env 或凭证 3) 路径不包含 '..' 遍历。返回 'approve' 或 'deny'。"
         }
       ]
     }
@@ -22,11 +22,11 @@ Block dangerous file writes using prompt-based hooks:
 }
 ```
 
-**Use for:** Preventing writes to sensitive files or system directories.
+**用于：** 防止写入敏感文件或系统目录。
 
-## Pattern 2: Test Enforcement
+## 模式 2：测试强制执行
 
-Ensure tests run before stopping:
+确保在停止之前运行测试：
 
 ```json
 {
@@ -36,7 +36,7 @@ Ensure tests run before stopping:
       "hooks": [
         {
           "type": "prompt",
-          "prompt": "Review transcript. If code was modified (Write/Edit tools used), verify tests were executed. If no tests were run, block with reason 'Tests must be run after code changes'."
+          "prompt": "查看转录。如果修改了代码（使用了 Write/Edit 工具），验证是否执行了测试。如果未运行测试，以原因 '代码更改后必须运行测试' 阻止。"
         }
       ]
     }
@@ -44,11 +44,11 @@ Ensure tests run before stopping:
 }
 ```
 
-**Use for:** Enforcing quality standards and preventing incomplete work.
+**用于：** 强制执行质量标准并防止工作未完成。
 
-## Pattern 3: Context Loading
+## 模式 3：上下文加载
 
-Load project-specific context at session start:
+在会话开始时加载特定于项目的上下文：
 
 ```json
 {
@@ -66,26 +66,26 @@ Load project-specific context at session start:
 }
 ```
 
-**Example script (load-context.sh):**
+**示例脚本（load-context.sh）：**
 ```bash
 #!/bin/bash
 cd "$CLAUDE_PROJECT_DIR" || exit 1
 
-# Detect project type
+# 检测项目类型
 if [ -f "package.json" ]; then
-  echo "📦 Node.js project detected"
+  echo "📦 检测到 Node.js 项目"
   echo "export PROJECT_TYPE=nodejs" >> "$CLAUDE_ENV_FILE"
 elif [ -f "Cargo.toml" ]; then
-  echo "🦀 Rust project detected"
+  echo "🦀 检测到 Rust 项目"
   echo "export PROJECT_TYPE=rust" >> "$CLAUDE_ENV_FILE"
 fi
 ```
 
-**Use for:** Automatically detecting and configuring project-specific settings.
+**用于：** 自动检测和配置特定于项目的设置。
 
-## Pattern 4: Notification Logging
+## 模式 4：通知日志记录
 
-Log all notifications for audit or analysis:
+记录所有通知以进行审计或分析：
 
 ```json
 {
@@ -103,11 +103,11 @@ Log all notifications for audit or analysis:
 }
 ```
 
-**Use for:** Tracking user notifications or integration with external logging systems.
+**用于：** 跟踪用户通知或与外部日志系统集成。
 
-## Pattern 5: MCP Tool Monitoring
+## 模式 5：MCP 工具监控
 
-Monitor and validate MCP tool usage:
+监控和验证 MCP 工具使用：
 
 ```json
 {
@@ -117,7 +117,7 @@ Monitor and validate MCP tool usage:
       "hooks": [
         {
           "type": "prompt",
-          "prompt": "Deletion operation detected. Verify: Is this deletion intentional? Can it be undone? Are there backups? Return 'approve' only if safe."
+          "prompt": "检测到删除操作。验证：此删除是否是有意的？可以撤销吗？是否有备份？仅当安全时返回 'approve'。"
         }
       ]
     }
@@ -125,11 +125,11 @@ Monitor and validate MCP tool usage:
 }
 ```
 
-**Use for:** Protecting against destructive MCP operations.
+**用于：** 防止破坏性 MCP 操作。
 
-## Pattern 6: Build Verification
+## 模式 6：构建验证
 
-Ensure project builds after code changes:
+确保代码更改后项目构建成功：
 
 ```json
 {
@@ -139,7 +139,7 @@ Ensure project builds after code changes:
       "hooks": [
         {
           "type": "prompt",
-          "prompt": "Check if code was modified. If Write/Edit tools were used, verify the project was built (npm run build, cargo build, etc). If not built, block and request build."
+          "prompt": "检查是否修改了代码。如果使用了 Write/Edit 工具，验证是否构建了项目（npm run build、cargo build 等）。如果未构建，阻止并请求构建。"
         }
       ]
     }
@@ -147,11 +147,11 @@ Ensure project builds after code changes:
 }
 ```
 
-**Use for:** Catching build errors before committing or stopping work.
+**用于：** 在提交或停止工作之前捕获构建错误。
 
-## Pattern 7: Permission Confirmation
+## 模式 7：权限确认
 
-Ask user before dangerous operations:
+在危险操作之前询问用户：
 
 ```json
 {
@@ -161,7 +161,7 @@ Ask user before dangerous operations:
       "hooks": [
         {
           "type": "prompt",
-          "prompt": "Command: $TOOL_INPUT.command. If command contains 'rm', 'delete', 'drop', or other destructive operations, return 'ask' to confirm with user. Otherwise 'approve'."
+          "prompt": "命令：$TOOL_INPUT.command。如果命令包含 'rm'、'delete'、'drop' 或其他破坏性操作，返回 'ask' 以与用户确认。否则返回 'approve'。"
         }
       ]
     }
@@ -169,11 +169,11 @@ Ask user before dangerous operations:
 }
 ```
 
-**Use for:** User confirmation on potentially destructive commands.
+**用于：** 对潜在破坏性命令进行用户确认。
 
-## Pattern 8: Code Quality Checks
+## 模式 8：代码质量检查
 
-Run linters or formatters on file edits:
+在文件编辑上运行 linter 或格式化程序：
 
 ```json
 {
@@ -191,23 +191,23 @@ Run linters or formatters on file edits:
 }
 ```
 
-**Example script (check-quality.sh):**
+**示例脚本（check-quality.sh）：**
 ```bash
 #!/bin/bash
 input=$(cat)
 file_path=$(echo "$input" | jq -r '.tool_input.file_path')
 
-# Run linter if applicable
+# 如果适用，运行 linter
 if [[ "$file_path" == *.js ]] || [[ "$file_path" == *.ts ]]; then
   npx eslint "$file_path" 2>&1 || true
 fi
 ```
 
-**Use for:** Automatic code quality enforcement.
+**用于：** 自动代码质量强制执行。
 
-## Pattern Combinations
+## 模式组合
 
-Combine multiple patterns for comprehensive protection:
+组合多个模式以实现全面保护：
 
 ```json
 {
@@ -217,7 +217,7 @@ Combine multiple patterns for comprehensive protection:
       "hooks": [
         {
           "type": "prompt",
-          "prompt": "Validate file write safety"
+          "prompt": "验证文件写入安全性"
         }
       ]
     },
@@ -226,7 +226,7 @@ Combine multiple patterns for comprehensive protection:
       "hooks": [
         {
           "type": "prompt",
-          "prompt": "Validate bash command safety"
+          "prompt": "验证 bash 命令安全性"
         }
       ]
     }
@@ -237,7 +237,7 @@ Combine multiple patterns for comprehensive protection:
       "hooks": [
         {
           "type": "prompt",
-          "prompt": "Verify tests run and build succeeded"
+          "prompt": "验证运行测试且构建成功"
         }
       ]
     }
@@ -256,81 +256,81 @@ Combine multiple patterns for comprehensive protection:
 }
 ```
 
-This provides multi-layered protection and automation.
+这提供了多层保护和自动化。
 
-## Pattern 9: Temporarily Active Hooks
+## 模式 9：临时激活的 Hook
 
-Create hooks that only run when explicitly enabled via flag files:
+创建仅通过标志文件明确启用时运行的 hook：
 
 ```bash
 #!/bin/bash
-# Hook only active when flag file exists
+# Hook 仅在标志文件存在时激活
 FLAG_FILE="$CLAUDE_PROJECT_DIR/.enable-security-scan"
 
 if [ ! -f "$FLAG_FILE" ]; then
-  # Quick exit when disabled
+  # 禁用时快速退出
   exit 0
 fi
 
-# Flag present, run validation
+# 标志存在，运行验证
 input=$(cat)
 file_path=$(echo "$input" | jq -r '.tool_input.file_path')
 
-# Run security scan
+# 运行安全扫描
 security-scanner "$file_path"
 ```
 
-**Activation:**
+**激活：**
 ```bash
-# Enable the hook
+# 启用 hook
 touch .enable-security-scan
 
-# Disable the hook
+# 禁用 hook
 rm .enable-security-scan
 ```
 
-**Use for:**
-- Temporary debugging hooks
-- Feature flags for development
-- Project-specific validation that's opt-in
-- Performance-intensive checks only when needed
+**用于：**
+- 临时调试 hook
+- 开发功能标志
+- 可选的特定于项目验证
+- 仅在需要时进行性能密集型检查
 
-**Note:** Must restart Claude Code after creating/removing flag files for hooks to recognize changes.
+**注意：** 必须在创建/删除标志文件后重新启动 Claude Code，以便 hook 识别更改。
 
-## Pattern 10: Configuration-Driven Hooks
+## 模式 10：配置驱动的 Hook
 
-Use JSON configuration to control hook behavior:
+使用 JSON 配置控制 hook 行为：
 
 ```bash
 #!/bin/bash
 CONFIG_FILE="$CLAUDE_PROJECT_DIR/.claude/my-plugin.local.json"
 
-# Read configuration
+# 读取配置
 if [ -f "$CONFIG_FILE" ]; then
   strict_mode=$(jq -r '.strictMode // false' "$CONFIG_FILE")
   max_file_size=$(jq -r '.maxFileSize // 1000000' "$CONFIG_FILE")
 else
-  # Defaults
+  # 默认值
   strict_mode=false
   max_file_size=1000000
 fi
 
-# Skip if not in strict mode
+# 如果未处于严格模式，则跳过
 if [ "$strict_mode" != "true" ]; then
   exit 0
 fi
 
-# Apply configured limits
+# 应用配置的限制
 input=$(cat)
 file_size=$(echo "$input" | jq -r '.tool_input.content | length')
 
 if [ "$file_size" -gt "$max_file_size" ]; then
-  echo '{"decision": "deny", "reason": "File exceeds configured size limit"}' >&2
+  echo '{"decision": "deny", "reason": "文件超过配置的大小限制"}'>&2
   exit 2
 fi
 ```
 
-**Configuration file (.claude/my-plugin.local.json):**
+**配置文件（.claude/my-plugin.local.json）：**
 ```json
 {
   "strictMode": true,
@@ -339,8 +339,8 @@ fi
 }
 ```
 
-**Use for:**
-- User-configurable hook behavior
-- Per-project settings
-- Team-specific rules
-- Dynamic validation criteria
+**用于：**
+- 用户可配置的 hook 行为
+- 特定于项目的设置
+- 特定于团队的规则
+- 动态验证标准

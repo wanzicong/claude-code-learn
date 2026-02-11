@@ -1,263 +1,263 @@
-# MCP Server Recommendations
+# MCP 服务器推荐
 
-MCP (Model Context Protocol) servers extend Claude's capabilities by connecting to external tools and services.
+MCP（模型上下文协议）服务器通过连接到外部工具和服务来扩展 Claude 的功能。
 
-**Note**: These are common MCP servers. Use web search to find MCP servers specific to the codebase's services and integrations.
+**注意**：这些是常见的 MCP 服务器。使用网络搜索找到代码库服务和集成特定的 MCP 服务器。
 
-## Setup & Team Sharing
+## 设置与团队共享
 
-**Connection methods:**
-1. **Project config** (`.mcp.json`) - Available only in that directory
-2. **Global config** (`~/.claude.json`) - Available across all projects
-3. **Checked-in `.mcp.json`** - Available to entire team (recommended!)
+**连接方式：**
+1. **项目配置**（`.mcp.json`） - 仅在该目录中可用
+2. **全局配置**（`~/.claude.json`） - 在所有项目中可用
+3. **检入的 `.mcp.json`** - 整个团队可用（推荐！）
 
-**Tip**: Check `.mcp.json` into git so your whole team gets the same MCP servers.
+**提示**：将 `.mcp.json` 检入 git，这样整个团队都能获得相同的 MCP 服务器。
 
-**Debugging**: Use `claude --mcp-debug` to identify configuration issues.
+**调试**：使用 `claude --mcp-debug` 识别配置问题。
 
-## Documentation & Knowledge
+## 文档与知识
 
 ### context7
-**Best for**: Projects using popular libraries/SDKs where you want Claude to code with up-to-date documentation
+**最适用于**：使用流行库/SDK 的项目，希望 Claude 使用最新的文档进行编码
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| Using React, Vue, Angular | Frontend frameworks |
-| Using Express, FastAPI, Django | Backend frameworks |
-| Using Prisma, Drizzle | ORMs |
-| Using Stripe, Twilio, SendGrid | Third-party APIs |
-| Using AWS SDK, Google Cloud | Cloud SDKs |
-| Using LangChain, OpenAI SDK | AI/ML libraries |
+| 使用 React、Vue、Angular | 前端框架 |
+| 使用 Express、FastAPI、Django | 后端框架 |
+| 使用 Prisma、Drizzle | ORM |
+| 使用 Stripe、Twilio、SendGrid | 第三方 API |
+| 使用 AWS SDK、Google Cloud | 云 SDK |
+| 使用 LangChain、OpenAI SDK | AI/ML 库 |
 
-**Value**: Claude fetches live documentation instead of relying on training data, reducing hallucinated APIs and outdated patterns.
+**价值**：Claude 获取实时文档，而不是依赖训练数据，减少幻觉 API 和过时的模式。
 
 ---
 
-## Browser & Frontend
+## 浏览器与前端
 
 ### Playwright MCP
-**Best for**: Frontend projects needing browser automation, testing, or screenshots
+**最适用于**：需要浏览器自动化、测试或截图的前端项目
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| React/Vue/Angular app | UI component testing |
-| E2E tests needed | User flow validation |
-| Visual regression testing | Screenshot comparisons |
-| Debugging UI issues | See what user sees |
-| Form testing | Multi-step workflows |
+| React/Vue/Angular 应用 | UI 组件测试 |
+| 需要 E2E 测试 | 用户流程验证 |
+| 视觉回归测试 | 截图比较 |
+| 调试 UI 问题 | 看到用户看到的内容 |
+| 表单测试 | 多步骤工作流 |
 
-**Value**: Claude can interact with your running app, take screenshots, fill forms, and verify UI behavior.
+**价值**：Claude 可以与您运行的应用程序交互、截图、填写表单并验证 UI 行为。
 
 ### Puppeteer MCP
-**Best for**: Headless browser automation, web scraping
+**最适用于**：无头浏览器自动化、网页抓取
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| PDF generation from HTML | Report generation |
-| Web scraping tasks | Data extraction |
-| Headless testing | CI environments |
+| 从 HTML 生成 PDF | 报告生成 |
+| 网页抓取任务 | 数据提取 |
+| 无头测试 | CI 环境 |
 
 ---
 
-## Databases
+## 数据库
 
 ### Supabase MCP
-**Best for**: Projects using Supabase for backend/database
+**最适用于**：使用 Supabase 进行后端/数据库的项目
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| Supabase project detected | `@supabase/supabase-js` in deps |
-| Auth + database needs | User management apps |
-| Real-time features | Live data sync |
+| 检测到 Supabase 项目 | deps 中的 `@supabase/supabase-js` |
+| 认证 + 数据库需求 | 用户管理应用 |
+| 实时功能 | 实时数据同步 |
 
-**Value**: Claude can query tables, manage auth, and interact with Supabase storage directly.
+**价值**：Claude 可以直接查询表、管理认证并与 Supabase 存储交互。
 
 ### PostgreSQL MCP
-**Best for**: Direct PostgreSQL database access
+**最适用于**：直接 PostgreSQL 数据库访问
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| Raw PostgreSQL usage | No ORM layer |
-| Database migrations | Schema management |
-| Data analysis tasks | Complex queries |
-| Debugging data issues | Inspect actual data |
+| 使用原始 PostgreSQL | 无 ORM 层 |
+| 数据库迁移 | 架构管理 |
+| 数据分析任务 | 复杂查询 |
+| 调试数据问题 | 检查实际数据 |
 
 ### Neon MCP
-**Best for**: Neon serverless Postgres users
+**最适用于**：Neon 无服务器 Postgres 用户
 
 ### Turso MCP
-**Best for**: Turso/libSQL edge database users
+**最适用于**：Turso/libSQL 边缘数据库用户
 
 ---
 
-## Version Control & DevOps
+## 版本控制与 DevOps
 
 ### GitHub MCP
-**Best for**: GitHub-hosted repositories needing issue/PR integration
+**最适用于**：需要问题/PR 集成的 GitHub 托管仓库
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| GitHub repository | `.git` with GitHub remote |
-| Issue-driven development | Reference issues in commits |
-| PR workflows | Review, merge operations |
-| GitHub Actions | CI/CD pipeline access |
-| Release management | Tag and release automation |
+| GitHub 仓库 | 带有 GitHub 远程的 `.git` |
+| 问题驱动开发 | 在提交中引用问题 |
+| PR 工作流 | 审查、合并操作 |
+| GitHub Actions | CI/CD 流水线访问 |
+| 发布管理 | 标签和发布自动化 |
 
-**Value**: Claude can create issues, review PRs, check workflow runs, and manage releases.
+**价值**：Claude 可以创建问题、审查 PR、检查工作流运行和管理发布。
 
 ### GitLab MCP
-**Best for**: GitLab-hosted repositories
+**最适用于**：GitLab 托管的仓库
 
 ### Linear MCP
-**Best for**: Teams using Linear for issue tracking
+**最适用于**：使用 Linear 进行问题跟踪的团队
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| Linear workspace | Issue references like `ABC-123` |
-| Sprint planning | Backlog management |
-| Issue creation from code | Auto-create issues for TODOs |
+| Linear 工作区 | 像 `ABC-123` 这样的问题引用 |
+| Sprint 规划 | 待办事项管理 |
+| 从代码创建问题 | 为 TODO 自动创建问题 |
 
 ---
 
-## Cloud Infrastructure
+## 云基础设施
 
 ### AWS MCP
-**Best for**: AWS infrastructure management
+**最适用于**：AWS 基础设施管理
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| AWS SDK in dependencies | `@aws-sdk/*` packages |
-| Infrastructure as code | Terraform, CDK, SAM |
-| Lambda development | Serverless functions |
-| S3, DynamoDB usage | Cloud data services |
+| 依赖项中的 AWS SDK | `@aws-sdk/*` 包 |
+| 基础设施即代码 | Terraform、CDK、SAM |
+| Lambda 开发 | 无服务器函数 |
+| S3、DynamoDB 使用 | 云数据服务 |
 
 ### Cloudflare MCP
-**Best for**: Cloudflare Workers, Pages, R2, D1
+**最适用于**：Cloudflare Workers、Pages、R2、D1
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| Cloudflare Workers | Edge functions |
-| Pages deployment | Static site hosting |
-| R2 storage | Object storage |
-| D1 database | Edge SQL database |
+| Cloudflare Workers | 边缘函数 |
+| Pages 部署 | 静态站点托管 |
+| R2 存储 | 对象存储 |
+| D1 数据库 | 边缘 SQL 数据库 |
 
 ### Vercel MCP
-**Best for**: Vercel deployment and configuration
+**最适用于**：Vercel 部署和配置
 
 ---
 
-## Monitoring & Observtic
+## 监控与可观测性
 
 ### Sentry MCP
-**Best for**: Error tracking and debugging
+**最适用于**：错误跟踪和调试
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| Sentry configured | `@sentry/*` in deps |
-| Production debugging | Investigate errors |
-| Error patterns | Group similar issues |
-| Release tracking | Correlate deploys with errors |
+| 配置了 Sentry | deps 中的 `@sentry/*` |
+| 生产调试 | 调查错误 |
+| 错误模式 | 对类似问题进行分组 |
+| 发布跟踪 | 将部署与错误关联 |
 
-**Value**: Claude can investigate Sentry issues, find root causes, and suggest fixes.
+**价值**：Claude 可以调查 Sentry 问题、找到根本原因并建议修复。
 
 ### Datadog MCP
-**Best for**: APM, logs, and metrics
+**最适用于**：APM、日志和指标
 
 ---
 
-## Communication
+## 通信
 
 ### Slack MCP
-**Best for**: Slack workspace integration
+**最适用于**：Slack 工作区集成
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| Team uses Slack | Send notifications |
-| Deployment notifications | Alert channels |
-| Incident response | Post updates |
+| 团队使用 Slack | 发送通知 |
+| 部署通知 | 警报频道 |
+| 事件响应 | 发布更新 |
 
 ### Notion MCP
-**Best for**: Notion workspace for documentation
+**最适用于**：用于文档的 Notion 工作区
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| Notion for docs | Read/update pages |
-| Knowledge base | Search documentation |
-| Meeting notes | Create summaries |
+| 使用 Notion 编写文档 | 读取/更新页面 |
+| 知识库 | 搜索文档 |
+| 会议笔记 | 创建摘要 |
 
 ---
 
-## File & Data
+## 文件与数据
 
 ### Filesystem MCP
-**Best for**: Enhanced file operations beyond built-in tools
+**最适用于**：超越内置工具的增强文件操作
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| Complex file operations | Batch processing |
-| File watching | Monitor changes |
-| Advanced search | Custom patterns |
+| 复杂文件操作 | 批处理 |
+| 文件监视 | 监控更改 |
+| 高级搜索 | 自定义模式 |
 
 ### Memory MCP
-**Best for**: Persistent memory across sessions
+**最适用于**：跨会话的持久记忆
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| Long-running projects | Remember context |
-| User preferences | Store settings |
-| Learning patterns | Build knowledge |
+| 长期运行的项目 | 记住上下文 |
+| 用户偏好 | 存储设置 |
+| 学习模式 | 构建知识 |
 
-**Value**: Claude remembers project context, decisions, and patterns across conversations.
+**价值**：Claude 记住跨对话的项目上下文、决策和模式。
 
 ---
 
-## Containers & DevOps
+## 容器与 DevOps
 
 ### Docker MCP
-**Best for**: Container management
+**最适用于**：容器管理
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| Docker Compose file | Container orchestration |
-| Dockerfile present | Build images |
-| Container debugging | Inspect logs, exec |
+| Docker Compose 文件 | 容器编排 |
+| 存在 Dockerfile | 构建镜像 |
+| 容器调试 | 检查日志、执行 |
 
 ### Kubernetes MCP
-**Best for**: Kubernetes cluster management
+**最适用于**：Kubernetes 集群管理
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| K8s manifests | Deploy, scale pods |
-| Helm charts | Package management |
-| Cluster debugging | Pod logs, status |
+| K8s 清单 | 部署、扩缩 Pod |
+| Helm 图表 | 包管理 |
+| 集群调试 | Pod 日志、状态 |
 
 ---
 
-## AI & ML
+## AI 与 ML
 
 ### Exa MCP
-**Best for**: Web search and research
+**最适用于**：网络搜索和研究
 
-| Recommend When | Examples |
+| 推荐时机 | 示例 |
 |----------------|----------|
-| Research tasks | Find current info |
-| Competitive analysis | Market research |
-| Documentation gaps | Find examples |
+| 研究任务 | 查找最新信息 |
+| 竞争分析 | 市场研究 |
+| 文档缺口 | 查找示例 |
 
 ---
 
-## Quick Reference: Detection Patterns
+## 快速参考：检测模式
 
-| Look For | Suggests MCP Server |
+| 查找内容 | 建议 MCP 服务器 |
 |----------|-------------------|
-| Popular npm packages | context7 |
+| 流行的 npm 包 | context7 |
 | React/Vue/Next.js | Playwright MCP |
 | `@supabase/supabase-js` | Supabase MCP |
-| `pg` or `postgres` | PostgreSQL MCP |
-| GitHub remote | GitHub MCP |
-| `.linear` or Linear refs | Linear MCP |
+| `pg` 或 `postgres` | PostgreSQL MCP |
+| GitHub 远程 | GitHub MCP |
+| `.linear` 或 Linear 引用 | Linear MCP |
 | `@aws-sdk/*` | AWS MCP |
 | `@sentry/*` | Sentry MCP |
 | `docker-compose.yml` | Docker MCP |
-| Slack webhook URLs | Slack MCP |
-| `@anthropic-ai/sdk` | context7 for Anthropic docs |
+| Slack Webhook URL | Slack MCP |
+| `@anthropic-ai/sdk` | context7 用于 Anthropic 文档 |

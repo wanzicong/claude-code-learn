@@ -1,21 +1,21 @@
 ---
-description: Explain Stripe error codes and provide solutions with code examples
+description: 解释 Stripe 错误代码并提供代码示例解决方案
 argument-hint: [error_code or error_message]
 ---
 
-# Explain Stripe Error
+# 解释 Stripe 错误
 
-Provide a comprehensive explanation of the given Stripe error code or error message:
+提供对给定 Stripe 错误代码或错误消息的全面解释：
 
-1. Accept the error code or full error message from the arguments
-2. Explain in plain English what the error means
-3. List common causes of this error
-4. Provide specific solutions and handling recommendations
-5. Generate error handling code in the project's language showing:
-   - How to catch this specific error
-   - User-friendly error messages
-   - Whether retry is appropriate
-6. Mention related error codes the developer should be aware of
-7. Include a link to the relevant Stripe documentation
+1. 从参数中接受错误代码或完整错误消息
+2. 用通俗易懂的语言解释错误的含义
+3. 列出此错误的常见原因
+4. 提供具体的解决方案和处理建议
+5. 在项目语言中生成错误处理代码，展示：
+   - 如何捕获此特定错误
+   - 用户友好的错误消息
+   - 是否适合重试
+6. 提及开发者应该了解的相关错误代码
+7. 包含相关 Stripe 文档的链接
 
-Focus on actionable solutions and production-ready error handling patterns.
+专注于可执行的解决方案和生产就绪的错误处理模式。

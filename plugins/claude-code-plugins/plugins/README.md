@@ -1,77 +1,77 @@
-# Claude Code Plugins
+# Claude Code 插件
 
-This directory contains some official Claude Code plugins that extend functionality through custom commands, agents, and workflows. These are examples of what's possible with the Claude Code plugin system—many more plugins are available through community marketplaces.
+此目录包含一些官方 Claude Code 插件，通过自定义命令、代理和工作流扩展功能。这些示例展示了 Claude Code 插件系统的可能性——通过社区市场还可以获得更多插件。
 
-## What are Claude Code Plugins?
+## 什么是 Claude Code 插件？
 
-Claude Code plugins are extensions that enhance Claude Code with custom slash commands, specialized agents, hooks, and MCP servers. Plugins can be shared across projects and teams, providing consistent tooling and workflows.
+Claude Code 插件是通过自定义斜杠命令、专用代理、钩子和 MCP 服务器增强 Claude Code 功能的扩展。插件可以在项目和团队之间共享，提供一致的工具和工作流。
 
-Learn more in the [official plugins documentation](https://docs.claude.com/en/docs/claude-code/plugins).
+在[官方插件文档](https://docs.claude.com/en/docs/claude-code/plugins)中了解更多信息。
 
-## Plugins in This Directory
+## 此目录中的插件
 
-| Name | Description | Contents |
+| 名称 | 描述 | 内容 |
 |------|-------------|----------|
-| [agent-sdk-dev](./agent-sdk-dev/) | Development kit for working with the Claude Agent SDK | **Command:** `/new-sdk-app` - Interactive setup for new Agent SDK projects<br>**Agents:** `agent-sdk-verifier-py`, `agent-sdk-verifier-ts` - Validate SDK applications against best practices |
-| [claude-opus-4-5-migration](./claude-opus-4-5-migration/) | Migrate code and prompts from Sonnet 4.x and Opus 4.1 to Opus 4.5 | **Skill:** `claude-opus-4-5-migration` - Automated migration of model strings, beta headers, and prompt adjustments |
-| [code-review](./code-review/) | Automated PR code review using multiple specialized agents with confidence-based scoring to filter false positives | **Command:** `/code-review` - Automated PR review workflow<br>**Agents:** 5 parallel Sonnet agents for CLAUDE.md compliance, bug detection, historical context, PR history, and code comments |
-| [commit-commands](./commit-commands/) | Git workflow automation for committing, pushing, and creating pull requests | **Commands:** `/commit`, `/commit-push-pr`, `/clean_gone` - Streamlined git operations |
-| [explanatory-output-style](./explanatory-output-style/) | Adds educational insights about implementation choices and codebase patterns (mimics the deprecated Explanatory output style) | **Hook:** SessionStart - Injects educational context at the start of each session |
-| [feature-dev](./feature-dev/) | Comprehensive feature development workflow with a structured 7-phase approach | **Command:** `/feature-dev` - Guided feature development workflow<br>**Agents:** `code-explorer`, `code-architect`, `code-reviewer` - For codebase analysis, architecture design, and quality review |
-| [frontend-design](./frontend-design/) | Create distinctive, production-grade frontend interfaces that avoid generic AI aesthetics | **Skill:** `frontend-design` - Auto-invoked for frontend work, providing guidance on bold design choices, typography, animations, and visual details |
-| [hookify](./hookify/) | Easily create custom hooks to prevent unwanted behaviors by analyzing conversation patterns or explicit instructions | **Commands:** `/hookify`, `/hookify:list`, `/hookify:configure`, `/hookify:help`<br>**Agent:** `conversation-analyzer` - Analyzes conversations for problematic behaviors<br>**Skill:** `writing-rules` - Guidance on hookify rule syntax |
-| [learning-output-style](./learning-output-style/) | Interactive learning mode that requests meaningful code contributions at decision points (mimics the unshipped Learning output style) | **Hook:** SessionStart - Encourages users to write meaningful code (5-10 lines) at decision points while receiving educational insights |
-| [plugin-dev](./plugin-dev/) | Comprehensive toolkit for developing Claude Code plugins with 7 expert skills and AI-assisted creation | **Command:** `/plugin-dev:create-plugin` - 8-phase guided workflow for building plugins<br>**Agents:** `agent-creator`, `plugin-validator`, `skill-reviewer`<br>**Skills:** Hook development, MCP integration, plugin structure, settings, commands, agents, and skill development |
-| [pr-review-toolkit](./pr-review-toolkit/) | Comprehensive PR review agents specializing in comments, tests, error handling, type design, code quality, and code simplification | **Command:** `/pr-review-toolkit:review-pr` - Run with optional review aspects (comments, tests, errors, types, code, simplify, all)<br>**Agents:** `comment-analyzer`, `pr-test-analyzer`, `silent-failure-hunter`, `type-design-analyzer`, `code-reviewer`, `code-simplifier` |
-| [ralph-wiggum](./ralph-wiggum/) | Interactive self-referential AI loops for iterative development. Claude works on the same task repeatedly until completion | **Commands:** `/ralph-loop`, `/cancel-ralph` - Start/stop autonomous iteration loops<br>**Hook:** Stop - Intercepts exit attempts to continue iteration |
-| [security-guidance](./security-guidance/) | Security reminder hook that warns about potential security issues when editing files | **Hook:** PreToolUse - Monitors 9 security patterns including command injection, XSS, eval usage, dangerous HTML, pickle deserialization, and os.system calls |
+| [agent-sdk-dev](./agent-sdk-dev/) | 使用 Claude Agent SDK 的开发工具包 | **命令：** `/new-sdk-app` - 新建 Agent SDK 项目的交互式设置<br>**代理：** `agent-sdk-verifier-py`、`agent-sdk-verifier-ts` - 根据**最佳实践验证 SDK 应用程序 |
+| [claude-opus-4-5-migration](./claude-opus-4-5-migration/) | 将代码和提示词从 Sonnet 4.x 和 Opus 4.1 迁移到 Opus 4.5 | **技能：** `claude-opus-4-5-migration` - 自动迁移模型字符串、beta 头和提示词调整 |
+| [code-review](./code-review/) | 使用多个专用代理和基于置信度的评分进行自动 PR 代码审查，以过滤误报 | **命令：** `/code-review` - 自动化 PR 审查工作流<br>**代理：** 5 个并行 Sonnet 代理，用于 CLAUDE.md 合规性、bug 检测、历史上下文、PR 历史和代码注释 |
+| [commit-commands](./commit-commands/) | Git 工作流自动化，用于提交、推送和创建拉取请求 | **命令：** `/commit`、`/commit-push-pr`、`/clean_gone` - 简化的 git 操作 |
+| [explanatory-output-style](./explanatory-output-style/) | 添加关于实现选择和代码库模式的教育见解(模仿已弃用的解释输出样式) | **钩子：** SessionStart - 在每次会话开始时注入教育上下文 |
+| [feature-dev](./feature-dev/) | 具有结构化 7 阶段方法的综合功能开发工作流 | **命令：** `/feature-dev` - 指导功能开发工作流<br>**代理：** `code-explorer`、`code-architect`、`code-reviewer` - 用于代码库分析、架构设计和质量审查 |
+| [frontend-design](./frontend-design/) | 创建独特、生产级的前端界面，避免通用的 AI 美学风格 | **技能：** `frontend-design` - 用于前端工作时自动调用，提供关于大胆设计选择、排版、动画和视觉细节的指导 |
+| [hookify](./hookify/) | 通过分析对话模式或明确指令轻松创建自定义钩子以防止不良行为 | **命令：** `/hookify`、`/hookify:list`、`/hookify:configure`、`/hookify:help`<br>**代理：** `conversation-analyzer` - 分析对话中的不良行为<br>**技能：** `writing-rules` - 关于 hookify 规则语法的指导 |
+| [learning-output-style](./learning-output-style/) | 在决策点请求有意义代码贡献的交互式学习模式(模仿未发布的学习输出样式) | **钩子：** SessionStart - 鼓励用户在决策点编写有意义的代码（5-10 行），同时接收教育见解 |
+| [plugin-dev](./plugin-dev/) | 开发 Claude Code 插件的全面工具包，包含 7 个专家技能和 AI 辅助创建 | **命令：** `/plugin-dev:create-plugin` - 构建 8 阶段指导工作流<br>**代理：** `agent-creator`、`plugin-validator`、`skill-reviewer`<br>**技能：** 钩子开发、MCP 集成、插件结构、设置、命令、代理和技能开发 |
+| [pr-review-toolkit](./pr-review-toolkit/) | 专门研究注释、测试、错误处理、类型设计、代码质量和代码简化的综合 PR 审查代理 | **命令：** `/pr-review-toolkit:review-pr` - 可选审查方面运行（注释、测试、错误、类型、代码、简化、全部）<br>**代理：** `comment-analyzer`、`pr-test-analyzer`、`silent-failure-hunter`、`type-design-analyzer`、`code-reviewer`、`code-simplifier` |
+| [ralph-wiggum](./ralph-wiggum/) | 用于迭代开发的交互式自引用 AI 循环。Claude 重复处理同一任务直到完成 | **命令：** `/ralph-loop`、`/cancel-ralph` - 启动/停止自主迭代循环<br>**钩子：** Stop - 拦截退出尝试以继续迭代 |
+| [security-guidance](./security-guidance/) | 安全提醒钩子，在编辑文件时警告潜在的安全问题 | **钩子：** PreToolUse - 监控 9 种安全模式，包括命令注入、XSS、eval 使用、危险 HTML、pickle 反序列化和 os.system 调用 |
 
-## Installation
+## 安装
 
-These plugins are included in the Claude Code repository. To use them in your own projects:
+这些插件包含在 Claude Code 存储库中。要在您自己的项目中使用它们：
 
-1. Install Claude Code globally:
+1. 全局安装 Claude Code：
 ```bash
 npm install -g @anthropic-ai/claude-code
 ```
 
-2. Navigate to your project and run Claude Code:
+2. 导航到您的项目并运行 Claude Code：
 ```bash
 claude
 ```
 
-3. Use the `/plugin` command to install plugins from marketplaces, or configure them in your project's `.claude/settings.json`.
+3. 使用 `/plugin` 命令从市场安装插件，或在项目的 `.claude/settings.json` 中配置它们。
 
-For detailed plugin installation and configuration, see the [official documentation](https://docs.claude.com/en/docs/claude-code/plugins).
+有关详细的插件安装和配置，请参阅[官方文档](https://docs.claude.com/en/docs/claude-code/plugins)。
 
-## Plugin Structure
+## 插件结构
 
-Each plugin follows the standard Claude Code plugin structure:
+每个插件遵循标准的 Claude Code 插件结构：
 
 ```
 plugin-name/
 ├── .claude-plugin/
-│   └── plugin.json          # Plugin metadata
-├── commands/                # Slash commands (optional)
-├── agents/                  # Specialized agents (optional)
-├── skills/                  # Agent Skills (optional)
-├── hooks/                   # Event handlers (optional)
-├── .mcp.json                # External tool configuration (optional)
-└── README.md                # Plugin documentation
+│   └── plugin.json          # 插件元数据
+├── commands/                # 斜杠命令（可选）
+├── agents/                  # 专用代理（可选）
+├── skills/                  # 代理技能（可选）
+├── hooks/                   # 事件处理程序（可选）
+├── .mcp.json                # 外部工具配置（可选）
+└── README.md                # 插件文档
 ```
 
-## Contributing
+## 贡献
 
-When adding new plugins to this directory:
+向此目录添加新插件时：
 
-1. Follow the standard plugin structure
-2. Include a comprehensive README.md
-3. Add plugin metadata in `.claude-plugin/plugin.json`
-4. Document all commands and agents
-5. Provide usage examples
+1. 遵循标准插件结构
+2. 包含全面的 README.md
+3. 在 `.claude-plugin/plugin.json` 中添加插件元数据
+4. 记录所有命令和代理
+5. 提供使用示例
 
-## Learn More
+## 了解更多
 
-- [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code/overview)
-- [Plugin System Documentation](https://docs.claude.com/en/docs/claude-code/plugins)
-- [Agent SDK Documentation](https://docs.claude.com/en/api/agent-sdk/overview)
+- [Claude Code 文档](https://docs.claude.com/en/docs/claude-code/overview)
+- [插件系统文档](https://docs.claude.com/en/docs/claude-code/plugins)
+- [Agent SDK 文档](https://docs.claude.com/en/api/agent-sdk/overview)

@@ -1,84 +1,84 @@
-# Advanced Workflow Patterns
+# 高级工作流模式
 
-Multi-step command sequences and composition patterns for complex workflows.
+多步骤命令序列和复杂工作流的组合模式。
 
-## Overview
+## 概述
 
-Advanced workflows combine multiple commands, coordinate state across invocations, and create sophisticated automation sequences. These patterns enable building complex functionality from simple command building blocks.
+高级工作流组合多个命令、协调调用之间的状态，并创建复杂的自动化序列。这些模式能够从简单命令构建块构建复杂功能。
 
-## Multi-Step Command Patterns
+## 多步骤命令模式
 
-### Sequential Workflow Command
+### 顺序工作流命令
 
-Commands that guide users through multi-step processes:
+指导用户通过多步骤流程的命令：
 
 ```markdown
 ---
-description: Complete PR review workflow
+description: 完整 PR 审查工作流
 argument-hint: [pr-number]
 allowed-tools: Bash(gh:*), Read, Grep
 ---
 
-# PR Review Workflow for #$1
+# PR 审查工作流，针对 #$1
 
-## Step 1: Fetch PR Details
+## 步骤 1：获取 PR 详细信息
 !`gh pr view $1 --json title,body,author,files`
 
-## Step 2: Review Files
-Files changed: !`gh pr diff $1 --name-only`
+## 步骤 2：审查文件
+更改的文件：!`gh pr diff $1 --name-only`
 
-For each file:
-- Check code quality
-- Verify tests exist
-- Review documentation
+对于每个文件：
+- 检查代码质量
+- 验证测试存在
+- 审查文档
 
-## Step 3: Run Checks
-Test status: !`gh pr checks $1`
+## 步骤 3：运行检查
+测试状态：!`gh pr checks $1`
 
-Verify:
-- All tests passing
-- No merge conflicts
-- CI/CD successful
+验证：
+- 所有测试通过
+- 无合并冲突
+- CI/CD 成功
 
-## Step 4: Provide Feedback
+## 步骤 4：提供反馈
 
-Summarize:
-- Issues found (critical/minor)
-- Suggestions for improvement
-- Approval recommendation
+总结：
+- 发现的问题（关键/次要）
+- 改进建议
+- 批准推荐
 
-Would you like to:
-1. Approve PR
-2. Request changes
-3. Leave comments only
+您想要：
+1. 批准 PR
+2. 请求更改
+3. 仅留下注释
 
-Reply with your choice and I'll help complete the action.
+回复您的选择，我将帮助完成操作。
 ```
 
-**Key features:**
-- Numbered steps for clarity
-- Bash execution for context
-- Decision points for user input
-- Next action suggestions
+**关键功能：**
+- 清晰编号的步骤
+- 用于上下文的 Bash 执行
+- 用于用户输入的决策点
+- 下一步操作建议
 
-### State-Carrying Workflow
+### 状态携带工作流
 
-Commands that maintain state between invocations:
+在调用之间维护状态的命令：
 
 ```markdown
 ---
-description: Initialize deployment workflow
+description: 初始化部署工作流
 allowed-tools: Write, Bash(git:*)
 ---
 
-# Initialize Deployment
+# 初始化部署
 
-Creating deployment tracking file...
+创建部署跟踪文件...
 
-Current branch: !`git branch --show-current`
-Latest commit: !`git log -1 --format=%H`
+当前分支：!`git branch --show-current`
+最新提交：!`git log -1 --format=%H`
 
-Deployment state saved to `.claude/deployment-state.local.md`:
+部署状态保存到 `.claude/deployment-state.local.md`：
 
 \`\`\`markdown
 ---
@@ -89,198 +89,198 @@ timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)
 status: initialized
 ---
 
-# Deployment Tracking
+# 部署跟踪
 
-Branch: $(git branch --show-current)
-Started: $(date)
+分支：$(git branch --show-current)
+启动：$(date)
 
-Next steps:
-1. Run tests: /deploy-test
-2. Build: /deploy-build
-3. Deploy: /deploy-execute
+下一步：
+1. 运行测试：/deploy-test
+2. 构建：/deploy-build
+3. 部署：/deploy-execute
 \`\`\`
 
-State saved. Run `/deploy-test` to continue.
+状态已保存。运行 `/deploy-test` 继续。
 ```
 
-**Next command** (`/deploy-test`):
+**下个命令** (`/deploy-test`)：
 ```markdown
 ---
-description: Run deployment tests
+description: 运行部署测试
 allowed-tools: Read, Bash(npm:*)
 ---
 
-Reading deployment state from `.claude/deployment-state.local.md`...
+从 `.claude/deployment-state.local.md` 读取部署状态...
 
-Running tests: !`npm test`
+运行测试：!`npm test`
 
-Updating state to 'tested'...
+将状态更新为 'tested'...
 
-Tests complete. Run `/deploy-build` to continue.
+测试完成。运行 `/deploy-build` 继续。
 ```
 
-**Pattern benefits:**
-- Persistent state across commands
-- Clear workflow progression
-- Safety checkpoints
-- Resume capability
+**模式好处：**
+- 命令间的持久状态
+- 清晰的工作流进展
+- 安全检查点
+- 恢复能力
 
-### Conditional Workflow Branching
+### 条件工作流分支
 
-Commands that adapt based on conditions:
+根据条件适应的命令：
 
 ```markdown
 ---
-description: Smart deployment workflow
+description: 智能部署工作流
 argument-hint: [environment]
 allowed-tools: Bash(git:*), Bash(npm:*), Read
 ---
 
-# Deploy to $1
+# 部署到 $1
 
-## Pre-flight Checks
+## 部署前检查
 
-Branch: !`git branch --show-current`
-Status: !`git status --short`
+分支：!`git branch --show-current`
+状态：!`git status --short`
 
-**Checking conditions:**
+**检查条件：**
 
-1. Branch status:
-   - If main/master: Require approval
-   - If feature branch: Warning about target
-   - If hotfix: Fast-track process
+1. 分支状态：
+   - 如果 main/master：需要批准
+   - 如果功能分支：关于目标的警告
+   - 如果热修复：快通道程
 
-2. Tests:
+2. 测试：
    !`npm test`
-   - If tests fail: STOP - fix tests first
-   - If tests pass: Continue
+   - 如果测试失败：停止 - 首先修复测试
+   - 如果测试通过：继续
 
-3. Environment:
-   - If $1 = 'production': Extra validation
-   - If $1 = 'staging': Standard process
-   - If $1 = 'dev': Minimal checks
+3. 环境：
+   - 如果 $1 = 'production'：额外验证
+   - 如果 $1 = 'staging'：标准流程
+   - 如果 $1 = 'dev'：最小检查
 
-**Workflow decision:**
-Based on above, proceeding with: [determined workflow]
+**工作流决策：**
+基于以上，继续进行：[确定的工作流]
 
-[Conditional steps based on environment and status]
+[根据环境和状态的条件的步骤]
 
-Ready to deploy? (yes/no)
+准备部署？（是/否）
 ```
 
-## Command Composition Patterns
+## 命令组合模式
 
-### Command Chaining
+### 命令链
 
-Commands designed to work together:
+设计协同工作的命令：
 
 ```markdown
 ---
-description: Prepare for code review
+description: 准备代码审查
 ---
 
-# Prepare Code Review
+# 准备代码审查
 
-Running preparation sequence:
+运行准备序列：
 
-1. Format code: /format-code
-2. Run linter: /lint-code
-3. Run tests: /test-all
-4. Generate coverage: /coverage-report
-5. Create review summary: /review-summary
+1. 格式化代码：/format-code
+2. 运行 linter：/lint-code
+3. 运行测试：/test-all
+4. 生成覆盖率：/coverage-report
+5. 创建审查摘要：/review-summary
 
-This is a meta-command. After completing each step above,
-I'll compile results and prepare comprehensive review materials.
+这是一个元命令。完成以上每个步骤后，
+我将编译结果并准备全面的审查材料。
 
-Starting sequence...
+开始序列...
 ```
 
-**Individual commands** are simple:
-- `/format-code` - Just formats
-- `/lint-code` - Just lints
-- `/test-all` - Just tests
+**单个命令**很简单：
+- `/format-code` - 仅格式化
+- `/lint-code` - 仅 lint
+- `/test-all` - 仅测试
 
-**Composition command** orchestrates them.
+**组合命令**编排它们。
 
-### Pipeline Pattern
+### 管道模式
 
-Commands that process output from previous commands:
+处理来自先前命令输出的命令：
 
 ```markdown
 ---
-description: Analyze test failures
+description: 分析测试失败
 ---
 
-# Analyze Test Failures
+# 分析测试失败
 
-## Step 1: Get test results
-(Run /test-all first if not done)
+## 步骤 1：获取测试结果
+（如果未完成，首先运行 /test-all）
 
-Reading test output...
+读取测试输出...
 
-## Step 2: Categorize failures
-- Flaky tests (random failures)
-- Consistent failures
-- New failures vs existing
+## 步骤 2：分类失败
+- 不稳定的测试（随机失败）
+- 一致的失败
+- 新失败 vs 现有
 
-## Step 3: Prioritize
-Rank by:
-- Impact (critical path vs edge case)
-- Frequency (always fails vs sometimes)
-- Effort (quick fix vs major work)
+## 步骤 3：优先级排序
+按以下标准排序：
+- 影响（关键路径 vs 边缘情况）
+- 频率（总是失败 vs 有时失败）
+- 工作量（快速修复 vs 主要工作）
 
-## Step 4: Generate fix plan
-For each failure:
-- Root cause hypothesis
-- Suggested fix approach
-- Estimated effort
+## 步骤 4：生成修复计划
+对于每个失败：
+- 根本原因假设
+- 建议的修复方法
+- 估计工作量
 
-Would you like me to:
-1. Fix highest priority failure
-2. Generate detailed fix plans for all
-3. Create GitHub issues for each
+您想要我：
+1. 修复最高优先级失败
+2. 为所有失败生成详细修复计划
+3. 为每个创建 GitHub 问题
 ```
 
-### Parallel Execution Pattern
+### 并行执行模式
 
-Commands that coordinate multiple simultaneous operations:
+协调多个同时操作的命令：
 
 ```markdown
 ---
-description: Run comprehensive validation
+description: 运行全面验证
 allowed-tools: Bash(*), Read
 ---
 
-# Comprehensive Validation
+# 全面验证
 
-Running validations in parallel...
+并行运行验证...
 
-Starting:
-- Code quality checks
-- Security scanning
-- Dependency audit
-- Performance profiling
+启动：
+- 代码质量检查
+- 安全扫描
+- 依赖项审计
+- 性能分析
 
-This will take 2-3 minutes. I'll monitor all processes
-and report when complete.
+这将需要 2-3 分钟。我将监控所有进程
+并在完成时报告。
 
-[Poll each process and report progress]
+[轮询每个进程并报告进度]
 
-All validations complete. Summary:
-- Quality: PASS (0 issues)
-- Security: WARN (2 minor issues)
-- Dependencies: PASS
-- Performance: PASS (baseline met)
+所有验证完成。摘要：
+- 质量：通过（0 个问题）
+- 安全：警告（2 个次要问题）
+- 依赖项：通过
+- 性能：通过（达到基线）
 
-Details:
-[Collated results from all checks]
+详情：
+[从所有检查汇总的结果]
 ```
 
-## Workflow State Management
+## 工作流状态管理
 
-### Using .local.md Files
+### 使用 .local.md 文件
 
-Store workflow state in plugin-specific files:
+在插件特定文件中存储工作流状态：
 
 ```markdown
 .claude/plugin-name-workflow.local.md:
@@ -296,210 +296,210 @@ tests_passed: false
 build_complete: false
 ---
 
-# Deployment Workflow State
+# 部署工作流状态
 
-Current stage: Testing
-Started: 2025-01-15 10:30 UTC
+当前阶段：测试
+启动：2025-01-15 10:30 UTC
 
-Completed steps:
-- ✅ Validation
-- ✅ Branch check
-- ⏳ Testing (in progress)
+完成的步骤：
+- ✅ 验证
+- ✅ 分支检查
+- ⏳ 测试（进行中）
 
-Pending steps:
-- Build
-- Deploy
-- Smoke tests
+待处理步骤：
+- 构建
+- 部署
+- 烟雾测试
 ```
 
-**Reading state in commands:**
+**在命令中读取状态：**
 
 ```markdown
 ---
-description: Continue deployment workflow
+description: 继续部署工作流
 allowed-tools: Read, Write
 ---
 
-Reading workflow state from .claude/plugin-name-workflow.local.md...
+从 .claude/plugin-name-workflow.local.md 读取工作流状态...
 
-Current stage: @.claude/plugin-name-workflow.local.md
+当前阶段：@.claude/plugin-name-workflow.local.md
 
-[Parse YAML frontmatter to determine next step]
+[解析 YAML frontmatter 以确定下一步]
 
-Next action based on state: [determined action]
+基于状态的下个操作：[确定操作]
 ```
 
-### Workflow Recovery
+### 工作流恢复
 
-Handle interrupted workflows:
+处理中断的工作流：
 
 ```markdown
 ---
-description: Resume deployment workflow
+description: 恢复部署工作流
 allowed-tools: Read
 ---
 
-# Resume Deployment
+# 恢复部署
 
-Checking for interrupted workflow...
+检查中断的工作流...
 
-State file: @.claude/plugin-name-workflow.local.md
+状态文件：@.claude/plugin-name-workflow.local.md
 
-**Workflow found:**
-- Started: [timestamp]
-- Environment: [env]
-- Last completed: [step]
+**找到工作流：**
+- 启动：[时间戳]
+- 环境：[env]
+- 最后完成：[步骤]
 
-**Recovery options:**
-1. Resume from last step
-2. Restart from beginning
-3. Abort and clean up
+**恢复选项：**
+1. 从最后一步恢复
+2. 从开始重新启动
+3. 中止并清理
 
-Which would you like? (1/2/3)
+您想要？（1/2/3）
 ```
 
-## Workflow Coordination Patterns
+## 工作流协调模式
 
-### Cross-Command Communication
+### 跨命令通信
 
-Commands that signal each other:
+相互发送信号的命令：
 
 ```markdown
 ---
-description: Mark feature complete
+description: 标记功能完成
 allowed-tools: Write
 ---
 
-# Mark Feature Complete
+# 标记功能完成
 
-Writing completion marker...
+写入完成标记...
 
-Creating: .claude/feature-complete.flag
+创建：.claude/feature-complete.flag
 
-This signals other commands that feature is ready for:
-- Integration testing (/integration-test will auto-detect)
-- Documentation generation (/docs-generate will include)
-- Release notes (/release-notes will add)
+这向其他命令发出信号功能已准备好用于：
+- 集成测试（/integration-test 将自动检测）
+- 文档生成（/docs-generate 将包含）
+- 发布说明（/release-notes 将添加）
 
-Feature marked complete.
+功能已标记完成。
 ```
 
-**Other commands check for flag:**
+**其他命令检查标记：**
 
 ```markdown
 ---
-description: Generate release notes
+description: 生成发布说明
 allowed-tools: Read, Bash(git:*)
 ---
 
-Checking for completed features...
+检查完成的功能...
 
 if [ -f .claude/feature-complete.flag ]; then
-  Feature ready for release notes
+  功能准备好发布说明
 fi
 
-[Include in release notes]
+[包含在发布说明中]
 ```
 
-### Workflow Locking
+### 工作流锁定
 
-Prevent concurrent workflow execution:
+防止并发工作流执行：
 
 ```markdown
 ---
-description: Start deployment
+description: 开始部署
 allowed-tools: Read, Write, Bash
 ---
 
-# Start Deployment
+# 开始部署
 
-Checking for active deployments...
+检查活动的部署...
 
 if [ -f .claude/deployment.lock ]; then
-  ERROR: Deployment already in progress
-  Started: [timestamp from lock file]
+  错误：部署已在进行中
+  启动：[来自锁定文件的时间戳]
 
-  Cannot start concurrent deployment.
-  Wait for completion or run /deployment-abort
+  无法启动并发部署。
+  等待完成或运行 /deployment-abort
 
-  Exit.
+  退出。
 fi
 
-Creating deployment lock...
+创建部署锁定...
 
-Deployment started. Lock created.
-[Proceed with deployment]
+部署已启动。创建锁定。
+[继续部署]
 ```
 
-**Lock cleanup:**
+**锁定清理：**
 
 ```markdown
 ---
-description: Complete deployment
+description: 完成部署
 allowed-tools: Write, Bash
 ---
 
-Deployment complete.
+部署完成。
 
-Removing deployment lock...
+删除部署锁定...
 rm .claude/deployment.lock
 
-Ready for next deployment.
+准备好下一个部署。
 ```
 
-## Advanced Argument Handling
+## 高级参数处理
 
-### Optional Arguments with Defaults
+### 带有默认值的可选参数
 
 ```markdown
 ---
-description: Deploy with optional version
+description: 带有可选版本的部署
 argument-hint: [environment] [version]
 ---
 
-Environment: ${1:-staging}
-Version: ${2:-latest}
+环境：${1:-staging}
+版本：${2:-latest}
 
-Deploying ${2:-latest} to ${1:-staging}...
+部署 ${2:-latest} 到 ${1:-staging}...
 
-Note: Using defaults for missing arguments:
-- Environment defaults to 'staging'
-- Version defaults to 'latest'
+注意：对缺失参数使用默认值：
+- 环境默认为 'staging'
+- 版本默认为 'latest'
 ```
 
-### Argument Validation
+### 参数验证
 
 ```markdown
 ---
-description: Deploy to validated environment
+description: 部署到验证的环境
 argument-hint: [environment]
 ---
 
-Environment: $1
+环境：$1
 
-Validating environment...
+验证环境...
 
 valid_envs="dev staging production"
 if ! echo "$valid_envs" | grep -w "$1" > /dev/null; then
-  ERROR: Invalid environment '$1'
-  Valid options: dev, staging, production
-  Exit.
+  错误：无效环境 '$1'
+  有效选项：dev、staging、production
+  退出。
 fi
 
-Environment validated. Proceeding...
+环境已验证。继续...
 ```
 
-### Argument Transformation
+### 参数转换
 
 ```markdown
 ---
-description: Deploy with shorthand
+description: 带有简写的部署
 argument-hint: [env-shorthand]
 ---
 
-Input: $1
+输入：$1
 
-Expanding shorthand:
+扩展简写：
 - d/dev → development
 - s/stg → staging
 - p/prod → production
@@ -511,143 +511,143 @@ case "$1" in
   *) ENV="$1";;
 esac
 
-Deploying to: $ENV
+部署到：$ENV
 ```
 
-## Error Handling in Workflows
+## 工作流中的错误处理
 
-### Graceful Failure
+### 优雅失败
 
 ```markdown
 ---
-description: Resilient deployment workflow
+description: 弹性部署工作流
 ---
 
-# Deployment Workflow
+# 部署工作流
 
-Running steps with error handling...
+运行带有错误处理的步骤...
 
-## Step 1: Tests
+## 步骤 1：测试
 !`npm test`
 
 if [ $? -ne 0 ]; then
-  ERROR: Tests failed
+  错误：测试失败
 
-  Options:
-  1. Fix tests and retry
-  2. Skip tests (NOT recommended)
-  3. Abort deployment
+  选项：
+  1. 修复测试并重试
+  2. 跳过测试（不推荐）
+  3. 中止部署
 
-  What would you like to do?
+  您想要做什么？
 
-  [Wait for user input before continuing]
+  [在继续之前等待用户输入]
 fi
 
-## Step 2: Build
-[Continue only if Step 1 succeeded]
+## 步骤 2：构建
+[仅当步骤 1 成功时继续]
 ```
 
-### Rollback on Failure
+### 失败时回滚
 
 ```markdown
 ---
-description: Deployment with rollback
+description: 带有回滚的部署
 ---
 
-# Deploy with Rollback
+# 带有回滚的部署
 
-Saving current state for rollback...
-Previous version: !`current-version.sh`
+保存当前状态以供回滚...
+上一个版本：!`current-version.sh`
 
-Deploying new version...
+部署新版本...
 
 !`deploy.sh`
 
 if [ $? -ne 0 ]; then
-  DEPLOYMENT FAILED
+  部署失败
 
-  Initiating automatic rollback...
+  启动自动回滚...
   !`rollback.sh`
 
-  Rolled back to previous version.
-  Check logs for failure details.
+  已回滚到上一个版本。
+  检查日志以获取失败详情。
 fi
 
-Deployment complete.
+部署完成。
 ```
 
-### Checkpoint Recovery
+### 检查点恢复
 
 ```markdown
 ---
-description: Workflow with checkpoints
+description: 带有检查点的工作流
 ---
 
-# Multi-Stage Deployment
+# 多阶段部署
 
-## Checkpoint 1: Validation
+## 检查点 1：验证
 !`validate.sh`
 echo "checkpoint:validation" >> .claude/deployment-checkpoints.log
 
-## Checkpoint 2: Build
+## 检查点 2：构建
 !`build.sh`
 echo "checkpoint:build" >> .claude/deployment-checkpoints.log
 
-## Checkpoint 3: Deploy
+## 检查点 3：部署
 !`deploy.sh`
 echo "checkpoint:deploy" >> .claude/deployment-checkpoints.log
 
-If any step fails, resume with:
-/deployment-resume [last-successful-checkpoint]
+如果任何步骤失败，使用以下恢复：
+/deployment-resume [最后成功的检查点]
 ```
 
-## Best Practices
+## 最佳实践
 
-### Workflow Design
+### 工作流设计
 
-1. **Clear progression**: Number steps, show current position
-2. **Explicit state**: Don't rely on implicit state
-3. **User control**: Provide decision points
-4. **Error recovery**: Handle failures gracefully
-5. **Progress indication**: Show what's done, what's pending
+1. **清晰进展**：编号步骤，显示当前位置
+2. **明确状态**：不依赖隐式状态
+3. **用户控制**：提供决策点
+4. **错误恢复**：优雅处理失败
+5. **进度指示**：显示已完成、待处理的内容
 
-### Command Composition
+### 命令组合
 
-1. **Single responsibility**: Each command does one thing well
-2. **Composable design**: Commands work together easily
-3. **Standard interfaces**: Consistent input/output formats
-4. **Loose coupling**: Commands don't depend on each other's internals
+1. **单一职责**：每个命令做好一件事
+2. **可组合设计**：命令容易协同工作
+3. **标准接口**：一致的输入/输出格式
+4. **松散耦合**：命令不依赖彼此的内部
 
-### State Management
+### 状态管理
 
-1. **Persistent state**: Use .local.md files
-2. **Atomic updates**: Write complete state files atomically
-3. **State validation**: Check state file format/completeness
-4. **Cleanup**: Remove stale state files
-5. **Documentation**: Document state file formats
+1. **持久状态**：使用 .local.md 文件
+2. **原子更新**：原子性地编写完整状态文件
+3. **状态验证**：检查状态文件格式/完整性
+4. **清理**：删除过时状态文件
+5. **文档化**：文档化状态文件格式
 
-### Error Handling
+### 错误处理
 
-1. **Fail fast**: Detect errors early
-2. **Clear messages**: Explain what went wrong
-3. **Recovery options**: Provide clear next steps
-4. **State preservation**: Keep state for recovery
-5. **Rollback capability**: Support undoing changes
+1. **快速失败**：尽早检测错误
+2. **清晰消息**：解释什么出错
+3. **恢复选项**：提供清晰的下一步
+4. **状态保留**：保留状态以供恢复
+5. **回滚能力**：支持撤销更改
 
-## Example: Complete Deployment Workflow
+## 示例：完整部署工作流
 
-### Initialize Command
+### 初始化命令
 
 ```markdown
 ---
-description: Initialize deployment
+description: 初始化部署
 argument-hint: [environment]
 allowed-tools: Write, Bash(git:*)
 ---
 
-# Initialize Deployment to $1
+# 初始化部署到 $1
 
-Creating workflow state...
+创建工作流状态...
 
 \`\`\`yaml
 ---
@@ -660,63 +660,63 @@ timestamp: !`date -u +%Y-%m-%dT%H:%M:%SZ`
 ---
 \`\`\`
 
-Written to .claude/deployment-state.local.md
+写入到 .claude/deployment-state.local.md
 
-Next: Run /deployment-validate
+下一步：运行 /deployment-validate
 ```
 
-### Validation Command
+### 验证命令
 
 ```markdown
 ---
-description: Validate deployment
+description: 验证部署
 allowed-tools: Read, Bash
 ---
 
-Reading state: @.claude/deployment-state.local.md
+读取状态：@.claude/deployment-state.local.md
 
-Running validation...
-- Branch check: PASS
-- Tests: PASS
-- Build: PASS
+运行验证...
+- 分支检查：通过
+- 测试：通过
+- 构建：通过
 
-Updating state to 'validated'...
+将状态更新为 'validated'...
 
-Next: Run /deployment-execute
+下一步：运行 /deployment-execute
 ```
 
-### Execution Command
+### 执行命令
 
 ```markdown
 ---
-description: Execute deployment
+description: 执行部署
 allowed-tools: Read, Bash, Write
 ---
 
-Reading state: @.claude/deployment-state.local.md
+读取状态：@.claude/deployment-state.local.md
 
-Executing deployment to [environment]...
+执行部署到 [环境]...
 
 !`deploy.sh [environment]`
 
-Deployment complete.
-Updating state to 'completed'...
+部署完成。
+将状态更新为 'completed'...
 
-Cleanup: /deployment-cleanup
+清理：/deployment-cleanup
 ```
 
-### Cleanup Command
+### 清理命令
 
 ```markdown
 ---
-description: Clean up deployment
+description: 清理部署
 allowed-tools: Bash
 ---
 
-Removing deployment state...
+删除部署状态...
 rm .claude/deployment-state.local.md
 
-Deployment workflow complete.
+部署工作流完成。
 ```
 
-This complete workflow demonstrates state management, sequential execution, error handling, and clean separation of concerns across multiple commands.
+此完整工作流展示了状态管理、顺序执行、错误处理以及跨多个命令的清晰关注点分离。

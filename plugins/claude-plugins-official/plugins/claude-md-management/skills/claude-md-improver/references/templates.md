@@ -1,40 +1,40 @@
-# CLAUDE.md Templates
+# CLAUDE.md 模板
 
-## Key Principles
+## 关键原则
 
-- **Concise**: Dense, human-readable content; one line per concept when possible
-- **Actionable**: Commands should be copy-paste ready
-- **Project-specific**: Document patterns unique to this project, not generic advice
-- **Current**: All info should reflect actual codebase state
+- **简洁**：密集、可读的内容；可能的话每行一个概念
+- **可执行**：命令应该可以复制粘贴
+- **项目特定**：记录此项目特有的模式，而非通用建议
+- **最新**：所有信息应反映实际代码库状态
 
 ---
 
-## Recommended Sections
+## 推荐部分
 
-Use only the sections relevant to the project. Not all sections are needed.
+仅使用与项目相关的部分。并非所有部分都是必需的。
 
-### Commands
+### 命令
 
-Document the essential commands for working with the project.
+记录使用项目的基本命令。
 
 ```markdown
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `<install command>` | Install dependencies |
-| `<dev command>` | Start development server |
-| `<build command>` | Production build |
-| `<test command>` | Run tests |
-| `<lint command>` | Lint/format code |
+| `<install command>` | 安装依赖 |
+| `<dev command>` | 启动开发服务器 |
+| `<build command>` | 生产构建 |
+| `<test command>` | 运行测试 |
+| `<lint command>` | Lint/格式化代码 |
 ```
 
-### Architecture
+### 架构
 
-Describe the project structure so Claude understands where things live.
+描述项目结构，以便 Claude 理解各部分的位置。
 
 ```markdown
-## Architecture
+## 架构
 
 ```
 <root>/
@@ -44,73 +44,73 @@ Describe the project structure so Claude understands where things live.
 ```
 ```
 
-### Key Files
+### 关键文件
 
-List important files that Claude should know about.
+列出 Claude 应该知道的重要文件。
 
 ```markdown
-## Key Files
+## 关键文件
 
 - `<path>` - <purpose>
 - `<path>` - <purpose>
 ```
 
-### Code Style
+### 代码风格
 
-Document project-specific coding conventions.
+记录项目特定的编码约定。
 
 ```markdown
-## Code Style
+## 代码风格
 
 - <convention>
 - <convention>
 - <preference over alternative>
 ```
 
-### Environment
+### 环境
 
-Document required environment variables and setup.
+记录所需的环境变量和设置。
 
 ```markdown
-## Environment
+## 环境
 
-Required:
+必需：
 - `<VAR_NAME>` - <purpose>
 - `<VAR_NAME>` - <purpose>
 
-Setup:
+设置：
 - <setup step>
 ```
 
-### Testing
+### 测试
 
-Document testing approach and commands.
+记录测试方法和命令。
 
 ```markdown
-## Testing
+## 测试
 
 - `<test command>` - <what it tests>
 - <testing convention or pattern>
 ```
 
-### Gotchas
+### 注意事项
 
-Document non-obvious patterns, quirks, and warnings.
+记录非显而易见的模式、特殊之处和警告。
 
 ```markdown
-## Gotchas
+## 注意事项
 
 - <non-obvious thing that causes issues>
 - <ordering dependency or prerequisite>
 - <common mistake to avoid>
 ```
 
-### Workflow
+### 工作流程
 
-Document development workflow patterns.
+记录开发工作流程模式。
 
 ```markdown
-## Workflow
+## 工作流程
 
 - <when to do X>
 - <preferred approach for Y>
@@ -118,124 +118,124 @@ Document development workflow patterns.
 
 ---
 
-## Template: Project Root (Minimal)
+## 模板：项目根目录（最小版）
 
 ```markdown
 # <Project Name>
 
 <One-line description>
 
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
 | `<command>` | <description> |
 
-## Architecture
+## 架构
 
 ```
 <structure>
 ```
 
-## Gotchas
+## 注意事项
 
 - <gotcha>
 ```
 
 ---
 
-## Template: Project Root (Comprehensive)
+## 模板：项目根目录（完整版）
 
 ```markdown
 # <Project Name>
 
 <One-line description>
 
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
 | `<command>` | <description> |
 
-## Architecture
+## 架构
 
 ```
 <structure with descriptions>
 ```
 
-## Key Files
+## 关键文件
 
 - `<path>` - <purpose>
 
-## Code Style
+## 代码风格
 
 - <convention>
 
-## Environment
+## 环境
 
 - `<VAR>` - <purpose>
 
-## Testing
+## 测试
 
 - `<command>` - <scope>
 
-## Gotchas
+## 注意事项
 
 - <gotcha>
 ```
 
 ---
 
-## Template: Package/Module
+## 模板：包/模块
 
-For packages within a monorepo or distinct modules.
+用于 monorepo 中的包或独立模块。
 
 ```markdown
 # <Package Name>
 
-<Purpose of this package>
+<此包的目的>
 
-## Usage
+## 使用方法
 
 ```
 <import/usage example>
 ```
 
-## Key Exports
+## 关键导出
 
 - `<export>` - <purpose>
 
-## Dependencies
+## 依赖
 
 - `<dependency>` - <why needed>
 
-## Notes
+## 备注
 
 - <important note>
 ```
 
 ---
 
-## Template: Monorepo Root
+## 模板：Monorepo 根目录
 
 ```markdown
 # <Monorepo Name>
 
 <Description>
 
-## Packages
+## 包
 
-| Package | Description | Path |
+| 包 | 描述 | 路径 |
 |---------|-------------|------|
 | `<name>` | <purpose> | `<path>` |
 
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
 | `<command>` | <description> |
 
-## Cross-Package Patterns
+## 跨包模式
 
 - <shared pattern>
 - <generation/sync pattern>
@@ -243,11 +243,11 @@ For packages within a monorepo or distinct modules.
 
 ---
 
-## Update Principles
+## 更新原则
 
-When updating any CLAUDE.md:
+更新任何 CLAUDE.md 时：
 
-1. **Be specific**: Use actual file paths, real commands from this project
-2. **Be current**: Verify info against the actual codebase
-3. **Be brief**: One line per concept when possible
-4. **Be useful**: Would this help a new Claude session understand the project?
+1. **具体**：使用实际的文件路径、来自此项目的真实命令
+2. **最新**：根据实际代码库验证信息
+3. **简洁**：可能的话每行一个概念
+4. **有用**：这会帮助新的 Claude 会话理解项目吗？

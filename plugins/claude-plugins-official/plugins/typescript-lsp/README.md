@@ -1,24 +1,24 @@
 # typescript-lsp
 
-TypeScript/JavaScript language server for Claude Code, providing code intelligence features like go-to-definition, find references, and error checking.
+TypeScript/JavaScript 语言服务器，用于 Claude Code，提供跳转到定义、查找引用和错误检查等代码智能功能。
 
-## Supported Extensions
+## 支持的扩展名
 `.ts`, `.tsx`, `.js`, `.jsx`, `.mts`, `.cts`, `.mjs`, `.cjs`
 
-## Installation
+## 安装
 
-Install the TypeScript language server globally via npm:
+通过 npm 全局安装 TypeScript 语言服务器：
 
 ```bash
 npm install -g typescript-language-server typescript
 ```
 
-Or with yarn:
+或使用 yarn：
 
 ```bash
 yarn global add typescript-language-server typescript
 ```
 
-## More Information
+## 更多信息
 - [typescript-language-server on npm](https://www.npmjs.com/package/typescript-language-server)
-- [GitHub Repository](https://github.com/typescript-language-server/typescript-language-server)
+- [GitHub 仓库](https://github.com/typescript-language-server/typescript-language-server)

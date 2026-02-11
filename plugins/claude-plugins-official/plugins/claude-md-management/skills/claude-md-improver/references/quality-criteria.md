@@ -1,109 +1,109 @@
-# CLAUDE.md Quality Criteria
+# CLAUDE.md 质量标准
 
-## Scoring Rubric
+## 评分标准
 
-### 1. Commands/Workflows (20 points)
+### 1. 命令/工作流 (20 分)
 
-**20 points**: All essential commands documented with context
-- Build, test, lint, deploy commands present
-- Development workflow clear
-- Common operations documented
+**20 分**：所有基本命令都有上下文记录
+- 存在构建、测试、lint、部署命令
+- 开发工作流程清晰
+- 记录了常见操作
 
-**15 points**: Most commands present, some missing context
+**15 分**：存在大多数命令，缺少一些上下文
 
-**10 points**: Basic commands only, no workflow
+**10 分**：只有基本命令，没有工作流程
 
-**5 points**: Few commands, many missing
+**5 分**：命令很少，很多缺失
 
-**0 points**: No commands documented
+**0 分**：没有记录命令
 
-### 2. Architecture Clarity (20 points)
+### 2. 架构清晰度 (20 分)
 
-**20 points**: Clear codebase map
-- Key directories explained
-- Module relationships documented
-- Entry points identified
-- Data flow described where relevant
+**20 分**：清晰的代码库映射
+- 解释了关键目录
+- 记录了模块关系
+- 识别了入口点
+- 在相关处描述了数据流
 
-**15 points**: Good structure overview, minor gaps
+**15 分**：良好的结构概览，有小缺口
 
-**10 points**: Basic directory listing only
+**10 分**：只有基本的目录列表
 
-**5 points**: Vague or incomplete
+**5 分**：模糊或不完整
 
-**0 points**: No architecture info
+**0 分**：没有架构信息
 
-### 3. Non-Obvious Patterns (15 points)
+### 3. 非显而易见的模式 (15 分)
 
-**15 points**: Gotchas and quirks captured
-- Known issues documented
-- Workarounds explained
-- Edge cases noted
-- "Why we do it this way" for unusual patterns
+**15 分**：捕获了注意事项和特殊之处
+- 记录了已知问题
+- 解释了解决方法
+- 注意了边缘情况
+- 针对不寻常模式的"为什么这样做"
 
-**10 points**: Some patterns documented
+**10 分**：记录了一些模式
 
-**5 points**: Minimal pattern documentation
+**5 分**：最少的模式记录
 
-**0 points**: No patterns or gotchas
+**0 分**：没有模式或注意事项
 
-### 4. Conciseness (15 points)
+### 4. 简洁性 (15 分)
 
-**15 points**: Dense, valuable content
-- No filler or obvious info
-- Each line adds value
-- No redundancy with code comments
+**15 分**：密集、有价值的内容
+- 没有填充内容或明显信息
+- 每行都增加价值
+- 与代码注释没有冗余
 
-**10 points**: Mostly concise, some padding
+**10 分**：大部分简洁，有一些填充
 
-**5 points**: Verbose in places
+**5 分**：有些地方冗长
 
-**0 points**: Mostly filler or restates obvious code
+**0 分**：大部分是填充内容或重述明显的代码
 
-### 5. Currency (15 points)
+### 5. 时效性 (15 分)
 
-**15 points**: Reflects current codebase
-- Commands work as documented
-- File references accurate
-- Tech stack current
+**15 分**：反映当前代码库
+- 命令按记录工作
+- 文件引用准确
+- 技术栈最新
 
-**10 points**: Mostly current, minor staleness
+**10 分**：大部分最新，有一些过时
 
-**5 points**: Several outdated references
+**5 分**：有几个过时的引用
 
-**0 points**: Severely outdated
+**0 分**：严重过时
 
-### 6. Actionability (15 points)
+### 6. 可执行性 (15 分)
 
-**15 points**: Instructions are executable
-- Commands can be copy-pasted
-- Steps are concrete
-- Paths are real
+**15 分**：指令可执行
+- 命令可以复制粘贴
+- 步骤具体
+- 路径真实
 
-**10 points**: Mostly actionable
+**10 分**：大部分可执行
 
-**5 points**: Some vague instructions
+**5 分**：有一些模糊的指令
 
-**0 points**: Vague or theoretical
+**0 分**：模糊或理论化
 
-## Assessment Process
+## 评估流程
 
-1. Read the CLAUDE.md file completely
-2. Cross-reference with actual codebase:
-   - Run documented commands (mentally or actually)
-   - Check if referenced files exist
-   - Verify architecture descriptions
-3. Score each criterion
-4. Calculate total and assign grade
-5. List specific issues found
-6. Propose concrete improvements
+1. 完整阅读 CLAUDE.md 文件
+2. 与实际代码库交叉引用：
+   - 运行记录的命令（在脑海中或实际运行）
+   - 检查引用的文件是否存在
+   - 验证架构描述
+3. 为每个标准评分
+4. 计算总分并分配等级
+5. 列出发现的具体问题
+6. 提出具体改进建议
 
-## Red Flags
+## 警示信号
 
-- Commands that would fail (wrong paths, missing deps)
-- References to deleted files/folders
-- Outdated tech versions
-- Copy-paste from templates without customization
-- Generic advice not specific to the project
-- "TODO" items never completed
-- Duplicate info across multiple CLAUDE.md files
+- 会失败的命令（路径错误、缺少依赖）
+- 对已删除文件/文件夹的引用
+- 过时的技术版本
+- 从模板复制粘贴而未定制
+- 不特定于项目的通用建议
+- 从未完成的 "TODO" 项目
+- 跨多个 CLAUDE.md 文件的重复信息

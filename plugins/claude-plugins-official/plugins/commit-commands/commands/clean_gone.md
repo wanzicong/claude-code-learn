@@ -1,53 +1,52 @@
 ---
-description: Cleans up all git branches marked as [gone] (branches that have been deleted on the remote but still exist locally), including removing associated worktrees.
+description: 清理所有标记为 [gone] 的 git 分支（已在远程删除但在本地仍存在的分支），包括删除关联的工作树。
 ---
 
-## Your Task
+## 您的任务
 
-You need to execute the following bash commands to clean up stale local branches that have been deleted from the remote repository.
+您需要执行以下 bash 命令来清理已从远程仓库删除的过时本地分支。
 
-## Commands to Execute
+## 要执行的命令
 
-1. **First, list branches to identify any with [gone] status**
-   Execute this command:
+1. **首先，列出分支以识别任何具有 [gone] 状态的分支**
+   执行此命令：
    ```bash
    git branch -v
    ```
-   
-   Note: Branches with a '+' prefix have associated worktrees and must have their worktrees removed before deletion.
 
-2. **Next, identify worktrees that need to be removed for [gone] branches**
-   Execute this command:
+   注意：带有 '+' 前缀的分支有关联的工作树，必须在删除之前删除其工作树。
+
+2. **接下来，识别需要为 [gone] 分支删除的工作树**
+   执行此命令：
    ```bash
    git worktree list
    ```
 
-3. **Finally, remove worktrees and delete [gone] branches (handles both regular and worktree branches)**
-   Execute this command:
+3. **最后，删除工作树并删除 [gone] 分支（处理常规分支和工作树分支）**
+   执行此命令：
    ```bash
-   # Process all [gone] branches, removing '+' prefix if present
+   # 处理所有 [gone] 分支，如果存在则删除 '+' 前缀
    git branch -v | grep '\[gone\]' | sed 's/^[+* ]//' | awk '{print $1}' | while read branch; do
      echo "Processing branch: $branch"
-     # Find and remove worktree if it exists
+     # 查找并删除工作树（如果存在）
      worktree=$(git worktree list | grep "\\[$branch\\]" | awk '{print $1}')
      if [ ! -z "$worktree" ] && [ "$worktree" != "$(git rev-parse --show-toplevel)" ]; then
        echo "  Removing worktree: $worktree"
        git worktree remove --force "$worktree"
      fi
-     # Delete the branch
+     # 删除分支
      echo "  Deleting branch: $branch"
      git branch -D "$branch"
    done
    ```
 
-## Expected Behavior
+## 预期行为
 
-After executing these commands, you will:
+执行这些命令后，您将：
 
-- See a list of all local branches with their status
-- Identify and remove any worktrees associated with [gone] branches
-- Delete all branches marked as [gone]
-- Provide feedback on which worktrees and branches were removed
+- 看到所有本地分支及其状态的列表
+- 识别并删除与 [gone] 分支关联的任何工作树
+- 删除所有标记为 [gone] 的分支
+- 提供关于已删除的工作树和分支的反馈
 
-If no branches are marked as [gone], report that no cleanup was needed.
-
+如果没有分支标记为 [gone]，则报告无需清理。

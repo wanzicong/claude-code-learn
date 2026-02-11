@@ -1,52 +1,52 @@
 ---
-description: "Create plugin settings file with user preferences"
+description: "使用用户偏好创建插件设置文件"
 allowed-tools: ["Write", "AskUserQuestion"]
 ---
 
-# Create Plugin Settings
+# 创建插件设置
 
-This command helps users create a `.claude/my-plugin.local.md` settings file.
+此命令帮助用户创建 `.claude/my-plugin.local.md` 设置文件。
 
-## Steps
+## 步骤
 
-### Step 1: Ask User for Preferences
+### 步骤 1：询问用户偏好
 
-Use AskUserQuestion to gather configuration:
+使用 AskUserQuestion 收集配置：
 
 ```json
 {
   "questions": [
     {
-      "question": "Enable plugin for this project?",
-      "header": "Enable Plugin",
+      "question": "为此项目启用插件？",
+      "header": "启用插件",
       "multiSelect": false,
       "options": [
         {
-          "label": "Yes",
-          "description": "Plugin will be active"
+          "label": "是",
+          "description": "插件将激活"
         },
         {
-          "label": "No",
-          "description": "Plugin will be disabled"
+          "label": "否",
+          "description": "插件将禁用"
         }
       ]
     },
     {
-      "question": "Validation mode?",
-      "header": "Mode",
+      "question": "验证模式？",
+      "header": "模式",
       "multiSelect": false,
       "options": [
         {
-          "label": "Strict",
-          "description": "Maximum validation and security checks"
+          "label": "严格",
+          "description": "最大验证和安全检查"
         },
         {
-          "label": "Standard",
-          "description": "Balanced validation (recommended)"
+          "label": "标准",
+          "description": "平衡验证（推荐）"
         },
         {
-          "label": "Lenient",
-          "description": "Minimal validation only"
+          "label": "宽松",
+          "description": "仅最小验证"
         }
       ]
     }
@@ -54,45 +54,45 @@ Use AskUserQuestion to gather configuration:
 }
 ```
 
-### Step 2: Parse Answers
+### 步骤 2：解析答案
 
-Extract answers from AskUserQuestion result:
+从 AskUserQuestion 结果提取答案：
 
-- answers["0"]: enabled (Yes/No)
-- answers["1"]: mode (Strict/Standard/Lenient)
+- answers["0"]: enabled（是/否）
+- answers["1"]: mode（严格/标准/宽松）
 
-### Step 3: Create Settings File
+### 步骤 3：创建设置文件
 
-Use Write tool to create `.claude/my-plugin.local.md`:
+使用 Write 工具创建 `.claude/my-plugin.local.md`：
 
 ```markdown
 ---
-enabled: <true if Yes, false if No>
-validation_mode: <strict, standard, or lenient>
+enabled: <true 如果是，否则 false>
+validation_mode: <strict、standard 或 lenient>
 max_file_size: 1000000
 notify_on_errors: true
 ---
 
-# Plugin Configuration
+# 插件配置
 
-Your plugin is configured with <mode> validation mode.
+您的插件配置为 <mode> 验证模式。
 
-To modify settings, edit this file and restart Claude Code.
+如需修改设置，编辑此文件并重启 Claude Code。
 ```
 
-### Step 4: Inform User
+### 步骤 4：通知用户
 
-Tell the user:
-- Settings file created at `.claude/my-plugin.local.md`
-- Current configuration summary
-- How to edit manually if needed
-- Reminder: Restart Claude Code for changes to take effect
-- Settings file is gitignored (won't be committed)
+通知用户：
+- 设置文件已创建于 `.claude/my-plugin.local.md`
+- 当前配置摘要
+- 如需则如何手动编辑
+- 提醒：重启 Claude Code 以使更改生效
+- 设置文件已 gitignored（不会被提交）
 
-## Implementation Notes
+## 实现说明
 
-Always validate user input before writing:
-- Check mode is valid
-- Validate numeric fields are numbers
-- Ensure paths don't have traversal attempts
-- Sanitize any free-text fields
+写入前始终验证用户输入：
+- 检查模式有效
+- 验证数字字段为数字
+- 确保路径没有遍历尝试
+- 清理任何自由文本字段

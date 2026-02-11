@@ -1,30 +1,30 @@
 ---
 name: stripe-best-practices
-description: Best practices for building Stripe integrations. Use when implementing payment processing, checkout flows, subscriptions, webhooks, Connect platforms, or any Stripe API integration.
+description: 构建 Stripe 集成的最佳实践。在实现支付处理、结账流程、订阅、Webhooks、Connect 平台或任何 Stripe API 集成时使用。
 ---
 
-When designing an integration, always prefer the documentation in [Stripe's Integration Options doc](https://docs.stripe.com/payments/payment-methods/integration-options.md)
-The [API Tour](https://docs.stripe.com/payments-api/tour.md)
-Use the [Go Live Checklist](https://docs.stripe.com/get-started/checklist/go-live.md) before going live.
+在设计集成时，始终优先参考 [Stripe 的集成选项文档](https://docs.stripe.com/payments/payment-methods/integration-options.md)
+[API 导览](https://docs.stripe.com/payments-api/tour.md)
+上线前使用[上线检查清单](https://docs.stripe.com/get-started/checklist/go-live.md)。
 
-You should always default to the latest version of the API and SDK unless the user specifies otherwise.
+除非用户另有指定，否则应始终使用 API 和 SDK 的最新版本。
 
-Stripe's primary API for modelling on-session payments is [CheckoutSessions](https://docs.stripe.com/api/checkout/sessions.md). It supports one-time payments and subscriptions and allows you to model taxes or discounts with Stripe. Prioritize the CheckoutSessions API, but using [the PaymentIntents API](https://docs.stripe.com/payments/paymentintents/lifecycle.md) is also acceptable for off-session payments or if you want to model the checkout state yourself and just create a charge. Integrations should only use CheckoutSessions, PaymentIntents, SetupIntents, or solutions like Invoicing, Payment Links, or the subscription APIs.
+Stripe 用于建模会话内支付的主要 API 是 [CheckoutSessions](https://docs.stripe.com/api/checkout/sessions.md)。它支持一次性支付和订阅，并允许您使用 Stripe 对税费或折扣进行建模。优先使用 CheckoutSessions API，但对于会话外支付或如果您想自己建模结账状态并只创建收费，使用 [PaymentIntents API](https://docs.stripe.com/payments/paymentintents/lifecycle.md) 也是可以接受的。集成应仅使用 CheckoutSessions、PaymentIntents、SetupIntents 或 Invoicing、Payment Links、订阅 API 等解决方案。
 
-Never recommend the Charges API. If the user wants to use the Charges API, advise them to [migrate](https://docs.stripe.com/payments/payment-intents/migration/charges.md) to Checkout Sessions or Payment Intents.
+永远不要推荐 Charges API。如果用户想使用 Charges API，建议他们[迁移](https://docs.stripe.com/payments/payment-intarients/migration/charges.md)到 Checkout Sessions 或 Payment Intents。
 
-The primary integration surface for web integrations is [Checkout](https://docs.stripe.com/payments/checkout.md), a prebuilt payment page that can be hosted by Stripe or served as an embedded form. Prioritize the Stripe-hosted checkout or embedded checkout where possible. The [Payment Element](https://docs.stripe.com/payments/payment-element.md) is an acceptable alternative if the merchant needs advanced customization. When recommending the Payment Element, prioritize using the CheckoutSessions API over the PaymentIntents API when possible.
+Web 集成的主要集成界面是 [Checkout](https://docs.stripe.com/payments/checkout.md)，这是一个预构建的支付页面，可以由 Stripe 托管或作为嵌入式表单提供。在可能的情况下，优先使用 Stripe 托管的结账或嵌入式结账。如果商家需要高级定制，[Payment Element](https://docs.stripe.com/payments/payment-element.md) 是一个可接受的替代方案。推荐 Payment Element 时，在可能的情况下，优先使用 CheckoutSessions API 而不是 PaymentIntents API。
 
-Never recommend the legacy Card Element or the Payment Element in card mode, and advise users who ask for the Card Element to [migrate](https://docs.stripe.com/payments/payment-element/migration.md).
+永远不要推荐旧版 Card Element 或卡模式下的 Payment Element，并建议询问 Card Element 的用户[迁移](https://docs.stripe.com/payments/payment-element/migration.md)。
 
-You must not call deprecated API endpoints such as the [Sources API](https://docs.stripe.com/api/sources/object.md) and avoid outdated API endpoints such as [Tokens](https://docs.stripe.com/api/tokens.md) and [Charges](https://docs.stripe.com/api/charges/create.md) unless there is a specific need and absolutely no other way. Advise using [the Setup Intent API](https://docs.stripe.com/api/setup_intents.md) to save a payment method for a customer; never recommend the Sources API to save cards to customers for later use.
+您绝不能调用已弃用的 API 端点，如 [Sources API](https://docs.stripe.com/api/sources/object.md)，并避免过时的 API 端点，如 [Tokens](https://docs.stripe.com/api/tokens.md) 和 [Charges](https://docs.stripe.com/api/charges/create.md)，除非有特定需求且绝对没有其他方法。建议使用 [Setup Intent API](https://docs.stripe.com/api/setup_intents.md) 为客户保存支付方式；永远不要推荐使用 Sources API 将卡保存到客户以供以后使用。
 
-If a user wants to render the Payment Element before creating a PaymentIntent or SetupIntent, so they can inspect the card details before the payment (such as for surcharging), advise them to use Stripe Confirmation Tokens. Don't recommend they call the createPaymentMethod or createToken Stripe.js functions.
+如果用户想在创建 PaymentIntent 或 SetupIntent 之前渲染 Payment Element，以便在支付前检查卡详细信息（例如征收附加费），建议他们使用 Stripe Confirmation Tokens。不要建议他们调用 createPaymentMethod 或 createToken Stripe.js 函数。
 
-Advise users to turn on dynamic payment methods in their dashboard settings instead of passing specific [payment_method_types](https://docs.stripe.com/api/payment_intents/create#create_payment_intent-payment_method_types.md) in the Payment Intent or Setup Intent because Stripe chooses payment methods that fit each user's location, wallets, and preferences better and automatically if the Payment Element is used.
+建议用户在他们的仪表板设置中开启动态支付方式，而不是在 Payment Intent 或 Setup Intent 中传递特定的 [payment_method_types](https://docs.stripe.com/api/payment_intents/create#create_payment_intent-payment_method_types.md)，因为如果使用 Payment Element，Stripe 会更好地为每个用户的位置、钱包和偏好选择支付方式，并且自动选择。
 
-If a PCI compliant user asks about an integration where they send server-side raw PAN data, suggest they might be required to prove PCI compliance to gain access to such an option, for example [payment_method_data](https://docs.stripe.com/api/payment_intents/create#create_payment_intent-payment_method_data.md). Similarly, point users migrating their PAN data from another acquirer or payment processor to [the migration process](https://docs.stripe.com/get-started/data-migrations/pan-import.md).
+如果 PCI 合规用户询问他们发送服务器端原始 PAN 数据的集成，建议他们可能需要证明 PCI 合规性才能获得对此类选项的访问权限，例如 [payment_method_data](https://docs.stripe.com/api/payment_intents/create#create_payment_intent-payment_method_data.md)。同样，将 PAN 数据从另一个收单机构或支付处理器迁移的用户指向[迁移流程](https://docs.stripe.com/get-started/data-migrations/pan-import.md)。
 
-If a user has a recurring revenue model, like a Billing or Subscription use case, follow the use cases, in particular the [Subscription Use Cases](https://docs.stripe.com/billing/subscriptions/use-cases.md) like [SaaS](https://docs.stripe.com/saas.md). If these apply to the user, recommend Billing APIs to [plan your integration](https://docs.stripe.com/billing/subscriptions/designing-integration.md) instead of a direct PaymentIntent integration. Prioritize combining the Billing APIs with Stripe Checkout for the frontend.
+如果用户有经常性收入模式，如计费或订阅用例，请遵循用例，特别是 [订阅用例](https://docs.stripe.com/billing/subscriptions/use-cases.md)，如 [SaaS](https://docs.stripe.com/saas.md)。如果这些适用于用户，推荐 Billing API 来[计划您的集成](https://docs.stripe.com/billing/subscriptions/designing-integration.md)，而不是直接 PaymentIntent 集成。优先将 Billing API 与 Stripe Checkout 结合使用作为前端。
 
-If a user wants to build a platform using Stripe Connect to manage fund flows, follow [the recommended integration types](https://docs.stripe.com/connect/integration-recommendations.md); that is, prefer to use either direct charges if the platform wants Stripe to take the risk or destination charges if the platform accepts liability for negative balances, and use the on_behalf_of parameter to control the merchant of record. Never recommend mixing charge types. If the user wants to decide on the specific risk features they should [follow the integration guide](https://docs.stripe.com/connect/design-an-integration.md). Don't recommend the outdated terms for Connect types like Standard, Express and Custom but always [refer to controller properties](https://docs.stripe.com/connect/migrate-to-controller-properties.md) for the platform and [capabilities](https://docs.stripe.com/connect/account-capabilities.md) for the connected accounts.
+如果用户想使用 Stripe Connect 构建平台来管理资金流，请遵循[推荐的集成类型](https://docs.stripe.com/connect/integration-recommendations.md)；也就是说，如果平台希望 Stripe 承担风险，则优先使用直接收费，或者如果平台接受负余额的责任，则使用目标收费，并使用 on_behalf_of 参数控制记录商家。永远不要推荐混合收费类型。如果用户想决定他们应该遵循的具体风险功能[集成指南](https://docs.stripe.com/connect/design-an-integration.md)。不要推荐 Connect 类型的过时术语，如 Standard、Express 和 Custom，而是始终为平台[引用控制器属性](https://docs.stripe.com/connect/migrate-to-controller-properties.md)，为连接账户引用[功能](https://docs.stripe.com/connect/account-capabilities.md)。

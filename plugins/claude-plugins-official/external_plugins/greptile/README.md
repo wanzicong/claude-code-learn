@@ -1,57 +1,57 @@
 # Greptile
 
-[Greptile](https://greptile.com) is an AI code review agent for GitHub and GitLab that automatically reviews pull requests. This plugin connects Claude Code to your Greptile account, letting you view and resolve Greptile's review comments directly from your terminal.
+[Greptile](https://greptile.com) 是一个面向 GitHub 和 GitLab 的 AI 代码审查代理，可以自动审查拉取请求。此插件将 Claude Code 连接到您的 Greptile 账户，让您可以直接从终端查看和解决 Greptile 的审查评论。
 
-## Setup
+## 设置
 
-### 1. Create a Greptile Account
+### 1. 创建 Greptile 账户
 
-Sign up at [greptile.com](https://greptile.com) and connect your GitHub or GitLab repositories.
+在 [greptile.com](https://greptile.com) 注册并连接您的 GitHub 或 GitLab 仓库。
 
-### 2. Get Your API Key
+### 2. 获取您的 API 密钥
 
-1. Go to [API Settings](https://app.greptile.com/settings/api)
-2. Generate a new API key
-3. Copy the key
+1. 前往 [API 设置](https://app.greptile.com/settings/api)
+2. 生成新的 API 密钥
+3. 复制密钥
 
-### 3. Set Environment Variable
+### 3. 设置环境变量
 
-Add to your shell profile (`.bashrc`, `.zshrc`, etc.):
+将以下内容添加到您的 shell 配置文件（`.bashrc`、`.zshrc` 等）中：
 
 ```bash
 export GREPTILE_API_KEY="your-api-key-here"
 ```
 
-Then reload your shell or run `source ~/.zshrc`.
+然后重新加载您的 shell 或运行 `source ~/.zshrc`。
 
-## Available Tools
+## 可用工具
 
-### Pull Request Tools
-- `list_pull_requests` - List PRs with optional filtering by repo, branch, author, or state
-- `get_merge_request` - Get detailed PR info including review analysis
-- `list_merge_request_comments` - Get all comments on a PR with filtering options
+### 拉取请求工具
+- `list_pull_requests` - 列出拉取请求，可选按仓库、分支、作者或状态筛选
+- `get_merge_request` - 获取详细的拉取请求信息，包括审查分析
+- `list_merge_request_comments` - 获取拉取请求上的所有评论，可选筛选
 
-### Code Review Tools
-- `list_code_reviews` - List code reviews with optional filtering
-- `get_code_review` - Get detailed code review information
-- `trigger_code_review` - Start a new Greptile review on a PR
+### 代码审查工具
+- `list_code_reviews` - 列出代码审查，可选筛选
+- `get_code_review` - 获取详细的代码审查信息
+- `trigger_code_review` - 在拉取请求上启动新的 Greptile 审查
 
-### Comment Search
-- `search_greptile_comments` - Search across all Greptile review comments
+### 评论搜索
+- `search_greptile_comments` - 搜索所有 Greptile 审查评论
 
-### Custom Context Tools
-- `list_custom_context` - List your organization's coding patterns and rules
-- `get_custom_context` - Get details for a specific pattern
-- `search_custom_context` - Search patterns by content
-- `create_custom_context` - Create a new coding pattern
+### 自定义上下文工具
+- `list_custom_context` - 列出您组织的编码模式和规则
+- `get_custom_context` - 获取特定模式的详细信息
+- `search_custom_context` - 按内容搜索模式
+- `create_custom_context` - 创建新的编码模式
 
-## Example Usage
+## 使用示例
 
-Ask Claude Code to:
-- "Show me Greptile's comments on my current PR and help me resolve them"
-- "What issues did Greptile find on PR #123?"
-- "Trigger a Greptile review on this branch"
+让 Claude Code：
+- "展示 Greptile 在我当前拉取请求上的评论并帮助我解决它们"
+- "Greptile 在拉取请求 #123 上发现了什么问题？"
+- "在此分支上触发 Greptile 审查"
 
-## Documentation
+## 文档
 
-For more information, visit [greptile.com/docs](https://greptile.com/docs).
+更多信息， 请访问 [greptile.com/docs](https://greptile.com/docs)。

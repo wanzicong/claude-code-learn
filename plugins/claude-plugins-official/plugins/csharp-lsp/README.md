@@ -1,25 +1,25 @@
 # csharp-lsp
 
-C# language server for Claude Code, providing code intelligence and diagnostics.
+C# 语言服务器，用于 Claude Code，提供代码智能和诊断功能。
 
-## Supported Extensions
+## 支持的扩展名
 `.cs`
 
-## Installation
+## 安装
 
-### Via .NET tool (recommended)
+### 通过 .NET 工具（推荐）
 ```bash
 dotnet tool install --global csharp-ls
 ```
 
-### Via Homebrew (macOS)
+### 通过 Homebrew (macOS)
 ```bash
 brew install csharp-ls
 ```
 
-## Requirements
-- .NET SDK 6.0 or later
+## 系统要求
+- .NET SDK 6.0 或更高版本
 
-## More Information
+## 更多信息
 - [csharp-ls GitHub](https://github.com/razzmatazz/csharp-language-server)
-- [.NET SDK Download](https://dotnet.microsoft.com/download)
+- [.NET SDK 下载](https://dotnet.microsoft.com/download)

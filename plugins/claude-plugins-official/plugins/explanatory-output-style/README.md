@@ -1,48 +1,41 @@
-# Explanatory Output Style Plugin
+# 解释性输出风格插件
 
-This plugin recreates the deprecated Explanatory output style as a SessionStart
-hook.
+此插件将已弃用的解释性输出风格重新实现为 SessionStart 钩子。
 
-WARNING: Do not install this plugin unless you are fine with incurring the token
-cost of this plugin's additional instructions and output.
+警告：除非您愿意承担此插件额外指令和输出的令牌成本，否则不要安装此插件。
 
-## What it does
+## 功能
 
-When enabled, this plugin automatically adds instructions at the start of each
-session that encourage Claude to:
+启用后，此插件会在每个会话开始时自动添加指令，鼓励 Claude：
 
-1. Provide educational insights about implementation choices
-2. Explain codebase patterns and decisions
-3. Balance task completion with learning opportunities
+1. 提供关于实现选择的教育见解
+2. 解释代码库模式和决策
+3. 在完成任务与学习机会之间取得平衡
 
-## How it works
+## 工作原理
 
-The plugin uses a SessionStart hook to inject additional context into every
-session. This context instructs Claude to provide brief educational explanations
-before and after writing code, formatted as:
+该插件使用 SessionStart 钩子向每个会话注入额外的上下文。此上下文指示 Claude 在编写代码前后提供简短的教育解释，格式如下：
 
 ```
-`★ Insight ─────────────────────────────────────`
-[2-3 key educational points]
+`★ 见解 ─────────────────────────────────────`
+[2-3 个关键教育要点]
 `─────────────────────────────────────────────────`
 ```
 
-## Usage
+## 使用方法
 
-Once installed, the plugin activates automatically at the start of every
-session. No additional configuration is needed.
+安装后，插件会在每个会话开始时自动激活。无需额外配置。
 
-The insights focus on:
+见解重点关注：
 
-- Specific implementation choices for your codebase
-- Patterns and conventions in your code
-- Trade-offs and design decisions
-- Codebase-specific details rather than general programming concepts
+- 针对您代码库的具体实现选择
+- 代码中的模式和约定
+- 权衡和设计决策
+- 代码库特有的细节，而非通用编程概念
 
-## Migration from Output Styles
+## 从输出风格迁移
 
-This plugin replaces the deprecated "Explanatory" output style setting. If you
-previously used:
+此插件取代了已弃用的"Explanatory"输出风格设置。如果您之前使用：
 
 ```json
 {
@@ -50,23 +43,15 @@ previously used:
 }
 ```
 
-You can now achieve the same behavior by installing this plugin instead.
+现在可以通过安装此插件来实现相同的行为。
 
-More generally, this SessionStart hook pattern is roughly equivalent to
-CLAUDE.md, but it is more flexible and allows for distribution through plugins.
+更一般地说，这种 SessionStart 钩子模式大致相当于 CLAUDE.md，但它更灵活，允许通过插件进行分发。
 
-Note: Output styles that involve tasks besides software development, are better
-expressed as
-[subagents](https://docs.claude.com/en/docs/claude-code/sub-agents), not as
-SessionStart hooks. Subagents change the system prompt while SessionStart hooks
-add to the default system prompt.
+注意：涉及软件开发以外任务的输出风格最好表达为[子代理](https://docs.claude.com/en/docs/claude-code/sub-agents)，而不是 SessionStart 钩子。子代理会更改系统提示，而 SessionStart 钩子会添加到默认系统提示。
 
-## Managing changes
+## 管理更改
 
-- Disable the plugin - keep the code installed on your device
-- Uninstall the plugin - remove the code from your device
-- Update the plugin - create a local copy of this plugin to personalize this
-  plugin
-  - Hint: Ask Claude to read
-    https://docs.claude.com/en/docs/claude-code/plugins.md and set it up for
-    you!
+- 禁用插件 - 在设备上保留已安装的代码
+- 卸载插件 - 从设备上删除代码
+- 更新插件 - 创建此插件的本地副本以进行个性化设置
+  - 提示：让 Claude 阅读 https://docs.claude.com/en/docs/claude-code/plugins.md 并为您设置！

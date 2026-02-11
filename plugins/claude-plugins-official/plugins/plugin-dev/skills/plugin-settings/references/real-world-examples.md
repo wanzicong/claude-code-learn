@@ -1,12 +1,12 @@
-# Real-World Plugin Settings Examples
+# 真实世界插件设置示例
 
-Detailed analysis of how production plugins use the `.claude/plugin-name.local.md` pattern.
+生产插件如何使用 `.claude/plugin-name.local.md` 模式的详细分析。
 
-## multi-agent-swarm Plugin
+## multi-agent-swarmar 插件
 
-### Settings File Structure
+### 设置文件结构
 
-**.claude/multi-agent-swarm.local.md:**
+**.claude/multi-agent-ar-swarm.local.md:**
 
 ```markdown
 ---
@@ -16,65 +16,65 @@ pr_number: 1234
 coordinator_session: team-leader
 enabled: true
 dependencies: ["Task 3.4"]
-additional_instructions: "Use JWT tokens, not sessions"
+additional_instructions: "使用 JWT 令牌，而非会话"
 ---
 
-# Task: Implement Authentication
+# 任务：实现身份验证
 
-Build JWT-based authentication for the REST API.
+为 REST API 构建 JWT 基于身份验证。
 
-## Requirements
-- JWT token generation and validation
-- Refresh token flow
-- Secure password hashing
+## 要求
+- JWT 令牌生成和验证
+- 刷新令牌流程
+- 安全密码哈希
 
-## Success Criteria
-- Auth endpoints implemented
-- Tests passing (100% coverage)
-- PR created and CI green
-- Documentation updated
+## 成功标准
+- 已实现身份验证端点
+- 测试通过（100% 覆盖率）
+- PR 已创建且 CI 绿色
+- 文档已更新
 
-## Coordination
-Depends on Task 3.4 (user model).
-Report status to 'team-leader' session.
+## 协调
+依赖于 Task 3.4（用户模型）。
+向协调器会话 'team-leader' 报告状态。
 ```
 
-### How It's Used
+### 使用方式
 
-**File:** `hooks/agent-stop-notification.sh`
+**文件：** `hooks/agent-stop-notification.sh`
 
-**Purpose:** Send notifications to coordinator when agent becomes idle
+**目的：** 当代理变为空闲时向协调器发送通知
 
-**Implementation:**
+**实现：**
 
 ```bash
 #!/bin/bash
-set -euo pipefail
+set -euoaring pipefail
 
 SWARM_STATE_FILE=".claude/multi-agent-swarm.local.md"
 
-# Quick exit if no swarm active
+# 如果没有激活的 swar 则快速退出
 if [[ ! -f "$SWARM_STATE_FILE" ]]; then
   exit 0
 fi
 
-# Parse frontmatter
+# 解析 frontmatter
 FRONTMATTER=$(sed -n '/^---$/,/^---$/{ /^---$/d; p; }' "$SWARM_STATE_FILE")
 
-# Extract configuration
+# 提取配置
 COORDINATOR_SESSION=$(echo "$FRONTMATTER" | grep '^coordinator_session:' | sed 's/coordinator_session: *//' | sed 's/^"\(.*\)"$/\1/')
 AGENT_NAME=$(echo "$FRONTMATTER" | grep '^agent_name:' | sed 's/agent_name: *//' | sed 's/^"\(.*\)"$/\1/')
 TASK_NUMBER=$(echo "$FRONTMATTER" | grep '^task_number:' | sed 's/task_number: *//' | sed 's/^"\(.*\)"$/\1/')
 PR_NUMBER=$(echo "$FRONTMATTER" | grep '^pr_number:' | sed 's/pr_number: *//' | sed 's/^"\(.*\)"$/\1/')
 ENABLED=$(echo "$FRONTMATTER" | grep '^enabled:' | sed 's/enabled: *//')
 
-# Check if enabled
+# 检查是否启用
 if [[ "$ENABLED" != "true" ]]; then
   exit 0
 fi
 
-# Send notification to coordinator
-NOTIFICATION="🤖 Agent ${AGENT_NAME} (Task ${TASK_NUMBER}, PR #${PR_NUMBER}) is idle."
+# 向协调器发送通知
+NOTIFICATION="🤖 代理 ${AGENT_NAME}（任务 ${TASK_NUMBER}，PR #${PR_NUMBER}）处于空闲状态。"
 
 if tmux has-session -t "$COORDINATOR_SESSION" 2>/dev/null; then
   tmux send-keys -t "$COORDINATOR_SESSION" "$NOTIFICATION" Enter
@@ -85,17 +85,17 @@ fi
 exit 0
 ```
 
-**Key patterns:**
-1. **Quick exit** (line 7-9): Returns immediately if file doesn't exist
-2. **Field extraction** (lines 11-17): Parses each frontmatter field
-3. **Enabled check** (lines 19-21): Respects enabled flag
-4. **Action based on settings** (lines 23-29): Uses coordinator_session to send notification
+**主要模式：**
+1. **快速退出**（第 7-9 行）：如果文件不存在则立即返回
+2. **字段提取**（第 11-17 行）：解析每个 frontmatter 字段
+3. **Enabled 检查**（第 19-21 行）：尊重 enabled 标志
+4. **基于设置的操作**（第 23-29 行）：使用 coordinator_session 发送通知
 
-### Creation
+### 创建
 
-**File:** `commands/launch-swarm.md`
+**文件：** `commands/launch-swar.md`
 
-Settings files are created during swarm launch with:
+设置文件在 swar 启动期间创建：
 
 ```bash
 cat > "$WORKTREE_PATH/.claude/multi-agent-swarm.local.md" <<EOF
@@ -109,26 +109,26 @@ dependencies: [$DEPENDENCIES]
 additional_instructions: "$EXTRA_INSTRUCTIONS"
 ---
 
-# Task: $TASK_DESCRIPTION
+# 任务：$TASK_DESCRIPTION
 
 $TASK_DETAILS
 EOF
 ```
 
-### Updates
+### 更新
 
-PR number updated after PR creation:
+PR 创建后更新 PR 编号：
 
 ```bash
-# Update pr_number field
+# 更新 pr_number 字段
 sed "s/^pr_number: .*/pr_number: $PR_NUM/" \
   ".claude/multi-agent-swarm.local.md" > temp.md
 mv temp.md ".claude/multi-agent-swarm.local.md"
 ```
 
-## ralph-loop Plugin
+## ralph-loop 插件
 
-### Settings File Structure
+### 设置文件结构
 
 **.claude/ralph-loop.local.md:**
 
@@ -136,79 +136,79 @@ mv temp.md ".claude/multi-agent-swarm.local.md"
 ---
 iteration: 1
 max_iterations: 10
-completion_promise: "All tests passing and build successful"
+completion_promise: "所有测试通过且构建成功"
 started_at: "2025-01-15T14:30:00Z"
 ---
 
-Fix all the linting errors in the project.
-Make sure tests pass after each fix.
-Document any changes needed in CLAUDE.md.
+修复项目中的所有 linting 错误。
+确保每次修复后测试通过。
+在 CLAUDE.md 中记录所需的任何更改。
 ```
 
-### How It's Used
+### 使用方式
 
-**File:** `hooks/stop-hook.sh`
+**文件：** `hooks/stop-hook.sh`
 
-**Purpose:** Prevent session exit and loop Claude's output back as input
+**目的：** 阻止会话退出并将 Claude 的输出循环回作为输入
 
-**Implementation:**
+**实现：**
 
 ```bash
 #!/bin/bash
-set -euo pipefail
+set -euoaring pipefail
 
 RALPH_STATE_FILE=".claude/ralph-loop.local.md"
 
-# Quick exit if no active loop
+# 如果没有活动的循环则快速退出
 if [[ ! -f "$RALPH_STATE_FILE" ]]; then
   exit 0
 fi
 
-# Parse frontmatter
+# 解析 frontmatter
 FRONTMATTER=$(sed -n '/^---$/,/^---$/{ /^---$/d; p; }' "$RALPH_STATE_FILE")
 
-# Extract configuration
+# 提取配置
 ITERATION=$(echo "$FRONTMATTER" | grep '^iteration:' | sed 's/iteration: *//')
 MAX_ITERATIONS=$(echo "$FRONTMATTER" | grep '^max_iterations:' | sed 's/max_iterations: *//')
 COMPLETION_PROMISE=$(echo "$FRONTMATTER" | grep '^completion_promise:' | sed 's/completion_promise: *//' | sed 's/^"\(.*\)"$/\1/')
 
-# Check max iterations
+# 检查最大迭代次数
 if [[ $MAX_ITERATIONS -gt 0 ]] && [[ $ITERATION -ge $MAX_ITERATIONS ]]; then
-  echo "🛑 Ralph loop: Max iterations ($MAX_ITERATIONS) reached."
+  echo "🛑 Ralph 循环：达到最大迭代次数（$MAX_ITERATIONS）。"
   rm "$RALPH_STATE_FILE"
   exit 0
 fi
 
-# Get transcript and check for completion promise
+# 获取转录并检看完成承诺
 TRANSCRIPT_PATH=$(echo "$HOOK_INPUT" | jq -r '.transcript_path')
 LAST_OUTPUT=$(grep '"role":"assistant"' "$TRANSCRIPT_PATH" | tail -1 | jq -r '.message.content | map(select(.type == "text")) | map(.text) | join("\n")')
 
-# Check for completion
+# 检查完成
 if [[ "$COMPLETION_PROMISE" != "null" ]] && [[ -n "$COMPLETION_PROMISE" ]]; then
   PROMISE_TEXT=$(echo "$LAST_OUTPUT" | perl -0777 -pe 's/.*?<promise>(.*?)<\/promise>.*/$1/s; s/^\s+|\s+$//g')
 
   if [[ "$PROMISE_TEXT" = "$COMPLETION_PROMISE" ]]; then
-    echo "✅ Ralph loop: Detected completion"
+    echo "✅ Ralph 循环：检测到完成"
     rm "$RALPH_STATE_FILE"
     exit 0
   fi
 fi
 
-# Continue loop - increment iteration
+# 继续循环 - 增加迭代
 NEXT_ITERATION=$((ITERATION + 1))
 
-# Extract prompt from markdown body
+# 从 markdown 正文提取提示
 PROMPT_TEXT=$(awk '/^---$/{i++; next} i>=2' "$RALPH_STATE_FILE")
 
-# Update iteration counter
+# 更新迭代计数器
 TEMP_FILE="${RALPH_STATE_FILE}.tmp.$$"
 sed "s/^iteration: .*/iteration: $NEXT_ITERATION/" "$RALPH_STATE_FILE" > "$TEMP_FILE"
 mv "$TEMP_FILE" "$RALPH_STATE_FILE"
 
-# Block exit and feed prompt back
+# 阻止退出并将提示反馈
 jq -n \
   --arg prompt "$PROMPT_TEXT" \
-  --arg msg "🔄 Ralph iteration $NEXT_ITERATION" \
+  --arg msg "🔄 Ralph 迭代 $NEXT_ITERATION" \
   '{
     "decision": "block",
     "reason": $prompt,
@@ -218,17 +218,17 @@ jq -n \
 exit 0
 ```
 
-**Key patterns:**
-1. **Quick exit** (line 7-9): Skip if not active
-2. **Iteration tracking** (lines 11-20): Count and enforce max iterations
-3. **Promise detection** (lines 25-33): Check for completion signal in output
-4. **Prompt extraction** (line 38): Read markdown body as next prompt
-5. **State update** (lines 40-43): Increment iteration atomically
-6. **Loop continuation** (lines 45-53): Block exit and feed prompt back
+**主要模式：**
+1. **快速退出**（第 7-9 行）：如未激活则跳过
+2. **迭代跟踪**（第 11-20 行）：计数并强制最大迭代次数
+3. **承诺检测**（第 25-33 行）：检看输出中的完成信号
+4. **提示提取**（第 38 行）：将 markdown 正文作为下一个提示读取
+5. **状态更新**（第 40-43 行）：原子的增加迭代
+6. **循环继续**（第 45-53 行）：阻尼退出并反馈提示
 
-### Creation
+### 创建
 
-**File:** `scripts/setup-ralph-loop.sh`
+**文件：** `scripts/setup-ralph-loop.sh`
 
 ```bash
 #!/bin/bash
@@ -236,7 +236,7 @@ PROMPT="$1"
 MAX_ITERATIONS="${2:-0}"
 COMPLETION_PROMISE="${3:-}"
 
-# Create state file
+# 创建状态文件
 cat > ".claude/ralph-loop.local.md" <<EOF
 ---
 iteration: 1
@@ -248,48 +248,48 @@ started_at: "$(date -Iseconds)"
 $PROMPT
 EOF
 
-echo "Ralph loop initialized: .claude/ralph-loop.local.md"
+echo "Ralph 循环已初始化：.claude/ralph-loop.local.md"
 ```
 
-## Pattern Comparison
+## 模式对比
 
-| Feature | multi-agent-swarm | ralph-loop |
+| 功能 | multi-agent-ar-swarm | ralph-loop |
 |---------|-------------------|--------------|
-| **File** | `.claude/multi-agent-swarm.local.md` | `.claude/ralph-loop.local.md` |
-| **Purpose** | Agent coordination state | Loop iteration state |
-| **Frontmatter** | Agent metadata | Loop configuration |
-| **Body** | Task assignment | Prompt to loop |
-| **Updates** | PR number, status | Iteration counter |
-| **Deletion** | Manual or on completion | On loop exit |
-| **Hook** | Stop (notifications) | Stop (loop control) |
+| **文件** | `.claude/multi-agentar-swarm.local.md` | `.claude/ralph-loop.local.md` |
+| **目的** | 代理协调状态 | 循环迭代状态 |
+| **Frontmatter** | 代理元数据 | 循环配置 |
+| **正文** | 任务分配 | 要循环的提示 |
+| **更新** | PR 编号、状态 | 迭代计数器 |
+| **删除** | 手动或完成时 | 循环退出时 |
+| **钩子** | 停止（通知） | 停止（循环控制） |
 
-## Best Practices from Real Plugins
+## 真实世界插件的最佳实践
 
-### 1. Quick Exit Pattern
+### 1. 快速退出模式
 
-Both plugins check file existence first:
+两个插件都首先检看文件是否存在：
 
 ```bash
 if [[ ! -f "$STATE_FILE" ]]; then
-  exit 0  # Not active
+  exit 0  # 未激活
 fi
 ```
 
-**Why:** Avoids errors when plugin isn't configured and performs fast.
+**原因：** 避免插件未配置时的错误，并且执行快速。
 
-### 2. Enabled Flag
+### 2. Enabled 标志
 
-Both use an `enabled` field for explicit control:
+两者都使用 `enabled` 字段进行显式控制：
 
 ```yaml
 enabled: true
 ```
 
-**Why:** Allows temporary deactivation without deleting file.
+**原因：** 允许在无需删除文件的情况下临时停用。
 
-### 3. Atomic Updates
+### 3. 原子更新
 
-Both use temp file + atomic move:
+两者都使用临时文件 + 原子移动：
 
 ```bash
 TEMP_FILE="${FILE}.tmp.$$"
@@ -297,99 +297,99 @@ sed "s/^field: .*/field: $NEW_VALUE/" "$FILE" > "$TEMP_FILE"
 mv "$TEMP_FILE" "$FILE"
 ```
 
-**Why:** Prevents corruption if process is interrupted.
+**原因：** 如果进程中断则防止损坏。
 
-### 4. Quote Handling
+### 4. 引号处理
 
-Both strip surrounding quotes from YAML values:
+两者都从 YAML 值去除周围引号：
 
 ```bash
 sed 's/^"\(.*\)"$/\1/'
 ```
 
-**Why:** YAML allows both `field: value` and `field: "value"`.
+**原因：** YAML 允许 ``field: value` 和 `field: "value"`。
 
-### 5. Error Handling
+### 5. 错误处理
 
-Both handle missing/corrupt files gracefully:
+两者都优雅地处理缺失/损坏的文件：
 
 ```bash
 if [[ ! -f "$FILE" ]]; then
-  exit 0  # No error, just not configured
+  exit 0  # 无错误，只是未配置
 fi
 
 if [[ -z "$CRITICAL_FIELD" ]]; then
-  echo "Settings file corrupt" >&2
-  rm "$FILE"  # Clean up
+  echo "设置文件损坏" >&2
+  rm "$FILE"  # 清理
   exit 0
 fi
 ```
 
-**Why:** Fails gracefully instead of crashing.
+**原因：** 优雅地失败而非崩溃。
 
-## Anti-Patterns to Avoid
+## 反模式
 
-### ❌ Hardcoded Paths
+### ❌ 硬编码路径
 
 ```bash
-# BAD
+# 不好
 FILE="/Users/alice/.claude/my-plugin.local.md"
 
-# GOOD
+# 好
 FILE=".claude/my-plugin.local.md"
 ```
 
-### ❌ Unquoted Variables
+### ❌ 未引用的变量
 
 ```bash
-# BAD
+# 不好
 echo $VALUE
 
-# GOOD
+# 好
 echo "$VALUE"
 ```
 
-### ❌ Non-Atomic Updates
+### ❌ 非原子的更新
 
 ```bash
-# BAD: Can corrupt file if interrupted
+# 不好：如果中断则可能损坏文件
 sed -i "s/field: .*/field: $VALUE/" "$FILE"
 
-# GOOD: Atomic
+# 好：原子的
 TEMP_FILE="${FILE}.tmp.$$"
 sed "s/field: .*/field: $VALUE/" "$FILE" > "$TEMP_FILE"
 mv "$TEMP_FILE" "$FILE"
 ```
 
-### ❌ No Default Values
+### ❌ 无默认值
 
 ```bash
-# BAD: Fails if field missing
+# 不好：如果字段缺失则失败
 if [[ $MAX -gt 100 ]]; then
-  # MAX might be empty!
+  # MAX 可能为空！
 fi
 
-# GOOD: Provide default
+# 好：提供默认值
 MAX=${MAX:-10}
 ```
 
-### ❌ Ignoring Edge Cases
+### ❌ 忽略边界情况
 
 ```bash
-# BAD: Assumes exactly 2 --- markers
+# 不好：假设恰好 2 个 --- 标记
 sed -n '/^---$/,/^---$/{ /^---$/d; p; }'
 
-# GOOD: Handles --- in body
-awk '/^---$/{i++; next} i>=2'  # For body
+# 好：处理正文中的 ---
+awk '/^---$/{i++; next} i>=2'  # 用于正文
 ```
 
-## Conclusion
+## 结论
 
-The `.claude/plugin-name.local.md` pattern provides:
-- Simple, human-readable configuration
-- Version-control friendly (gitignored)
-- Per-project settings
-- Easy parsing with standard bash tools
-- Supports both structured config (YAML) and freeform content (markdown)
+`.claude/plugin-name.local.md` 模式提供：
+- 简单、人类可读的配置
+- 版本控制友好（gitignored）
+- 每项目设置
+- 使用标准 bash 工具轻松解析
+- 支持结构化配置（YAML）和自由格式内容（markdown）
 
-Use this pattern for any plugin that needs user-configurable behavior or state persistence.
+使用此模式处理任何需要用户可配置行为或状态持久化的插件。

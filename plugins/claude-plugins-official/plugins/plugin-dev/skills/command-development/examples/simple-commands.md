@@ -1,12 +1,12 @@
-# Simple Command Examples
+# 简单命令示例
 
-Basic slash command patterns for common use cases.
+常见用例的基本斜杠命令模式。
 
-**Important:** All examples below are written as instructions FOR Claude (agent consumption), not messages TO users. Commands tell Claude what to do, not tell users what will happen.
+**重要：** 下面的所有示例都是写给 Claude 使用的指令（agent 使用），而不是给用户的消息。命令告诉 Claude 要做什么，而不是告诉用户将要发生什么。
 
-## Example 1: Code Review Command
+## 示例 1：代码审查命令
 
-**File:** `.claude/commands/review.md`
+**文件：** `.claude/commands/review.md`
 
 ```markdown
 ---
@@ -14,7 +14,8 @@ description: Review code for quality and issues
 allowed-tools: Read, Bash(git:*)
 ---
 
-Review the code in this repository for:
+Review
+ 代码，检查：
 
 1. **Code Quality:**
    - Readability and maintainability
@@ -34,16 +35,16 @@ Review the code in this repository for:
 Provide specific feedback with file and line references.
 ```
 
-**Usage:**
+**用法：**
 ```
 > /review
 ```
 
 ---
 
-## Example 2: Security Review Command
+## 示例 2：安全审查命令
 
-**File:** `.claude/commands/security-review.md`
+**文件：** `.claude/commands/security-review.md`
 
 ```markdown
 ---
@@ -77,16 +78,16 @@ For each issue found:
 Prioritize issues by severity.
 ```
 
-**Usage:**
+**用法：**
 ```
 > /security-review
 ```
 
 ---
 
-## Example 3: Test Command with File Argument
+## 示例 3：带文件参数的测试命令
 
-**File:** `.claude/commands/test-file.md`
+**文件：** `.claude/commands/test-file.md`
 
 ```markdown
 ---
@@ -108,16 +109,16 @@ Analyze results:
 If failures found, suggest fixes based on error messages.
 ```
 
-**Usage:**
+**用法：**
 ```
 > /test-file src/utils/helpers.test.ts
 ```
 
 ---
 
-## Example 4: Documentation Generator
+## 示例 4：文档生成器
 
-**File:** `.claude/commands/document.md`
+**文件：** `.claude/commands/document.md`
 
 ```markdown
 ---
@@ -153,16 +154,16 @@ Include:
 Format as Markdown suitable for project documentation.
 ```
 
-**Usage:**
+**用法：**
 ```
 > /document src/api/users.ts
 ```
 
 ---
 
-## Example 5: Git Status Summary
+## 示例 5：Git 状态摘要
 
-**File:** `.claude/commands/git-status.md`
+**文件：** `.claude/commands/git-status.md`
 
 ```markdown
 ---
@@ -186,16 +187,16 @@ Provide:
 - Any warnings or issues
 ```
 
-**Usage:**
+**用法：**
 ```
 > /git-status
 ```
 
 ---
 
-## Example 6: Deployment Command
+## 示例 6：部署命令
 
-**File:** `.claude/commands/deploy.md`
+**文件：** `.claude/commands/deploy.md`
 
 ```markdown
 ---
@@ -224,16 +225,16 @@ Document current version for rollback if issues occur.
 Proceed with deployment? (yes/no)
 ```
 
-**Usage:**
+**用法：**
 ```
 > /deploy staging v1.2.3
 ```
 
 ---
 
-## Example 7: Comparison Command
+## 示例 7：比较命令
 
-**File:** `.claude/commands/compare-files.md`
+**文件：** `.claude/commands/compare-files.md`
 
 ```markdown
 ---
@@ -269,16 +270,16 @@ Compare @$1 with @$2
 Present as structured comparison report.
 ```
 
-**Usage:**
+**用法：**
 ```
 > /compare-files src/old-api.ts src/new-api.ts
 ```
 
 ---
 
-## Example 8: Quick Fix Command
+## 示例 8：快速修复命令
 
-**File:** `.claude/commands/quick-fix.md`
+**文件：** `.claude/commands/quick-fix.md`
 
 ```markdown
 ---
@@ -292,7 +293,7 @@ Quickly fix: $ARGUMENTS
 **Approach:**
 1. Identify the issue
 2. Find relevant code
-3. Propose fix
+3. Propose a fix
 4. Explain solution
 
 Focus on:
@@ -304,7 +305,7 @@ Focus on:
 Provide code changes with file paths and line numbers.
 ```
 
-**Usage:**
+**用法：**
 ```
 > /quick-fix button not responding to clicks
 > /quick-fix typo in error message
@@ -312,9 +313,9 @@ Provide code changes with file paths and line numbers.
 
 ---
 
-## Example 9: Research Command
+## 示例 9：研究命令
 
-**File:** `.claude/commands/research.md`
+**文件：** `.claude/commands/research.md`
 
 ```markdown
 ---
@@ -349,7 +350,7 @@ Research best practices for: $ARGUMENTS
 Provide actionable guidance based on research.
 ```
 
-**Usage:**
+**用法：**
 ```
 > /research error handling in async operations
 > /research API authentication patterns
@@ -357,9 +358,9 @@ Provide actionable guidance based on research.
 
 ---
 
-## Example 10: Explain Code Command
+## 示例 10：解释代码命令
 
-**File:** `.claude/commands/explain.md`
+**文件：** `.claude/commands/explain.md`
 
 ```markdown
 ---
@@ -399,7 +400,7 @@ Explain @$1 in detail
 Explain at level appropriate for junior engineer.
 ```
 
-**Usage:**
+**用法：**
 ```
 > /explain src/utils/cache.ts
 > /explain AuthService.login
@@ -407,9 +408,9 @@ Explain at level appropriate for junior engineer.
 
 ---
 
-## Key Patterns
+## 关键模式
 
-### Pattern 1: Read-Only Analysis
+### 模式 1：只读分析
 
 ```markdown
 ---
@@ -419,9 +420,9 @@ allowed-tools: Read, Grep
 Analyze but don't modify...
 ```
 
-**Use for:** Code review, documentation, analysis
+**用于：** 代码审查、文档、分析
 
-### Pattern 2: Git Operations
+### 模式 2：Git 操作
 
 ```markdown
 ---
@@ -432,9 +433,9 @@ allowed-tools: Bash(git:*)
 Analyze and suggest...
 ```
 
-**Use for:** Repository status, commit analysis
+**用于：** 仓库状态、提交分析
 
-### Pattern 3: Single Argument
+### 模式 3：单个参数
 
 ```markdown
 ---
@@ -444,9 +445,9 @@ argument-hint: [target]
 Process $1...
 ```
 
-**Use for:** File operations, targeted actions
+**用于：** 文件操作、目标操作
 
-### Pattern 4: Multiple Arguments
+### 模式 4：多个参数
 
 ```markdown
 ---
@@ -456,9 +457,9 @@ argument-hint: [source] [target] [options]
 Process $1 to $2 with $3...
 ```
 
-**Use for:** Workflows, deployments, comparisons
+**用于：** 工作流、部署、比较
 
-### Pattern 5: Fast Execution
+### 模式 5：快速执行
 
 ```markdown
 ---
@@ -468,17 +469,17 @@ model: haiku
 Quick simple task...
 ```
 
-**Use for:** Simple, repetitive commands
+**用于：** 简单、重复的命令
 
-### Pattern 6: File Comparison
+### 模式 6：文件比较
 
 ```markdown
 Compare @$1 with @$2...
 ```
 
-**Use for:** Diff analysis, migration planning
+**用于：** 差异分析、迁移规划
 
-### Pattern 7: Context Gathering
+### 模式 7：上下文收集
 
 ```markdown
 ---
@@ -491,14 +492,14 @@ Files: @file1 @file2
 Analyze...
 ```
 
-**Use for:** Informed decision making
+**用于：** 知情决策
 
-## Tips for Writing Simple Commands
+## 编写简单命令的技巧
 
-1. **Start basic:** Single responsibility, clear purpose
-2. **Add complexity gradually:** Start without frontmatter
-3. **Test incrementally:** Verify each feature works
-4. **Use descriptive names:** Command name should indicate purpose
-5. **Document arguments:** Always use argument-hint
-6. **Provide examples:** Show usage in comments
-7. **Handle errors:** Consider missing arguments or files
+1. **从简单开始：** 单一职责，清晰目的
+2. **逐渐增加复杂性：** 从无 frontmatter 开始
+3. **增量测试：** 验证每个功能工作
+4. **使用描述性名称：** 命令名称应表示目的
+5. **记录参数：** 始终使用 argument-hint
+6. **提供示例：** 在注释中显示用法
+7. **处理错误：** 考虑缺失的参数或文件

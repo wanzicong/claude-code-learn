@@ -1,163 +1,163 @@
-# Hooks Recommendations
+# Hooks 推荐
 
-Hooks automatically run commands in response to Claude Code events. They're ideal for enforcement and automation that should happen consistently.
+Hooks 在响应 Claude Code 事件时自动运行命令。它们非常适合应该一致执行的强制和自动化。
 
-**Note**: These are common patterns. Use web search to find hooks for tools/frameworks not listed here to recommend the best hooks for the user.
+**注意**：这些是常见模式。使用网络搜索找到此处未列出的工具/框架的 hooks，以为用户推荐最佳 hooks。
 
-## Auto-Formatting Hooks
+## 自动格式化 Hooks
 
 ### Prettier (JavaScript/TypeScript)
-| Detection | File Exists |
+| 检测方式 | 文件存在 |
 |-----------|-------------|
-| `.prettierrc`, `.prettierrc.json`, `prettier.config.js` | ✓ |
+| `.prettierrc`、`.prettierrc.json`、`prettier.config.js` | ✓✓ |
 
-**Recommend**: PostToolUse hook on Edit/Write to auto-format
-**Value**: Code stays formatted without thinking about it
+**推荐**：Edit/Write 上的 PostToolUse hook 以自动格式化
+**价值**：代码保持格式化，无需费心
 
 ### ESLint (JavaScript/TypeScript)
-| Detection | File Exists |
+| 检测方式 | 文件存在 |
 |-----------|-------------|
-| `.eslintrc`, `.eslintrc.json`, `eslint.config.js` | ✓ |
+| `.eslintrc`、`.eslintrc.json`、`eslint.config.js` | ✓✓ |
 
-**Recommend**: PostToolUse hook on Edit/Write to auto-fix
-**Value**: Lint errors fixed automatically
+**推荐**：Edit/Write 上的 PostToolUse hook 以自动修复
+**价值**：Lint 错误自动修复
 
 ### Black/isort (Python)
-| Detection | File Exists |
+| 检测方式 | 文件存在 |
 |-----------|-------------|
-| `pyproject.toml` with black/isort, `.black`, `setup.cfg` | ✓ |
+| 带有 black/isort 的 `pyproject.toml`、`.black`、`setup.cfg` | ✓✓ |
 
-**Recommend**: PostToolUse hook to format Python files
-**Value**: Consistent Python formatting
+**推荐**：格式化 Python 文件的 PostToolUse hook
+**价值**：一致的 Python 格式化
 
-### Ruff (Python - Modern)
-| Detection | File Exists |
+### Ruff (Python - 现代化)
+| 检测方式 | 文件存在 |
 |-----------|-------------|
-| `ruff.toml`, `pyproject.toml` with `[tool.ruff]` | ✓ |
+| `ruff.toml`、带有 `[tool.ruff]` 的 `pyproject.toml` | ✓✓ |
 
-**Recommend**: PostToolUse hook for lint + format
-**Value**: Fast, comprehensive Python linting
+**推荐**：Lint + 格式化的 PostToolUse hook
+**价值**：快速、全面的 Python Lint
 
 ### gofmt (Go)
-| Detection | File Exists |
+| 检测方式 | 文件存在 |
 |-----------|-------------|
-| `go.mod` | ✓ |
+| `go.mod` | ✓✓ |
 
-**Recommend**: PostToolUse hook to run gofmt
-**Value**: Standard Go formatting
+**推荐**：运行 gofmt 的 PostToolUse hook
+**价值**：标准的 Go 格式化
 
 ### rustfmt (Rust)
-| Detection | File Exists |
+| 检测方式 | 文件存在 |
 |-----------|-------------|
-| `Cargo.toml` | ✓ |
+| `Cargo.toml` | ✓✓ |
 
-**Recommend**: PostToolUse hook to run rustfmt
-**Value**: Standard Rust formatting
+**推荐**：运行 rustfmt 的 PostToolUse hook
+**价值**：标准的 Rust 格式化
 
 ---
 
-## Type Checking Hooks
+## 类型检查 Hooks
 
 ### TypeScript
-| Detection | File Exists |
+| 检测方式 | 文件存在 |
 |-----------|-------------|
-| `tsconfig.json` | ✓ |
+| `tsconfig.json` | ✓✓ |
 
-**Recommend**: PostToolUse hook to run tsc --noEmit
-**Value**: Catch type errors immediately
+**推荐**：运行 tsc --noEe mit 的 PostToolUse hook
+**价值**：立即捕获类型错误
 
 ### mypy/pyright (Python)
-| Detection | File Exists |
+| 检测方式 | 文件存在 |
 |-----------|-------------|
-| `mypy.ini`, `pyrightconfig.json`, pyproject.toml with mypy | ✓ |
+| `mypy.ini`、`pyrightconfig.json`、带有 mypy 的 pyproject.toml | ✓✓ |
 
-**Recommend**: PostToolUse hook for type checking
-**Value**: Catch type errors in Python
+**推荐**：类型检查的 PostToolUse hook
+**价值**：捕获 Python 中的类型错误
 
 ---
 
-## Protection Hooks
+## 保护 Hooks
 
-### Block Sensitive File Edits
-| Detection | Presence Of |
+### 阻止敏感文件编辑
+| 检测方式 | 存在 |
 |-----------|-------------|
-| `.env`, `.env.local`, `.env.production` | Environment files |
-| `credentials.json`, `secrets.yaml` | Secret files |
-| `.git/` directory | Git internals |
+| `.env`、`.env.local`、`.env.production` | 环境文件 |
+| `credentials.json`、`secrets.yaml` | 秘密文件 |
+| `.git/` 目录 | Git 内部文件 |
 
-**Recommend**: PreToolUse hook that blocks Edit/Write to these paths
-**Value**: Prevent accidental secret exposure or git corruption
+**推荐**：阻止对这些路径的 Edit/Write 的 PreToolUse hook
+**价值**：防止意外泄露秘密或损坏 git
 
-### Block Lock File Edits
-| Detection | Presence Of |
+### 阻止锁定文件编辑
+| 检测方式 | 存在 |
 |-----------|-------------|
-| `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml` | JS lock files |
-| `Cargo.lock`, `poetry.lock`, `Pipfile.lock` | Other lock files |
+| `package-lock.json`、`yarn.lock`、`pnpm-lock.yaml` | JS 锁定文件 |
+| `Cargo.lock`、`poetry.lock`、`Pipfile.lock` | 其他锁定文件 |
 
-**Recommend**: PreToolUse hook that blocks direct edits
-**Value**: Lock files should only change via package manager
+**推荐**：阻止直接编辑的 PreToolUse hook
+**价值**：锁定文件应仅通过包管理器更改
 
 ---
 
-## Test Runner Hooks
+## 测试运行器 Hooks
 
 ### Jest (JavaScript/TypeScript)
-| Detection | Presence Of |
+| 检测方式 | 存在 |
 |-----------|-------------|
-| `jest.config.js`, `jest` in package.json | Jest configured |
-| `__tests__/`, `*.test.ts`, `*.spec.ts` | Test files exist |
+| `jest.config.js`、package.json 中的 jest | 已配置 Jest |
+| `__tests__/`、`*.test.ts`、`*.spec.ts` | 测试文件存在 |
 
-**Recommend**: PostToolUse hook to run related tests after edit
-**Value**: Immediate test feedback on changes
+**推荐**：编辑后运行相关测试的 PostToolUse hook
+**价值**：更改的即时测试反馈
 
 ### pytest (Python)
-| Detection | Presence Of |
+| 检测方式 | 存在 |
 |-----------|-------------|
-| `pytest.ini`, `pyproject.toml` with pytest | pytest configured |
-| `tests/`, `test_*.py` | Test files exist |
+| `pytest.ini`、带有 pytest 的 pyproject.toml | 已配置 pytest |
+| `tests/`、`test_*.py` | 测试文件存在 |
 
-**Recommend**: PostToolUse hook to run pytest on changed files
-**Value**: Immediate test feedback
+**推荐**：在更改的文件上运行 pytest 的 PostToolUse hook
+**价值**：即时测试反馈
 
 ---
 
-## Quick Reference: Detection → Recommendation
+## 快速参考：检测 → 推荐
 
-| If You See | Recommend This Hook |
+| 如果看到 | 推荐此 Hook |
 |------------|-------------------|
-| Prettier config | Auto-format on Edit/Write |
-| ESLint config | Auto-lint on Edit/Write |
-| Ruff/Black config | Auto-format Python |
-| tsconfig.json | Type-check on Edit |
-| Test directory | Run related tests on Edit |
-| .env files | Block .env edits |
-| Lock files | Block lock file edits |
-| Go project | gofmt on Edit |
-| Rust project | rustfmt on Edit |
+| Prettier 配置 | Edit/Write 时自动格式化 |
+| ESLint 配置 | Edit/Write 时自动 Lint |
+| Ruff/Black 配置 | 自动格式化 Python |
+| tsconfig.json | Edit 时类型检查 |
+| 测试目录 | Edit 时运行相关测试 |
+| .env 文件 | 阻止 .env 编辑 |
+| 锁定文件 | 阻止锁定文件编辑 |
+| Go 项目 | Edit 时 gofmt |
+| Rust 项目 | Edit 时 rustfmt |
 
 ---
 
-## Notification Hooks
+## 通知 Hooks
 
-Notification hooks run when Claude Code sends notifications. Use matchers to filter by notification type.
+通知 hooks 在 Claude Code 发送通知时运行。使用匹配器按通知类型过滤。
 
-### Permission Alerts
-| Matcher | Use Case |
+### 权限警报
+| 匹配器 | 用例 |
 |---------|----------|
-| `permission_prompt` | Alert when Claude requests permissions |
+| `permission_prompt` | Claude 请求权限时发出警报 |
 
-**Recommend**: Play sound, send desktop notification, or log permission requests
-**Value**: Never miss permission prompts when multitasking
+**推荐**：播放声音、发送桌面通知或记录权限请求
+**价值**：多任务处理时永远不会错过权限提示
 
-### Idle Notifications
-| Matcher | Use Case |
+### 空闲通知
+| 匹配器 | 用例 |
 |---------|----------|
-| `idle_prompt` | Alert when Claude is waiting for input (60+ seconds idle) |
+| `idle_prompt` | Claude 等待输入时发出警报（空闲 60+ 秒） |
 
-**Recommend**: Play sound or send notification when Claude needs attention
-**Value**: Know when Claude is ready for your input
+**推荐**：Claude 需要注意时播放声音或发送通知
+**价值**：知道 Claude 何时准备好接收您的输入
 
-### Example Configuration
+### 示例配置
 
 ```json
 {
@@ -186,41 +186,41 @@ Notification hooks run when Claude Code sends notifications. Use matchers to fil
 }
 ```
 
-### Available Matchers
+### 可用匹配器
 
-| Matcher | Triggers When |
+| 匹配器 | 触发时机 |
 |---------|---------------|
-| `permission_prompt` | Claude needs permission for a tool |
-| `idle_prompt` | Claude waiting for input (60+ seconds) |
-| `auth_success` | Authentication succeeds |
-| `elicitation_dialog` | MCP tool needs input |
+| `permission_prompt` | Claude 需要工具权限 |
+| `idle_prompt` | Claude 等待输入（60+ 秒） |
+| `auth_success` | 身份验证成功 |
+| `elicitation_dialog` | MCP 工具需要输入 |
 
 ---
 
-## Quick Reference: Detection → Recommendation
+## 快速参考：检测 → 推荐
 
-| If You See | Recommend This Hook |
+| 如果看到 | 推荐此 Hook |
 |------------|-------------------|
-| Prettier config | Auto-format on Edit/Write |
-| ESLint config | Auto-lint on Edit/Write |
-| Ruff/Black config | Auto-format Python |
-| tsconfig.json | Type-check on Edit |
-| Test directory | Run related tests on Edit |
-| .env files | Block .env edits |
-| Lock files | Block lock file edits |
-| Go project | gofmt on Edit |
-| Rust project | rustfmt on Edit |
-| Multitasking workflow | Notification hooks for alerts |
+| Prettier 配置 | Edit/Write 时自动格式化 |
+| ESLint 配置 | Edit/Write 时自动 Lint |
+| Ruff/Black 配置 | 自动格式化 Python |
+| tsconfig.json | Edit 时类型检查 |
+| 测试目录 | Edit 时运行相关测试 |
+| .env 文件 | 阻止 .env 编辑 |
+| 锁定文件 | 阻止锁定文件编辑 |
+| Go 项目 | Edit 时 gofmt |
+| Rust 项目 | Edit 时 rustfmt |
+| 多任务工作流 | 用于警报的通知 hooks |
 
 ---
 
-## Hook Placement
+## Hook 位置
 
-Hooks go in `.claude/settings.json`:
+Hooks 放在 `.claude/settings.json` 中：
 
 ```
 .claude/
-└── settings.json  ← Hook configurations here
+└── settings.json  ← Hook 配置在此处
 ```
 
-Recommend creating the `.claude/` directory if it doesn't exist.
+推荐创建 `.claude/` 目录（如果不存在）。

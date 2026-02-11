@@ -1,208 +1,208 @@
-# Agent SDK Development Plugin
+# Agent SDK 开发插件
 
-A comprehensive plugin for creating and verifying Claude Agent SDK applications in Python and TypeScript.
+用于创建和验证 Python 和 TypeScript Claude Agent SDK 应用程序的全面插件。
 
-## Overview
+## 概述
 
-The Agent SDK Development Plugin streamlines the entire lifecycle of building Agent SDK applications, from initial scaffolding to verification against best practices. It helps you quickly start new projects with the latest SDK versions and ensures your applications follow official documentation patterns.
+Agent SDK 开发插件简化了构建 Agent SDK 应用程序的整个生命周期，从初始脚手架到根据最佳实践进行验证。它帮助您使用最新的 SDK 版本快速启动新项目，并确保您的应用程序遵循官方文档模式。
 
-## Features
+## 功能
 
-### Command: `/new-sdk-app`
+### 命令：`/new-sdk-app`
 
-Interactive command that guides you through creating a new Claude Agent SDK application.
+交互式命令，指导您创建新的 Claude Agent SDK 应用程序。
 
-**What it does:**
-- Asks clarifying questions about your project (language, name, agent type, starting point)
-- Checks for and installs the latest SDK version
-- Creates all necessary project files and configuration
-- Sets up proper environment files (.env.example, .gitignore)
-- Provides a working example tailored to your use case
-- Runs type checking (TypeScript) or syntax validation (Python)
-- Automatically verifies the setup using the appropriate verifier agent
+**功能：**
+- 询问关于您项目的澄清问题（语言、名称、代理类型、起点）
+- 检查并安装最新的 SDK 版本
+- 创建所有必要的项目文件和配置
+- 设置适当的环境文件（.env.example、.gitignore）
+- 提供适合您用例的工作示例
+- 运行类型检查（TypeScript）或语法验证（Python）
+- 使用适当的验证器代理自动验证设置
 
-**Usage:**
+**用法：**
 ```bash
 /new-sdk-app my-project-name
 ```
 
-Or simply:
+或者简单：
 ```bash
 /new-sdk-app
 ```
 
-The command will interactively ask you:
-1. Language choice (TypeScript or Python)
-2. Project name (if not provided)
-3. Agent type (coding, business, custom)
-4. Starting point (minimal, basic, or specific example)
-5. Tooling preferences (npm/yarn/pnpm or pip/poetry)
+该命令将交互式地询问您：
+1. 语言选择（TypeScript 或 Python）
+2. 项目名称（如果未提供）
+3. 代理类型（编码、业务、自定义）
+4. 起点（最小、基本或特定示例）
+5. 工具偏好（npm/yarn/pnpm 或 pip/poetry）
 
-**Example:**
+**示例：**
 ```bash
 /new-sdk-app customer-support-agent
-# → Creates a new Agent SDK project for a customer support agent
-# → Sets up TypeScript or Python environment
-# → Installs latest SDK version
-# → Verifies the setup automatically
+# → 为客户支持代理创建一个新的 Agent SDK 项目
+# → 设置 TypeScript 或 Python 环境
+# → 安装最新的 SDK 版本
+# → 自动验证设置
 ```
 
-### Agent: `agent-sdk-verifier-py`
+### 代理：`agent-sdk-verifier-py`
 
-Thoroughly verifies Python Agent SDK applications for correct setup and best practices.
+彻底验证 Python Agent SDK 应用程序的正确设置和最佳实践。
 
-**Verification checks:**
-- SDK installation and version
-- Python environment setup (requirements.txt, pyproject.toml)
-- Correct SDK usage and patterns
-- Agent initialization and configuration
-- Environment and security (.env, API keys)
-- Error handling and functionality
-- Documentation completeness
+**验证检查：**
+- SDK 安装和版本
+- Python 环境设置（requirements.txt、pyproject.toml）
+- 正确的 SDK 使用和模式
+- 代理初始化和配置
+- 环境和安全（.env、API 密钥）
+- 错误处理和功能
+- 文档完整性
 
-**When to use:**
-- After creating a new Python SDK project
-- After modifying an existing Python SDK application
-- Before deploying a Python SDK application
+**何时使用：**
+- 创建新的 Python SDK 项目后
+- 修改现有的 Python SDK 应用程序后
+- 部署 Python SDK 应用程序之前
 
-**Usage:**
-The agent runs automatically after `/new-sdk-app` creates a Python project, or you can trigger it by asking:
+**用法：**
+该代理在 `/new-sdk-app` 创建 Python 项目后自动运行，或者您可以通过以下方式触发它：
 ```
-"Verify my Python Agent SDK application"
-"Check if my SDK app follows best practices"
-```
-
-**Output:**
-Provides a comprehensive report with:
-- Overall status (PASS / PASS WITH WARNINGS / FAIL)
-- Critical issues that prevent functionality
-- Warnings about suboptimal patterns
-- List of passed checks
-- Specific recommendations with SDK documentation references
-
-### Agent: `agent-sdk-verifier-ts`
-
-Thoroughly verifies TypeScript Agent SDK applications for correct setup and best practices.
-
-**Verification checks:**
-- SDK installation and version
-- TypeScript configuration (tsconfig.json)
-- Correct SDK usage and patterns
-- Type safety and imports
-- Agent initialization and configuration
-- Environment and security (.env, API keys)
-- Error handling and functionality
-- Documentation completeness
-
-**When to use:**
-- After creating a new TypeScript SDK project
-- After modifying an existing TypeScript SDK application
-- Before deploying a TypeScript SDK application
-
-**Usage:**
-The agent runs automatically after `/new-sdk-app` creates a TypeScript project, or you can trigger it by asking:
-```
-"Verify my TypeScript Agent SDK application"
-"Check if my SDK app follows best practices"
+"验证我的 Python Agent SDK 应用程序"
+"检查我的 SDK 应用程序是否遵循最佳实践"
 ```
 
-**Output:**
-Provides a comprehensive report with:
-- Overall status (PASS / PASS WITH WARNINGS / FAIL)
-- Critical issues that prevent functionality
-- Warnings about suboptimal patterns
-- List of passed checks
-- Specific recommendations with SDK documentation references
+**输出：**
+提供包含以下内容的综合报告：
+- 总体状态（通过 / 通过但有警告 / 失败）
+- 阻止功能的关键问题
+- 关于次优模式的警告
+- 通过的检查列表
+- 带有 SDK 文档引用的具体建议
 
-## Workflow Example
+### 代理：`agent-sdk-verifier-ts`
 
-Here's a typical workflow using this plugin:
+彻底验证 TypeScript Agent SDK 应用程序的正确设置和最佳实践。
 
-1. **Create a new project:**
+**验证检查：**
+- SDK 安装和版本
+- TypeScript 配置（tsconfig.json）
+- 正确的 SDK 使用和模式
+- 类型安全和导入
+- 代理初始化和配置
+- 环境和安全（.env、API 密钥）
+- 错误处理和功能
+- 文档完整性
+
+**何时使用：**
+- 创建新的 TypeScript SDK 项目后
+- 修改现有的 TypeScript SDK 应用程序后
+- 部署 TypeScript SDK 应用程序之前
+
+**用法：**
+该代理在 `/new-sdk-app` 创建 TypeScript 项目后自动运行，或者您可以通过以下方式触发它：
+```
+"验证我的 TypeScript Agent SDK 应用程序"
+"检查我的 SDK 应用程序是否遵循最佳实践"
+```
+
+**输出：**
+提供包含以下内容的综合报告：
+- 总体状态（通过 / 通过但有警告 / 失败）
+- 阻止功能的关键问题
+- 关于次优模式的警告
+- 通过的检查列表
+- 带有 SDK 文档引用的具体建议
+
+## 工作流示例
+
+以下是使用此插件的典型工作流：
+
+1. **创建新项目：**
 ```bash
 /new-sdk-app code-reviewer-agent
 ```
 
-2. **Answer the interactive questions:**
+2. **回答交互式问题：**
 ```
-Language: TypeScript
-Agent type: Coding agent (code review)
-Starting point: Basic agent with common features
+语言：TypeScript
+代理类型：编码代理（代码审查）
+起点：具有常见功能的基本代理
 ```
 
-3. **Automatic verification:**
-The command automatically runs `agent-sdk-verifier-ts` to ensure everything is correctly set up.
+3. **自动验证：**
+该命令自动运行 `agent-sdk-verifier-ts` 以确保一切正确设置。
 
-4. **Start developing:**
+4. **开始开发：**
 ```bash
-# Set your API key
+# 设置您的 API 密钥
 echo "ANTHROPIC_API_KEY=your_key_here" > .env
 
-# Run your agent
+# 运行您的代理
 npm start
 ```
 
-5. **Verify after changes:**
+5. **更改后验证：**
 ```
-"Verify my SDK application"
+"验证我的 SDK 应用程序"
 ```
 
-## Installation
+## 安装
 
-This plugin is included in the Claude Code repository. To use it:
+此插件包含在 Claude Code 存储库中。要使用它：
 
-1. Ensure Claude Code is installed
-2. The plugin commands and agents are automatically available
+1. 确保 Claude Code 已安装
+2. 插件命令和代理自动可用
 
-## Best Practices
+## 最佳实践
 
-- **Always use the latest SDK version**: `/new-sdk-app` checks for and installs the latest version
-- **Verify before deploying**: Run the verifier agent before deploying to production
-- **Keep API keys secure**: Never commit `.env` files or hardcode API keys
-- **Follow SDK documentation**: The verifier agents check against official patterns
-- **Type check TypeScript projects**: Run `npx tsc --noEmit` regularly
-- **Test your agents**: Create test cases for your agent's functionality
+- **始终使用最新的 SDK 版本**：`/new-sdk-app` 检查并安装最新版本
+- **部署前验证**：在部署到生产环境之前运行验证器代理
+- **保持 API 密钥安全**：永远不要提交 `.env` 文件或硬编码 API 密钥
+- **遵循 SDK 文档**：验证器代理根据官方模式进行检查
+- **检查 TypeScript 项目**：定期运行 `npx tsc --noEmit`
+- **测试您的代理**：为您的代理功能创建测试用例
 
-## Resources
+## 资源
 
-- [Agent SDK Overview](https://docs.claude.com/en/api/agent-sdk/overview)
-- [TypeScript SDK Reference](https://docs.claude.com/en/api/agent-sdk/typescript)
-- [Python SDK Reference](https://docs.claude.com/en/api/agent-sdk/python)
-- [Agent SDK Examples](https://docs.claude.com/en/api/agent-sdk/examples)
+- [Agent SDK 概述](https://docs.claude.com/en/api/agent-sdk/overview)
+- [TypeScript SDK 参考](https://docs.claude.com/en/api/agent-sdk/typescript)
+- [Python SDK 参考](https://docs.claude.com/en/api/agent-sdk/python)
+- [Agent SDK 示例](https://docs.claude.com/en/api/agent-sdk/examples)
 
-## Troubleshooting
+## 故障排除
 
-### Type errors in TypeScript project
+### TypeScript 项目中的类型错误
 
-**Issue**: TypeScript project has type errors after creation
+**问题**：创建后 TypeScript 项目有类型错误
 
-**Solution**:
-- The `/new-sdk-app` command runs type checking automatically
-- If errors persist, check that you're using the latest SDK version
-- Verify your `tsconfig.json` matches SDK requirements
+**解决方案**：
+- `/new-sdk-app` 命令自动运行类型检查
+- 如果错误仍然存在，检查您是否使用最新的 SDK 版本
+- 验证您的 `tsconfig.json` 匹配 SDK 要求
 
-### Python import errors
+### Python 导入错误
 
-**Issue**: Cannot import from `claude_agent_sdk`
+**问题**：无法从 `claude_agent_sdk` 导入
 
-**Solution**:
-- Ensure you've installed dependencies: `pip install -r requirements.txt`
-- Activate your virtual environment if using one
-- Check that the SDK is installed: `pip show claude-agent-sdk`
+**解决方案**：
+- 确保已安装依赖项：`pip install -r requirements.txt`
+- 如果使用虚拟环境，请激活它
+- 检查 SDK 是否已安装：`pip show claude-agent-sdk`
 
-### Verification fails with warnings
+### 验证失败并显示警告
 
-**Issue**: Verifier agent reports warnings
+**问题**：验证器代理报告警告
 
-**Solution**:
-- Review the specific warnings in the report
-- Check the SDK documentation references provided
-- Warnings don't prevent functionality but indicate areas for improvement
+**解决方案**：
+- 查看报告中的具体警告
+- 检查提供的 SDK 文档引用
+- 警告不会阻止功能，但指示需要改进的领域
 
-## Author
+## 作者
 
 Ashwin Bhat (ashwin@anthropic.com)
 
-## Version
+## 版本
 
 1.0.0

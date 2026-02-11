@@ -6,9 +6,9 @@ pattern: rm\s+-rf
 action: block
 ---
 
-⚠️ **Dangerous rm command detected!**
+⚠️ **检测到危险的 rm 命令！**
 
-This command could delete important files. Please:
-- Verify the path is correct
-- Consider using a safer approach
-- Make sure you have backups
+此命令可能删除重要文件。请：
+- 验证路径是否正确
+- 考虑使用更安全的方法
+- 确保您有备份

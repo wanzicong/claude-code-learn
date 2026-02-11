@@ -1,54 +1,54 @@
 ---
-description: Update CLAUDE.md with learnings from this session
+description: 使用本次会话的学习内容更新 CLAUDE.md
 allowed-tools: Read, Edit, Glob
 ---
 
-Review this session for learnings about working with Claude Code in this codebase. Update CLAUDE.md with context that would help future Claude sessions be more effective.
+审查本次会话中关于在此代码库中使用 Claude Code 的学习内容。用有助于未来 Claude 会话更有效工作的上下文更新 CLAUDE.md。
 
-## Step 1: Reflect
+## 步骤 1：反思
 
-What context was missing that would have helped Claude work more effectively?
-- Bash commands that were used or discovered
-- Code style patterns followed
-- Testing approaches that worked
-- Environment/configuration quirks
-- Warnings or gotchas encountered
+哪些缺失的上下文本可以帮助 Claude 更有效地工作？
+- 使用或发现的 Bash 命令
+- 遵循的代码风格模式
+- 有效的测试方法
+- 环境/配置的特殊之处
+- 遇到的警告或注意事项
 
-## Step 2: Find CLAUDE.md Files
+## 步骤 2：查找 CLAUDE.md 文件
 
 ```bash
 find . -name "CLAUDE.md" -o -name ".claude.local.md" 2>/dev/null | head -20
 ```
 
-Decide where each addition belongs:
-- `CLAUDE.md` - Team-shared (checked into git)
-- `.claude.local.md` - Personal/local only (gitignored)
+确定每个添加内容应该放在哪里：
+- `CLAUDE.md` - 团队共享（已提交到 git）
+- `.claude.local.md` - 个人/本地专用（已被 git 忽略）
 
-## Step 3: Draft Additions
+## 步骤 3：起草添加内容
 
-**Keep it concise** - one line per concept. CLAUDE.md is part of the prompt, so brevity matters.
+**保持简洁** - 每个概念一行。CLAUDE.md 是提示词的一部分，因此简洁很重要。
 
-Format: `<command or pattern>` - `<brief description>`
+格式：`<命令或模式>` - `<简要描述>`
 
-Avoid:
-- Verbose explanations
-- Obvious information
-- One-off fixes unlikely to recur
+避免：
+- 冗长的解释
+- 显而易见的信息
+- 不太可能再次发生的一次性修复
 
-## Step 4: Show Proposed Changes
+## 步骤 4：显示建议的更改
 
-For each addition:
+对于每个添加项：
 
 ```
-### Update: ./CLAUDE.md
+### 更新：./CLAUDE.md
 
-**Why:** [one-line reason]
+**原因：** [一行原因]
 
 \`\`\`diff
-+ [the addition - keep it brief]
++ [添加内容 - 保持简短]
 \`\`\`
 ```
 
-## Step 5: Apply with Approval
+## 步骤 5：获得批准后应用
 
-Ask if the user wants to apply the changes. Only edit files they approve.
+询问用户是否想要应用这些更改。只编辑编辑他们批准的文件。

@@ -1,10 +1,10 @@
-# Advanced Hook Use Cases
+# 高级 Hook 用例
 
-This reference covers advanced hook patterns and techniques for sophisticated automation workflows.
+本参考文档涵盖了高级 hook 模式和技术，用于复杂的自动化工作流。
 
-## Multi-Stage Validation
+## 多阶段验证
 
-Combine command and prompt hooks for layered validation:
+组合命令和 prompt hook 进行分层验证：
 
 ```json
 {
@@ -19,7 +19,7 @@ Combine command and prompt hooks for layered validation:
         },
         {
           "type": "prompt",
-          "prompt": "Deep analysis of bash command: $TOOL_INPUT",
+          "prompt": "深度分析 bash 命令：$TOOL_INPUT",
           "timeout": 15
         }
       ]
@@ -28,71 +28,71 @@ Combine command and prompt hooks for layered validation:
 }
 ```
 
-**Use case:** Fast deterministic checks followed by intelligent analysis
+**用例：** 快速确定性检查后进行智能分析
 
-**Example quick-check.sh:**
+**示例 quick-check.sh：**
 ```bash
 #!/bin/bash
 input=$(cat)
 command=$(echo "$input" | jq -r '.tool_input.command')
 
-# Immediate approval for safe commands
+# 立即批准安全命令
 if [[ "$command" =~ ^(ls|pwd|echo|date|whoami)$ ]]; then
   exit 0
 fi
 
-# Let prompt hook handle complex cases
+# 让 prompt hook 处理复杂情况
 exit 0
 ```
 
-The command hook quickly approves obviously safe commands, while the prompt hook analyzes everything else.
+命令 hook 快速批准明显安全的命令，而 prompt hook 分析其他所有内容。
 
-## Conditional Hook Execution
+## 条件 Hook 执行
 
-Execute hooks based on environment or context:
+根据环境或上下文执行 hook：
 
 ```bash
 #!/bin/bash
-# Only run in CI environment
+# 仅在 CI 环境中运行
 if [ -z "$CI" ]; then
-  echo '{"continue": true}' # Skip in non-CI
+  echo '{"continue": true}' # 在非 CI 中跳过
   exit 0
 fi
 
-# Run validation logic in CI
+# 在 CI 中运行验证逻辑
 input=$(cat)
-# ... validation code ...
+# ... 验证代码 ...
 ```
 
-**Use cases:**
-- Different behavior in CI vs local development
-- Project-specific validation
-- User-specific rules
+**用例：**
+- CI 与本地开发中的不同行为
+- 特定于项目的验证
+- 特定于用户的规则
 
-**Example: Skip certain checks for trusted users:**
+**示例：为受信任用户跳过某些检查：**
 ```bash
 #!/bin/bash
-# Skip detailed checks for admin users
+# 为管理员用户跳过详细检查
 if [ "$USER" = "admin" ]; then
   exit 0
 fi
 
-# Full validation for other users
+# 为其他用户进行完整验证
 input=$(cat)
-# ... validation code ...
+# ... 验证代码 ...
 ```
 
-## Hook Chaining via State
+## 通过状态的 Hook 链接
 
-Share state between hooks using temporary files:
+使用临时文件在 hook 之间共享状态：
 
 ```bash
-# Hook 1: Analyze and save state
+# Hook 1：分析并保存状态
 #!/bin/bash
 input=$(cat)
 command=$(echo "$input" | jq -r '.tool_input.command')
 
-# Analyze command
+# 分析命令
 risk_level=$(calculate_risk "$command")
 echo "$risk_level" > /tmp/hook-state-$$
 
@@ -100,41 +100,41 @@ exit 0
 ```
 
 ```bash
-# Hook 2: Use saved state
+# Hook 2：使用保存的状态
 #!/bin/bash
 risk_level=$(cat /tmp/hook-state-$$ 2>/dev/null || echo "unknown")
 
 if [ "$risk_level" = "high" ]; then
-  echo "High risk operation detected" >&2
+  echo "检测到高风险操作" >&2
   exit 2
 fi
 ```
 
-**Important:** This only works for sequential hook events (e.g., PreToolUse then PostToolUse), not parallel hooks.
+**重要：** 这仅适用于顺序 hook 事件（例如，PreToolUse 然后 PostToolUse），不适用于并行 hook。
 
-## Dynamic Hook Configuration
+## 动态 Hook 配置
 
-Modify hook behavior based on project configuration:
+根据项目配置修改 hook 行为：
 
 ```bash
 #!/bin/bash
 cd "$CLAUDE_PROJECT_DIR" || exit 1
 
-# Read project-specific config
+# 读取特定于项目的配置
 if [ -f ".claude-hooks-config.json" ]; then
   strict_mode=$(jq -r '.strict_mode' .claude-hooks-config.json)
 
   if [ "$strict_mode" = "true" ]; then
-    # Apply strict validation
+    # 应用严格验证
     # ...
   else
-    # Apply lenient validation
+    # 应用宽松验证
     # ...
   fi
 fi
 ```
 
-**Example .claude-hooks-config.json:**
+**示例 .claude-hooks-config.json：**
 ```json
 {
   "strict_mode": true,
@@ -143,9 +143,9 @@ fi
 }
 ```
 
-## Context-Aware Prompt Hooks
+## 上下文感知的 Prompt Hook
 
-Use transcript and session context for intelligent decisions:
+使用转录和会话上下文进行智能决策：
 
 ```json
 {
@@ -155,7 +155,7 @@ Use transcript and session context for intelligent decisions:
       "hooks": [
         {
           "type": "prompt",
-          "prompt": "Review the full transcript at $TRANSCRIPT_PATH. Check: 1) Were tests run after code changes? 2) Did the build succeed? 3) Were all user questions answered? 4) Is there any unfinished work? Return 'approve' only if everything is complete."
+          "prompt": "查看 $TRANSCRIPT_PATH 处的完整转录。检查：1) 代码更改后是否运行了测试？2) 构建是否成功？3) 是否回答了所有用户问题？4) 是否有未完成的工作？仅当一切完成时返回 'approve'。"
         }
       ]
     }
@@ -163,11 +163,11 @@ Use transcript and session context for intelligent decisions:
 }
 ```
 
-The LLM can read the transcript file and make context-aware decisions.
+LLM 可以读取转录文件并做出上下文感知的决策。
 
-## Performance Optimization
+## 性能优化
 
-### Caching Validation Results
+### 缓存验证结果
 
 ```bash
 #!/bin/bash
@@ -176,26 +176,26 @@ file_path=$(echo "$input" | jq -r '.tool_input.file_path')
 cache_key=$(echo -n "$file_path" | md5sum | cut -d' ' -f1)
 cache_file="/tmp/hook-cache-$cache_key"
 
-# Check cache
+# 检查缓存
 if [ -f "$cache_file" ]; then
   cache_age=$(($(date +%s) - $(stat -f%m "$cache_file" 2>/dev/null || stat -c%Y "$cache_file")))
-  if [ "$cache_age" -lt 300 ]; then  # 5 minute cache
+  if [ "$cache_age" -lt 300 ]; then  # 5 分钟缓存
     cat "$cache_file"
     exit 0
   fi
 fi
 
-# Perform validation
+# 执行验证
 result='{"decision": "approve"}'
 
-# Cache result
+# 缓存结果
 echo "$result" > "$cache_file"
 echo "$result"
 ```
 
-### Parallel Execution Optimization
+### 并行执行优化
 
-Since hooks run in parallel, design them to be independent:
+由于 hook 并行运行，将其设计为独立运行：
 
 ```json
 {
@@ -205,17 +205,17 @@ Since hooks run in parallel, design them to be independent:
       "hooks": [
         {
           "type": "command",
-          "command": "bash check-size.sh",      // Independent
+          "command": "bash check-size.sh",      // 独立
           "timeout": 2
         },
         {
           "type": "command",
-          "command": "bash check-path.sh",      // Independent
+          "command": "bash check-path.sh",      // 独立
           "timeout": 2
         },
         {
           "type": "prompt",
-          "prompt": "Check content safety",     // Independent
+          "prompt": "检查内容安全性",     // 独立
           "timeout": 10
         }
       ]
@@ -224,21 +224,21 @@ Since hooks run in parallel, design them to be independent:
 }
 ```
 
-All three hooks run simultaneously, reducing total latency.
+所有三个 hook 同时运行，减少总延迟。
 
-## Cross-Event Workflows
+## 跨事件工作流
 
-Coordinate hooks across different events:
+协调不同事件之间的 hook：
 
-**SessionStart - Set up tracking:**
+**SessionStart - 设置跟踪：**
 ```bash
 #!/bin/bash
-# Initialize session tracking
+# 初始化会话跟踪
 echo "0" > /tmp/test-count-$$
 echo "0" > /tmp/build-count-$$
 ```
 
-**PostToolUse - Track events:**
+**PostToolUse - 跟踪事件：**
 ```bash
 #!/bin/bash
 input=$(cat)
@@ -253,20 +253,20 @@ if [ "$tool_name" = "Bash" ]; then
 fi
 ```
 
-**Stop - Verify based on tracking:**
+**Stop - 基于跟踪进行验证：**
 ```bash
 #!/bin/bash
 test_count=$(cat /tmp/test-count-$$ 2>/dev/null || echo "0")
 
 if [ "$test_count" -eq 0 ]; then
-  echo '{"decision": "block", "reason": "No tests were run"}' >&2
+  echo '{"decision": "block", "reason": "未运行测试"}' >&2
   exit 2
 fi
 ```
 
-## Integration with External Systems
+## 与外部系统集成
 
-### Slack Notifications
+### Slack 通知
 
 ```bash
 #!/bin/bash
@@ -274,52 +274,52 @@ input=$(cat)
 tool_name=$(echo "$input" | jq -r '.tool_name')
 decision="blocked"
 
-# Send notification to Slack
+# 发送通知到 Slack
 curl -X POST "$SLACK_WEBHOOK" \
   -H 'Content-Type: application/json' \
-  -d "{\"text\": \"Hook ${decision} ${tool_name} operation\"}" \
+  -d "{\"text\": \"Hook ${decision} ${tool_name} 操作\"}" \
   2>/dev/null
 
 echo '{"decision": "deny"}' >&2
 exit 2
 ```
 
-### Database Logging
+### 数据库日志记录
 
 ```bash
 #!/bin/bash
 input=$(cat)
 
-# Log to database
+# 记录到数据库
 psql "$DATABASE_URL" -c "INSERT INTO hook_logs (event, data) VALUES ('PreToolUse', '$input')" \
   2>/dev/null
 
 exit 0
 ```
 
-### Metrics Collection
+### 指标收集
 
 ```bash
 #!/bin/bash
 input=$(cat)
 tool_name=$(echo "$input" | jq -r '.tool_name')
 
-# Send metrics to monitoring system
+# 发送指标到监控系统
 echo "hook.pretooluse.${tool_name}:1|c" | nc -u -w1 statsd.local 8125
 
 exit 0
 ```
 
-## Security Patterns
+## 安全模式
 
-### Rate Limiting
+### 速率限制
 
 ```bash
 #!/bin/bash
 input=$(cat)
 command=$(echo "$input" | jq -r '.tool_input.command')
 
-# Track command frequency
+# 跟踪命令频率
 rate_file="/tmp/hook-rate-$$"
 current_minute=$(date +%Y%m%d%H%M)
 
@@ -329,7 +329,7 @@ if [ -f "$rate_file" ]; then
 
   if [ "$current_minute" = "$last_minute" ]; then
     if [ "$count" -gt 10 ]; then
-      echo '{"decision": "deny", "reason": "Rate limit exceeded"}' >&2
+      echo '{"decision": "deny", "reason": "超过速率限制"}' >&2
       exit 2
     fi
     count=$((count + 1))
@@ -346,7 +346,7 @@ echo "$count" >> "$rate_file"
 exit 0
 ```
 
-### Audit Logging
+### 审计日志记录
 
 ```bash
 #!/bin/bash
@@ -354,126 +354,126 @@ input=$(cat)
 tool_name=$(echo "$input" | jq -r '.tool_name')
 timestamp=$(date -Iseconds)
 
-# Append to audit log
+# 追加到审计日志
 echo "$timestamp | $USER | $tool_name | $input" >> ~/.claude/audit.log
 
 exit 0
 ```
 
-### Secret Detection
+### 密钥检测
 
 ```bash
 #!/bin/bash
 input=$(cat)
 content=$(echo "$input" | jq -r '.tool_input.content')
 
-# Check for common secret patterns
+# 检查常见密钥模式
 if echo "$content" | grep -qE "(api[_-]?key|password|secret|token).{0,20}['\"]?[A-Za-z0-9]{20,}"; then
-  echo '{"decision": "deny", "reason": "Potential secret detected in content"}' >&2
+  echo '{"decision": "deny", "reason": "在内容中检测到潜在密钥"}'>' >&2
   exit 2
 fi
 
 exit 0
 ```
 
-## Testing Advanced Hooks
+## 测试高级 Hook
 
-### Unit Testing Hook Scripts
+### Hook 脚本的单元测试
 
 ```bash
 # test-hook.sh
 #!/bin/bash
 
-# Test 1: Approve safe command
+# 测试 1：批准安全命令
 result=$(echo '{"tool_input": {"command": "ls"}}' | bash validate-bash.sh)
 if [ $? -eq 0 ]; then
-  echo "✓ Test 1 passed"
+  echo "✓ 测试 1 通过"
 else
-  echo "✗ Test 1 failed"
+  echo "✗ 测试 1 失败"
 fi
 
-# Test 2: Block dangerous command
+# 测试 2：阻止危险命令
 result=$(echo '{"tool_input": {"command": "rm -rf /"}}' | bash validate-bash.sh)
 if [ $? -eq 2 ]; then
-  echo "✓ Test 2 passed"
+  echo "✓ 测试 2 通过"
 else
-  echo "✗ Test 2 failed"
+  echo "✗ 测试 2 失败"
 fi
 ```
 
-### Integration Testing
+### 集成测试
 
-Create test scenarios that exercise the full hook workflow:
+创建测试场景以执行完整的 hook 工作流：
 
 ```bash
 # integration-test.sh
 #!/bin/bash
 
-# Set up test environment
+# 设置测试环境
 export CLAUDE_PROJECT_DIR="/tmp/test-project"
 export CLAUDE_PLUGIN_ROOT="$(pwd)"
 mkdir -p "$CLAUDE_PROJECT_DIR"
 
-# Test SessionStart hook
+# 测试 SessionStart hook
 echo '{}' | bash hooks/session-start.sh
 if [ -f "/tmp/session-initialized" ]; then
-  echo "✓ SessionStart hook works"
+  echo "✓ SessionStart hook 工作"
 else
-  echo "✗ SessionStart hook failed"
+  echo "✗ SessionStart hook 失败"
 fi
 
-# Clean up
+# 清理
 rm -rf "$CLAUDE_PROJECT_DIR"
 ```
 
-## Best Practices for Advanced Hooks
+## 高级 Hook 的最佳实践
 
-1. **Keep hooks independent**: Don't rely on execution order
-2. **Use timeouts**: Set appropriate limits for each hook type
-3. **Handle errors gracefully**: Provide clear error messages
-4. **Document complexity**: Explain advanced patterns in README
-5. **Test thoroughly**: Cover edge cases and failure modes
-6. **Monitor performance**: Track hook execution time
-7. **Version configuration**: Use version control for hook configs
-8. **Provide escape hatches**: Allow users to bypass hooks when needed
+1. **保持 hook 独立**：不要依赖执行顺序
+2. **使用超时**：为每种 hook 类型设置适当的限制
+3. **优雅地处理错误**：提供清晰的错误消息
+4. **记录复杂性**：在 README 中解释高级模式
+5. **彻底测试**：覆盖边缘情况和失败模式
+6. **监控性能**：跟踪 hook 执行时间
+7. **版本控制配置**：对 hook 配置使用版本控制
+8. **提供逃生舱**：允许用户在需要时绕过 hook
 
-## Common Pitfalls
+## 常见陷阱
 
-### ❌ Assuming Hook Order
+### ❌ 假设 Hook 顺序
 
 ```bash
-# BAD: Assumes hooks run in specific order
-# Hook 1 saves state, Hook 2 reads it
-# This can fail because hooks run in parallel!
+# 不好：假设 hook 以特定顺序运行
+# Hook 1 保存状态，Hook 2 读取它
+# 这可能会失败，因为 hook 并行运行！
 ```
 
-### ❌ Long-Running Hooks
+### ❌ 长时间运行的 Hook
 
 ```bash
-# BAD: Hook takes 2 minutes to run
+# 不好：Hook 运行 2 分钟
 sleep 120
-# This will timeout and block the workflow
+# 这将超时并阻塞工作流
 ```
 
-### ❌ Uncaught Exceptions
+### ❌ 未捕获的异常
 
 ```bash
-# BAD: Script crashes on unexpected input
+# 不好：脚本在意外输入时崩溃
 file_path=$(echo "$input" | jq -r '.tool_input.file_path')
-cat "$file_path"  # Fails if file doesn't exist
+cat "$file_path"  # 如果文件不存在则失败
 ```
 
-### ✅ Proper Error Handling
+### ✅ 正确的错误处理
 
 ```bash
-# GOOD: Handles errors gracefully
+# 良好：优雅地处理错误
 file_path=$(echo "$input" | jq -r '.tool_input.file_path')
 if [ ! -f "$file_path" ]; then
-  echo '{"continue": true, "systemMessage": "File not found, skipping check"}' >&2
+  echo '{"continue": true, "systemMessage": "文件未找到，跳过检查"}'>&2
   exit 0
 fi
 ```
 
-## Conclusion
+## 结论
 
-Advanced hook patterns enable sophisticated automation while maintaining reliability and performance. Use these techniques when basic hooks are insufficient, but always prioritize simplicity and maintainability.
+高级 hook 模式在保持可靠性和性能的同时实现复杂的自动化。当基本 hook 不足时使用这些技术，但始终优先考虑简单性和可维护性。

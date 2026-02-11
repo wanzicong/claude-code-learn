@@ -1,46 +1,45 @@
-# Code Map Template
+# 代码地图模板
 
-Use this template when the playground is about visualizing codebase architecture: component relationships, data flow, layer diagrams, system architecture with interactive commenting for feedback.
+当 playground 是关于可视化代码库架构时使用此模板：组件关系、数据流、层级图、带有交互式评论功能的系统架构，用于提供反馈。
 
-## Layout
+## 布局
 
 ```
 +-------------------+----------------------------------+
 |                   |                                  |
-|  Controls:        |  SVG Canvas                      |
-|  • View presets   |  (nodes + connections)           |
-|  • Layer toggles  |  with zoom controls              |
-|  • Connection     |                                  |
-|    type filters   |  Legend (bottom-left)            |
-|                   |                                  |
-|  Comments (n):    +----------------------------------+
-|  • List of user   |  Prompt output                   |
-|    comments with  |  [ Copy Prompt ]                 |
-|    delete buttons |                                  |
+|  控件:            |  SVG 画布                         |
+|  • 视图预设       |  (节点 + 连接)                    |
+|  • 图层切换       |  带有缩放控件                     |
+|  • 连接           |                                  |
+|    类型过滤器     |                                  |
+|                   |  图例 (左下角)                    |
+|  评论 (n):        +----------------------------------+
+|  • 用户评论列表   |  提示词输出                       |
+|    带有删除按钮   |  [ 复制提示词 ]                   |
 +-------------------+----------------------------------+
 ```
 
-Code map playgrounds use an SVG canvas for the architecture diagram. Users click components to add comments, which become part of the generated prompt. Layer and connection filters let users focus on specific parts of the system.
+代码地图 playground 使用 SVG 画布来绘制架构图。用户点击组件以添加评论，这些评论将成为生成提示词的一部分。图层和连接过滤器让用户可以专注于系统的特定部分。
 
-## Control types for code maps
+## 代码地图的控件类型
 
-| Decision | Control | Example |
+| 决策 | 控件 | 示例 |
 |---|---|---|
-| System view | Preset buttons | Full System, Chat Flow, Data Flow, Agent System |
-| Visible layers | Checkboxes | Client, Server, SDK, Data, External |
-| Connection types | Checkboxes with color indicators | Data Flow (blue), Tool Calls (green), Events (red) |
-| Component feedback | Click-to-comment modal | Opens modal with textarea for feedback |
-| Zoom level | +/−/reset buttons | Scale SVG for detail |
+| 系统视图 | 预设按钮 | 完整系统、聊天流、数据流、代理系统 |
+| 可见图层 | 复选框 | 客户端、服务器、SDK、数据、外部 |
+| 连接类型 | 带颜色指示器的复选框 | 数据流（蓝色）、工具调用（绿色）、事件（红色） |
+| 组件反馈 | 点击评论模态框 | 打开带有文本区域的模态框用于反馈 |
+| 缩放级别 | +/−/重置按钮 | 缩放 SVG 以显示细节 |
 
-## Canvas rendering
+## 画布渲染
 
-Use an `<svg>` element with dynamically generated nodes and paths. Key patterns:
+使用 `<svg>` 元素和动态生成的节点和路径。关键模式：
 
-- **Nodes:** Rounded rectangles with title and subtitle (file path)
-- **Connections:** Curved paths (bezier) with arrow markers, styled by type
-- **Layer organization:** Group nodes by Y-position bands (e.g., y: 30-80 = Client, y: 130-180 = Server)
-- **Click-to-comment:** Click node → open modal → save comment → node gets visual indicator
-- **Filtering:** Toggle visibility of nodes by layer, connections by type
+- **节点：** 带有标题和副标题（文件路径）的圆角矩形
+- **连接：** 带有箭头标记的曲线（贝塞尔），按类型设置样式
+- **图层组织：** 按 Y 位置带对节点分组（例如，y: 30-80 = 客户端，y: 130-180 = 服务器）
+- **点击评论：** 点击节点 → 打开模态框 → 保存评论 → 节点获得视觉指示器
+- **过滤：** 按图层切换节点可见性，按类型切换连接
 
 ```javascript
 const nodes = [
@@ -57,25 +56,25 @@ const connections = [
 
 function renderDiagram() {
   const visibleNodes = nodes.filter(n => state.layers[n.layer]);
-  // Draw connections first (under nodes), then nodes
+  // 先绘制连接（节点下方），然后绘制节点
   connections.forEach(c => drawConnection(c));
   visibleNodes.forEach(n => drawNode(n));
 }
 ```
 
-## Connection types and styling
+## 连接类型和样式
 
-Define 3-5 connection types with distinct visual styles:
+定义 3-5 种连接类型，具有不同的视觉样式：
 
-| Type | Color | Style | Use for |
+| 类型 | 颜色 | 样式 | 用于 |
 |---|---|---|---|
-| `data-flow` | Blue (#3b82f6) | Solid line | Request/response, data passing |
-| `tool-call` | Green (#10b981) | Dashed (6,3) | Function calls, API invocations |
-| `event` | Red (#ef4444) | Short dash (4,4) | Async events, pub/sub |
-| `skill-invoke` | Orange (#f97316) | Long dash (8,4) | Plugin/skill activation |
-| `dependency` | Gray (#6b7280) | Dotted | Import/require relationships |
+| `data-flow` | 蓝色 (#3b82f6) | 实线 | 请求/响应、数据传递 |
+| `tool-call` | 绿色 (#10b981) | 虚线 (6,3) | 函数调用、API 调用 |
+| `event` | 红色 (#ef4444) | 短虚线 (4,4) | 异步事件、发布/订阅 |
+| `skill-invoke` | 橙色 (#f97316) | 长虚线 (8,4) | 插件/技能激活 |
+| `dependency` | 灰色 (#6b7280) | 点线 | 导入/require 关系 |
 
-Use SVG markers for arrowheads:
+使用 SVG 标记作为箭头：
 
 ```html
 <marker id="arrowhead-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
@@ -83,16 +82,16 @@ Use SVG markers for arrowheads:
 </marker>
 ```
 
-## Comment system
+## 评论系统
 
-The key differentiator for code maps is click-to-comment functionality:
+代码地图的关键区别在于点击评论功能：
 
-1. **Click node** → Open modal with component name, file path, textarea
-2. **Save comment** → Add to comments list, mark node with visual indicator (colored border)
-3. **View comments** → Sidebar list with component name, comment preview, delete button
-4. **Delete comment** → Remove from list, update node visual, regenerate prompt
+1. **点击节点** → 打开带有组件名称、文件路径、文本区域的模态框
+2. **保存评论** → 添加到评论列表，用视觉指示器（彩色边框）标记节点
+3. **查看评论** → 侧边栏列表，显示组件名称、评论预览、删除按钮
+4. **删除评论** → 从列表中删除，更新节点视觉，重新生成提示词
 
-Comments should include the component context:
+评论应包含组件上下文：
 
 ```javascript
 state.comments.push({
@@ -104,55 +103,55 @@ state.comments.push({
 });
 ```
 
-## Prompt output for code maps
+## 代码地图的提示词输出
 
-The prompt combines system context with user comments:
+提示词结合系统上下文和用户评论：
 
 ```
-This is the [PROJECT NAME] architecture, focusing on the [visible layers].
+这是 [项目名称] 架构，专注于 [可见图层]。
 
-Feedback on specific components:
+对特定组件的反馈：
 
 **API Client** (src/api/client.ts):
-I want to add retry logic with exponential backoff here.
+我想在这里添加指数退避的重试逻辑。
 
 **Database Manager** (src/db/manager.ts):
-Can we add connection pooling? Current implementation creates new connections per request.
+我们可以添加连接池吗？当前实现为每个请求创建新连接。
 
 **Auth Middleware** (src/middleware/auth.ts):
-This should validate JWT tokens and extract user context.
+这应该验证 JWT 令牌并提取用户上下文。
 ```
 
-Only include comments the user added. Mention which layers are visible if not showing the full system.
+仅包含用户添加的评论。如果未显示完整系统，请提及哪些图层可见。
 
-## Pre-populating with real data
+## 使用真实数据预填充
 
-For a specific codebase, pre-populate with:
+对于特定代码库，预填充以下内容：
 
-- **Nodes:** 15-25 key components with real file paths
-- **Connections:** 20-40 relationships based on actual imports/calls
-- **Layers:** Logical groupings (UI, API, Business Logic, Data, External)
-- **Presets:** "Full System", "Frontend Only", "Backend Only", "Data Flow"
+- **节点：** 15-25 个关键组件，带有真实文件路径
+- **连接：** 20-40 条基于实际导入/调用的关系
+- **图层：** 逻辑分组（UI、API、业务逻辑、数据、外部）
+- **预设：** "完整系统"、"仅前端"、"仅后端"、"数据流"
 
-Organize nodes in horizontal bands by layer, with consistent spacing.
+按图层将节点组织在水平带中，保持一致的间距。
 
-## Layer color palette (light theme)
+## 图层调色板（浅色主题）
 
-| Layer | Node fill | Description |
+| 图层 | 节点填充 | 描述 |
 |---|---|---|
-| Client/UI | #dbeafe (blue-100) | React components, hooks, pages |
-| Server/API | #fef3c7 (amber-100) | Express routes, middleware, handlers |
-| SDK/Core | #f3e8ff (purple-100) | Core libraries, SDK wrappers |
-| Agent/Logic | #dcfce7 (green-100) | Business logic, agents, processors |
-| Data | #fce7f3 (pink-100) | Database, cache, storage |
-| External | #fbcfe8 (pink-200) | Third-party services, APIs |
+| 客户端/UI | #dbeafe (blue-100) | React 组件、hooks、页面 |
+| 服务器/API | #fef3c7 (amber-100) | Express 路由、中间件、处理程序 |
+| SDK/核心 | #f3e8ff (purple-100) | 核心库、SDK 包装器 |
+| 代理/逻辑 | #dcfce7 (green-100) | 业务逻辑、代理、处理器 |
+| 数据 | #fce7f3 (pink-100) | 数据库、缓存、存储 |
+| 外部 | #fbcfe8 (pink-200) | 第三方服务、API |
 
-## Example topics
+## 示例主题
 
-- Codebase architecture explorer (modules, imports, data flow)
-- Microservices map (services, queues, databases, API gateways)
-- React component tree (components, hooks, context, state)
-- API architecture (routes, middleware, controllers, models)
-- Agent system (prompts, tools, skills, subagents)
-- Data pipeline (sources, transforms, sinks, scheduling)
-- Plugin/extension architecture (core, plugins, hooks, events)
+- 代码库架构探索器（模块、导入、数据流）
+- 微服务地图（服务、队列、数据库、API 网关）
+- React 组件树（组件、hooks、上下文、状态）
+- API 架构（路由、中间件、控制器、模型）
+- 代理系统（提示词、工具、技能、子代理）
+- 数据管道（源、转换、接收器、调度）
+- 插件/扩展架构（核心、插件、hooks、事件）

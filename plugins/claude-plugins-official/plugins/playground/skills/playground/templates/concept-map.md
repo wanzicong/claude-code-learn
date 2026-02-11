@@ -1,73 +1,74 @@
-# Concept Map Template
+# 概念图模板
 
-Use this template when the playground is about learning, exploration, or mapping relationships: concept maps, knowledge gap identification, scope mapping, task decomposition with dependencies.
+当 playground 是关于学习、探索或映射关系时使用此模板：概念图、知识缺口识别、范围映射、带有依赖关系的任务分解。
 
-## Layout
+## 布局
 
 ```
 +--------------------------------------+
-|  Canvas (draggable nodes, edges)     |
-|  with tooltip on hover               |
+|  画布（可拖动节点、边）              |
+|  悬停时显示工具提示                    |
 +-------------------------+------------+
 |                         |            |
-|  Sidebar:               | Prompt     |
-|  • Knowledge levels     | output     |
-|  • Connection types     |            |
-|  • Node list            | [Copy]     |
-|  • Actions              |            |
+|  侧边栏:                | 提示词      |
+|  • 知识级别              | 输出        |
+|  • 连接类型              |            |
+|  • 节点列表              | [复制]      |
+|  • 操作                  |            |
 +-------------------------+------------+
 ```
 
-Canvas-based playgrounds differ from the two-panel split. The interactive visual IS the control — users drag nodes and draw connections rather than adjusting sliders. The sidebar supplements with toggles and list controls.
+基于画布的 playground 与双面板拆分布局不同。交互式可视化本身即为控件 —— 用户拖动节点并绘制连接，而不是调整滑块。侧边栏提供切换开关和列表控件作为补充。
 
-## Control types for concept maps
+## 概念图的控件类型
 
-| Decision | Control | Example |
+| 决策 | 控件 | 示例 |
 |---|---|---|
-| Knowledge level per node | Click-to-cycle button in sidebar list | Know → Fuzzy → Unknown |
-| Connection type | Selector before drawing | calls, depends on, contains, reads from |
-| Node arrangement | Drag on canvas | spatial layout reflects mental model |
-| Which nodes to include | Toggle or checkbox per node | hide/show concepts |
-| Actions | Buttons | Auto-layout (force-directed), clear edges, reset |
+| 每个节点的知识级别 | 侧边栏列表中的点击循环按钮 | 了解 → 模糊 → 未知 |
+| 连接类型 | 绘制前的选择器 | 调用、依赖于、包含、读取自 |
+| 节点排列 | 画布上的拖动 | 空间布局反映心智模型 |
+| 要包含的节点 | 每个节点的切换开关或复选框 | 隐藏/显示概念 |
+| 操作 | 按钮 | 自动布局（力导向）、清除边、重置 |
 
-## Canvas rendering
+## 画布渲染
 
-Use a `<canvas>` element with manual draw calls. Key patterns:
+使用 `<canvas>` 元素和手动绘制调用。关键模式：
 
-- **Hit testing:** Check mouse position against node bounding circles on mousedown/mousemove
-- **Drag:** On mousedown on a node, track offset and update position on mousemove
-- **Edge drawing:** Click node A, then click node B. Draw arrow between them with the selected relationship type
-- **Tooltips:** On hover, position a div absolutely over the canvas with description text
-- **Force-directed auto-layout:** Simple spring simulation — repulsion between all pairs, attraction along edges, iterate 100-200 times with damping
+- **命中测试：** 在 mousedown/mousemove 时检查鼠标位置与节点边界圆的对比
+- **拖动：** 在节点上 mousedown 时，跟踪偏移量并在 mousemove 时更新位置
+- **边绘制：** 点击节点 A，然后点击节点 B。在它们之间使用选定的关系类型绘制箭头
+- **工具提示：** 悬停时，在画布上方绝对定位一个 div，显示描述文本
+- **力导向自动布局：** 简单的弹簧模拟 —— 所有成对之间的排斥，沿边的吸引，迭代 100-200 次并带阻尼
 
 ```javascript
 function draw() {
   ctx.clearRect(0, 0, W, H);
-  edges.forEach(e => drawEdge(e));  // edges first, under nodes
-  nodes.forEach(n => drawNode(n));  // nodes on top
+  edges.forEach(e => drawEdge(e));  // 先绘制边，节点下方
+  nodes.forEach(n => drawNode(n));  // 节点在上方
 }
 ```
 
-## Prompt output for concept maps
+## 概念图的提示词输出
 
-The prompt should be a targeted learning request shaped by the user's knowledge markings:
+提示词应该是一个由用户知识标记塑造的定向学习请求：
 
-> "I'm learning [CODEBASE/DOMAIN]. I already understand: [know nodes]. I'm fuzzy on: [fuzzy nodes]. I have no idea about: [unknown nodes]. Here are the relationships I want to understand: [edge list in natural language]. Please explain the fuzzy and unknown concepts, focusing on these relationships. Build on what I already know. Use concrete code references."
+> "我正在学习 [代码库/领域]。我已经理解：[了解的节点]。我对以下内容模糊：[模糊的节点]。我对以下内容一无所知：[未知的节点]。以下是我想要理解的关系：[自然语言中的边列表]。请解释模糊和未知的概念，重点关注这些关系。基于我已有的知识构建。使用具体的代码引用。"
 
-Only include edges the user drew. Only mention concepts they marked as fuzzy or unknown in the explanation request.
+仅包含用户绘制的边。仅在解释请求中提及他们标记为模糊或未知的概念。
 
-## Pre-populating with real data
+## 使用真实数据预填充
 
-For codebases or domains, pre-populate with:
-- **Nodes:** 15-20 key concepts with real file paths and short descriptions
-- **Edges:** 20-30 pre-drawn relationships based on actual architecture
-- **Knowledge:** Default all to "Fuzzy" so the user adjusts from there
-- **Presets:** "Zoom out" (hide internal nodes, show only top-level), "Focus on [layer]" (highlight nodes in one area)
+对于代码库或领域，预填充以下内容：
 
-## Example topics
+- **节点：** 15-20 个关键概念，带有真实文件路径和简短描述
+- **边：** 20-30 条基于实际架构的预绘制关系
+- **知识：** 默认全部设置为"模糊"，以便用户从此处开始调整
+- **预设：** "缩小"（隐藏内部节点，仅显示顶层）、"专注于 [图层]"（高亮一个区域中的节点）
 
-- Codebase architecture map (modules, data flow, state management)
-- Framework learning (how React hooks connect, Next.js data fetching layers)
-- System design (services, databases, queues, caches and how they relate)
-- Task decomposition (goals → sub-tasks with dependency arrows, knowledge tags)
-- API surface map (endpoints grouped by resource, shared middleware, auth layers)
+## 示例主题
+
+- 代码库架构图（模块、数据流、状态管理）
+- 框架学习（React hooks 如何连接、Next.js 数据获取层）
+- 系统设计（服务、数据库、队列、缓存及其关系）
+- 任务分解（目标 → 带有依赖箭头的子任务、知识标签）
+- API 表面图（按资源分组的端点、共享中间件、auth 层）

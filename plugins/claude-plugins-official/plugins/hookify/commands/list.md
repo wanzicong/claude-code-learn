@@ -1,82 +1,82 @@
 ---
-description: List all configured hookify rules
+description: 列出所有已配置的 hookify 规则
 allowed-tools: ["Glob", "Read", "Skill"]
 ---
 
-# List Hookify Rules
+# 列出 Hookify 规则
 
-**Load hookify:writing-rules skill first** to understand rule format.
+**首先加载 hookify:writing-rules 技能** 以了解规则格式。
 
-Show all configured hookify rules in the project.
+显示项目中所有已配置的 hookify 规则。
 
-## Steps
+## 步骤
 
-1. Use Glob tool to find all hookify rule files:
+1. 使用 Glob 工具查找所有 hookify 规则文件：
    ```
    pattern: ".claude/hookify.*.local.md"
    ```
 
-2. For each file found:
-   - Use Read tool to read the file
-   - Extract frontmatter fields: name, enabled, event, pattern
-   - Extract message preview (first 100 chars)
+2. 对于找到的每个文件：
+   - 使用 Read 工具读取文件
+   - 提取前置数据字段：name、enabled、event、pattern
+   - 提取消息预览（前 100 个字符）
 
-3. Present results in a table:
+3. 以表格形式展示结果：
 
 ```
-## Configured Hookify Rules
+## 已配置的 Hookify 规则
 
-| Name | Enabled | Event | Pattern | File |
+| 名称 | 已启用 | 事件 | 模式 | 文件 |
 |------|---------|-------|---------|------|
-| warn-dangerous-rm | ✅ Yes | bash | rm\s+-rf | hookify.dangerous-rm.local.md |
-| warn-console-log | ✅ Yes | file | console\.log\( | hookify.console-log.local.md |
-| check-tests | ❌ No | stop | .* | hookify.require-tests.local.md |
+| warn-dangerous-rm | ✅ 是 | bash | rm\s+-rf | hookify.dangerous-rm.local.md |
+| warn-console-log | ✅ 是 | file | console\.log\( | hookify.console-log.local.md |
+| check-tests | ❌ 否 | stop | .* | hookify.require-tests.local.md |
 
-**Total**: 3 rules (2 enabled, 1 disabled)
+**总计**：3 个规则（2 个已启用，1 个已禁用）
 ```
 
-4. For each rule, show a brief preview:
+4. 对于每个规则，显示简要预览：
 ```
 ### warn-dangerous-rm
-**Event**: bash
-**Pattern**: `rm\s+-rf`
-**Message**: "⚠️ **Dangerous rm command detected!** This command could delete..."
+**事件**：bash
+**模式**：`rm\s+-rf`
+**消息**："⚠️ **检测到危险的 rm 命令！** 此命令可能删除..."
 
-**Status**: ✅ Active
-**File**: .claude/hookify.dangerous-rm.local.md
+**状态**：✅ 活跃
+**文件**：.claude/hookify.dangerous-rm.local.md
 ```
 
-5. Add helpful footer:
+5. 添加有用的页脚：
 ```
 ---
 
-To modify a rule: Edit the .local.md file directly
-To disable a rule: Set `enabled: false` in frontmatter
-To enable a rule: Set `enabled: true` in frontmatter
-To delete a rule: Remove the .local.md file
-To create a rule: Use `/hookify` command
+要修改规则：直接编辑 .local.md 文件
+要禁用规则：在前置数据中设置 `enabled: false`
+要启用规则：在前置数据中设置 `enabled: true`
+要删除规则：删除 .local.md 文件
+要创建规则：使用 `/hookify` 命令
 
-**Remember**: Changes take effect immediately - no restart needed
+**记住**：更改立即生效 - 无需重启
 ```
 
-## If No Rules Found
+## 如果未找到规则
 
-If no hookify rules exist:
+如果不存在 hookify 规则：
 
 ```
-## No Hookify Rules Configured
+## 未配置 Hookify 规则
 
-You haven't created any hookify rules yet.
+您尚未创建任何 hookify 规则。
 
-To get started:
-1. Use `/hookify` to analyze conversation and create rules
-2. Or manually create `.claude/hookify.my-rule.local.md` files
-3. See `/hookify:help` for documentation
+要开始：
+1. 使用 `/hookify` 分析对话并创建规则
+2. 或手动创建 `.claude/hookify.my-rule.local.md` 文件
+3. 查看 `/hookify:help` 获取文档
 
-Example:
+示例：
 ```
-/hookify Warn me when I use console.log
+/hookify 当我使用 console.log 时警告我
 ```
 
-Check `${CLAUDE_PLUGIN_ROOT}/examples/` for example rule files.
+查看 `${CLAUDE_PLUGIN_ROOT}/examples/` 获取示例规则文件。
 ```

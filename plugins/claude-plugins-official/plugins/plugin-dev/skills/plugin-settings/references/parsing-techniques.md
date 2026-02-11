@@ -1,10 +1,10 @@
-# Settings File Parsing Techniques
+# 设置文件解析技术
 
-Complete guide to parsing `.claude/plugin-name.local.md` files in bash scripts.
+在 bash 脚本中解析 `.claude/plugin-name.local.md` 文件的完整指南。
 
-## File Structure
+## 文件结构
 
-Settings files use markdown with YAML frontmatter:
+设置文件使用带有 YAML frontmatter 的 markdown：
 
 ```markdown
 ---
@@ -15,162 +15,162 @@ boolean_field: true
 list_field: ["item1", "item2", "item3"]
 ---
 
-# Markdown Content
+# Markdown 内容
 
-This body content can be extracted separately.
-It's useful for prompts, documentation, or additional context.
+此正文内容可以单独提取。
+适用于提示、文档或附加上下文。
 ```
 
-## Parsing Frontmatter
+## 解析 Frontmatter
 
-### Extract Frontmatter Block
+### 提取 Frontmatter 块
 
 ```bash
 #!/bin/bash
 FILE=".claude/my-plugin.local.md"
 
-# Extract everything between --- markers (excluding the markers themselves)
+# 提取 --- 标记之间的所有内容（排除标记本身）
 FRONTMATTER=$(sed -n '/^---$/,/^---$/{ /^---$/d; p; }' "$FILE")
 ```
 
-**How it works:**
-- `sed -n` - Suppress automatic printing
-- `/^---$/,/^---$/` - Range from first `---` to second `---`
-- `{ /^---$/d; p; }` - Delete the `---` lines, print everything else
+**工作原理：**
+- `sed -n` - 禁止自动打印
+- `/^---$/,/^---$/` - 从第一个 `---` 到第二个 `---` 的范围
+- `{ /^---$/d; p; }` - 删除 `---` 行，打印其他所有内容
 
-### Extract Individual Fields
+### 提取各个字段
 
-**String fields:**
+**字符串字段：**
 ```bash
-# Simple value
+# 简单值
 VALUE=$(echo "$FRONTMATTER" | grep '^field_name:' | sed 's/field_name: *//')
 
-# Quoted value (removes surrounding quotes)
+# 带引号的值（去除周围引号）
 VALUE=$(echo "$FRONTMATTER" | grep '^field_name:' | sed 's/field_name: *//' | sed 's/^"\(.*\)"$/\1/')
 ```
 
-**Boolean fields:**
+**布尔字段：**
 ```bash
 ENABLED=$(echo "$FRONTMATTER" | grep '^enabled:' | sed 's/enabled: *//')
 
-# Use in condition
+# 在条件中使用
 if [[ "$ENABLED" == "true" ]]; then
-  # Enabled
+  # 已启用
 fi
 ```
 
-**Numeric fields:**
+**数字字段：**
 ```bash
 MAX=$(echo "$FRONTMATTER" | grep '^max_value:' | sed 's/max_value: *//')
 
-# Validate it's a number
+# 验证它是一个数字
 if [[ "$MAX" =~ ^[0-9]+$ ]]; then
-  # Use in numeric comparison
+  # 在数字比较中使用
   if [[ $MAX -gt 100 ]]; then
-    # Too large
+    # 过大
   fi
 fi
 ```
 
-**List fields (simple):**
+**列表字段（简单）：**
 ```bash
 # YAML: list: ["item1", "item2", "item3"]
 LIST=$(echo "$FRONTMATTER" | grep '^list:' | sed 's/list: *//')
-# Result: ["item1", "item2", "item3"]
+# 结果: ["item1", "item2", "item3"]
 
-# For simple checks:
+# 简单检看：
 if [[ "$LIST" == *"item1"* ]]; then
-  # List contains item1
+  # 列表包含 item1
 fi
 ```
 
-**List fields (proper parsing with jq):**
+**列表字段（使用 jq 进行正确解析）：**
 ```bash
-# For proper list handling, use yq or convert to JSON
-# This requires yq to be installed (brew install yq)
+# 对于正确的列表处理，使用 yq 或转换为 JSON
+# 这需要安装 yq（brew install yq）
 
-# Extract list as JSON array
+# 将列表提取为 JSON 数组
 LIST=$(echo "$FRONTMATTER" | yq -o json '.list' 2>/dev/null)
 
-# Iterate over items
+# 迭代项目
 echo "$LIST" | jq -r '.[]' | while read -r item; do
-  echo "Processing: $item"
+  echo "处理：$item"
 done
 ```
 
-## Parsing Markdown Body
+## 解析 Markdown 正文
 
-### Extract Body Content
+### 提取正文内容
 
 ```bash
 #!/bin/bash
 FILE=".claude/my-plugin.local.md"
 
-# Extract everything after the closing ---
-# Counts --- markers: first is opening, second is closing, everything after is body
+# 提取结束 --- 之后的所有内容
+# 计算 --- 标记：第一个是开始，第二个是结束，之后的所有是正文
 BODY=$(awk '/^---$/{i++; next} i>=2' "$FILE")
 ```
 
-**How it works:**
-- `/^---$/` - Match `---` lines
-- `{i++; next}` - Increment counter and skip the `---` line
-- `i>=2` - Print all lines after second `---`
+**工作原理：**
+- `/^---$/` - 匹配 `---` 行
+- `{i++; next}` - 增加计数器并跳过 `---` 行
+- `i>=2` - 打印第二个 `---` 之后的所有行
 
-**Handles edge case:** If `---` appears in the markdown body, it still works because we only count the first two `---` at the start.
+**处理边界情况：** 如果 markdown 正文包含 `---`，仍然有效，因为我们只匹配开头的两个 `---`
 
-### Use Body as Prompt
+### 将正文作为提示使用
 
 ```bash
-# Extract body
+# 提取正文
 PROMPT=$(awk '/^---$/{i++; next} i>=2' "$RALPH_STATE_FILE")
 
-# Feed back to Claude
+# 反馈给 Claude
 echo '{"decision": "block", "reason": "'"$PROMPT"'"}' | jq .
 ```
 
-**Important:** Use `jq -n --arg` for safer JSON construction with user content:
+**重要：** 使用 `jq -n --arg` 对带有用户内容进行更安全的 JSON 构建：
 
 ```bash
 PROMPT=$(awk '/^---$/{i++; next} i>=2' "$FILE")
 
-# Safe JSON construction
+# 安全的 JSON 构建
 jq -n --arg prompt "$PROMPT" '{
   "decision": "block",
   "reason": $prompt
 }'
 ```
 
-## Common Parsing Patterns
+## 常见解析模式
 
-### Pattern: Field with Default
+### 模式：带默认值的字段
 
 ```bash
 VALUE=$(echo "$FRONTMATTER" | grep '^field:' | sed 's/field: *//' | sed 's/^"\(.*\)"$/\1/')
 
-# Use default if empty
+# 如果为非则使用默认值
 if [[ -z "$VALUE" ]]; then
   VALUE="default_value"
 fi
 ```
 
-### Pattern: Optional Field
+### 模式：可选字段
 
 ```bash
 OPTIONAL=$(echo "$FRONTMATTER" | grep '^optional_field:' | sed 's/optional_field: *//' | sed 's/^"\(.*\)"$/\1/')
 
-# Only use if present
+# 仅在存在时使用
 if [[ -n "$OPTIONAL" ]] && [[ "$OPTIONAL" != "null" ]]; then
-  # Field is set, use it
-  echo "Optional field: $OPTIONAL"
+  # 字段已设置，使用它
+  echo "可选字段：$OPTIONAL"
 fi
 ```
 
-### Pattern: Multiple Fields at Once
+### 模式：一次性读取多个字段
 
 ```bash
-# Parse all fields in one pass
+# 在一次传递中解析所有字段
 while IFS=': ' read -r key value; do
-  # Remove quotes if present
+  # 如果存在则去除引号
   value=$(echo "$value" | sed 's/^"\(.*\)"$/\1/')
 
   case "$key" in
@@ -187,44 +187,44 @@ while IFS=': ' read -r key value; do
 done <<< "$FRONTMATTER"
 ```
 
-## Updating Settings Files
+## 更新设置文件
 
-### Atomic Updates
+### 原子更新
 
-Always use temp file + atomic move to prevent corruption:
+始终使用临时文件 + 原子移动以防止损坏：
 
 ```bash
 #!/bin/bash
 FILE=".claude/my-plugin.local.md"
 NEW_VALUE="updated_value"
 
-# Create temp file
+# 创建临时文件
 TEMP_FILE="${FILE}.tmp.$$"
 
-# Update field using sed
+# 使用 sed 更新字段
 sed "s/^field_name: .*/field_name: $NEW_VALUE/" "$FILE" > "$TEMP_FILE"
 
-# Atomic replace
+# 原子替换
 mv "$TEMP_FILE" "$FILE"
 ```
 
-### Update Single Field
+### 更新单个字段
 
 ```bash
-# Increment iteration counter
+# 增加迭代计数器
 CURRENT=$(echo "$FRONTMATTER" | grep '^iteration:' | sed 's/iteration: *//')
 NEXT=$((CURRENT + 1))
 
-# Update file
+# 更新文件
 TEMP_FILE="${FILE}.tmp.$$"
 sed "s/^iteration: .*/iteration: $NEXT/" "$FILE" > "$TEMP_FILE"
 mv "$TEMP_FILE" "$FILE"
 ```
 
-### Update Multiple Fields
+### 更新多个字段
 
 ```bash
-# Update several fields at once
+# 一次性更新多个字段
 TEMP_FILE="${FILE}.tmp.$$"
 
 sed -e "s/^iteration: .*/iteration: $NEXT_ITERATION/" \
@@ -235,109 +235,109 @@ sed -e "s/^iteration: .*/iteration: $NEXT_ITERATION/" \
 mv "$TEMP_FILE" "$FILE"
 ```
 
-## Validation Techniques
+## 验证技术
 
-### Validate File Exists and Is Readable
+### 验证文件存在且可读
 
 ```bash
 FILE=".claude/my-plugin.local.md"
 
 if [[ ! -f "$FILE" ]]; then
-  echo "Settings file not found" >&2
+  echo "未找到设置文件" >&2
   exit 1
 fi
 
 if [[ ! -r "$FILE" ]]; then
-  echo "Settings file not readable" >&2
+  echo "设置文件不可读" >&2
   exit 1
 fi
 ```
 
-### Validate Frontmatter Structure
+### 验证 Frontmatter 结构
 
 ```bash
-# Count --- markers (should be exactly 2 at start)
+# 计算开头的 --- 标记（应该正好 2 个）
 MARKER_COUNT=$(grep -c '^---$' "$FILE" 2>/dev/null || echo "0")
 
 if [[ $MARKER_COUNT -lt 2 ]]; then
-  echo "Invalid settings file: missing frontmatter markers" >&2
+  echo "无效的设置文件：缺少 frontmatter 标记" >&2
   exit 1
 fi
 ```
 
-### Validate Field Values
+### 验证字段值
 
 ```bash
 MODE=$(echo "$FRONTMATTER" | grep '^mode:' | sed 's/mode: *//')
 
 case "$MODE" in
   strict|standard|lenient)
-    # Valid mode
+    # 有效模式
     ;;
   *)
-    echo "Invalid mode: $MODE (must be strict, standard, or lenient)" >&2
+    echo "无效模式：$MODE（必须为 strict、standard 或 lenient）" >&2
     exit 1
     ;;
 esac
 ```
 
-### Validate Numeric Ranges
+### 验证数字范围
 
 ```bash
 MAX_SIZE=$(echo "$FRONTMATTER" | grep '^max_size:' | sed 's/max_size: *//')
 
 if ! [[ "$MAX_SIZE" =~ ^[0-9]+$ ]]; then
-  echo "max_size must be a number" >&2
+  echo "max_size 必须为数字" >&2
   exit 1
 fi
 
 if [[ $MAX_SIZE -lt 1 ]] || [[ $MAX_SIZE -gt 10000000 ]]; then
-  echo "max_size out of range (1-10000000)" >&2
+  echo "max_size 超出范围（1-10000000）" >&2
   exit 1
 fi
 ```
 
-## Edge Cases and Gotchas
+## 边界情况和注意事项
 
-### Quotes in Values
+### 值中的引号
 
-YAML allows both quoted and unquoted strings:
+YAML 允许带引号和不带引号的字符串：
 
 ```yaml
-# These are equivalent:
+# 这些是等效的：
 field1: value
 field2: "value"
 field3: 'value'
 ```
 
-**Handle both:**
+**处理两者：**
 ```bash
-# Remove surrounding quotes if present
-VALUE=$(echo "$FRONTMATTER" | grep '^field:' | sed 's/field: *//' | sed 's/^"\(.*\)"$/\1/' | sed "s/^'\\(.*\\)'$/\\1/")
+# 如果存在则去除周围引号
+VALUE=$(echo "$FRONTMATTER" | grep '^field:' | sed 's/field: *//' | sed 's/^"\(.*\)"$/\1/'/' | sed "s/^'\\(.*\\)'$/\\1/")
 ```
 
-### --- in Markdown Body
+### Markdown 正文中的 ---
 
-If the markdown body contains `---`, the parsing still works because we only match the first two:
+如果 markdown 正文包含 `---`，解析仍然有效，因为我们只匹配开头的两个：
 
 ```markdown
 ---
 field: value
 ---
 
-# Body
+# 正文
 
-Here's a separator:
+这里有一个分隔线：
 ---
 
-More content after the separator.
+分隔线之后有更多内容。
 ```
 
-The `awk '/^---$/{i++; next} i>=2'` pattern handles this correctly.
+`awk '/^---$/{i++; next} i>=2'` 模式正确处理此情况。
 
-### Empty Values
+### 空值
 
-Handle missing or empty fields:
+处理缺失或空的字段：
 
 ```yaml
 field1:
@@ -345,164 +345,164 @@ field2: ""
 field3: null
 ```
 
-**Parsing:**
+**解析：**
 ```bash
 VALUE=$(echo "$FRONTMATTER" | grep '^field1:' | sed 's/field1: *//')
-# VALUE will be empty string
+# VALUE 将为空字符串
 
-# Check for empty/null
+# 检查空/null
 if [[ -z "$VALUE" ]] || [[ "$VALUE" == "null" ]]; then
   VALUE="default"
 fi
 ```
 
-### Special Characters
+### 特殊字符
 
-Values with special characters need careful handling:
+包含特殊字符的值需要小心处理：
 
 ```yaml
-message: "Error: Something went wrong!"
+message: "错误：：出现问题！"
 path: "/path/with spaces/file.txt"
 regex: "^[a-zA-Z0-9_]+$"
 ```
 
-**Safe parsing:**
+**安全解析：**
 ```bash
-# Always quote variables when using
+# 使用时始终引用变量
 MESSAGE=$(echo "$FRONTMATTER" | grep '^message:' | sed 's/message: *//' | sed 's/^"\(.*\)"$/\1/')
 
-echo "Message: $MESSAGE"  # Quoted!
+echo "消息：$MESSAGE"  # 已引用！
 ```
 
-## Performance Optimization
+## 性能优化
 
-### Cache Parsed Values
+### 缓存解析的值
 
-If reading settings multiple times:
+如果多次读取设置：
 
 ```bash
-# Parse once
-FRONTMATTER=$(sed -n '/^---$/,/^---$/{ /^---$/d; p; }' "$FILE")
+# 解析一次
+FRONTMATTER=$(sed -n '/^---$/,/^---`{ /^---$/d; p; }' "$FILE")
 
-# Extract multiple fields from cached frontmatter
+# 从缓存的 frontmatter 提取多个字段
 FIELD1=$(echo "$FRONTMATTER" | grep '^field1:' | sed 's/field1: *//')
 FIELD2=$(echo "$FRONTMATTER" | grep '^field2:' | sed 's/field2: *//')
 FIELD3=$(echo "$FRONTMATTER" | grep '^field3:' | sed 's/field3: *//')
 ```
 
-**Don't:** Re-parse file for each field.
+**不要：** 为每个字段重新解析文件。
 
-### Lazy Loading
+### 延迟加载
 
-Only parse settings when needed:
+仅在需要时解析设置：
 
 ```bash
 #!/bin/bash
 input=$(cat)
 
-# Quick checks first (no file I/O)
+# 首先进行快速检看（无文件 I/O）
 tool_name=$(echo "$input" | jq -r '.tool_name')
 if [[ "$tool_name" != "Write" ]]; then
-  exit 0  # Not a write operation, skip
+  exit 0  # 不是写入操作，跳过
 fi
 
-# Only now check settings file
-if [[ -f ".claude/my-plugin.local.md" ]]; then
-  # Parse settings
+# 只有现在检看设置文件
+if [[ -f ".claude/my-plugin.local.md"` ]]; then
+  # 解析设置
   # ...
 fi
 ```
 
-## Debugging
+## 调试
 
-### Print Parsed Values
+### 打印解析的值
 
 ```bash
 #!/bin/bash
-set -x  # Enable debug tracing
+set -x  # 启用调试跟踪
 
 FILE=".claude/my-plugin.local.md"
 
 if [[ -f "$FILE" ]]; then
-  echo "Settings file found" >&2
+  echo "找到设置文件" >&2
 
   FRONTMATTER=$(sed -n '/^---$/,/^---$/{ /^---$/d; p; }' "$FILE")
-  echo "Frontmatter:" >&2
+  echo "Frontmatter：" >&2
   echo "$FRONTMATTER" >&2
 
   ENABLED=$(echo "$FRONTMATTER" | grep '^enabled:' | sed 's/enabled: *//')
-  echo "Enabled: $ENABLED" >&2
+  echo "Enabled：$ENABLED" >&2
 fi
 ```
 
-### Validate Parsing
+### 验证解析
 
 ```bash
-# Show what was parsed
-echo "Parsed values:" >&2
-echo "  enabled: $ENABLED" >&2
-echo "  mode: $MODE" >&2
-echo "  max_size: $MAX_SIZE" >&2
+# 显示解析的内容
+echo "解析的值：" >&2
+echo "  enabled：$ENABLED" >&2
+echo "  mode：$MODE" >&2
+echo "  max_size：$MAX_SIZE" >&2
 
-# Verify expected values
+# 验证预期值
 if [[ "$ENABLED" != "true" ]] && [[ "$ENABLED" != "false" ]]; then
-  echo "⚠️  Unexpected enabled value: $ENABLED" >&2
+  echo "⚠  意外的 enabled 值：$ENABLED" >&2
 fi
 ```
 
-## Alternative: Using yq
+## 替代方案：使用 yq
 
-For complex YAML, consider using `yq`:
+对于复杂 YAML，考虑使用 `yq`：
 
 ```bash
-# Install: brew install yq
+# 安装：brew install yq
 
-# Parse YAML properly
+# 正确解析 YAML
 FRONTMATTER=$(sed -n '/^---$/,/^---$/{ /^---$/d; p; }' "$FILE")
 
-# Extract fields with yq
+# 使用 yq 提取字段
 ENABLED=$(echo "$FRONTMATTER" | yq '.enabled')
 MODE=$(echo "$FRONTMATTER" | yq '.mode')
 LIST=$(echo "$FRONTMATTER" | yq -o json '.list_field')
 
-# Iterate list properly
+# 正确地迭代列表
 echo "$LIST" | jq -r '.[]' | while read -r item; do
-  echo "Item: $item"
+  echo "项：$item"
 done
 ```
 
-**Pros:**
-- Proper YAML parsing
-- Handles complex structures
-- Better list/object support
+**优点：**
+- 正确的 YAML 解析
+- 处理复杂结构
+- 更好的列表/对象支持
 
-**Cons:**
-- Requires yq installation
-- Additional dependency
-- May not be available on all systems
+**缺点：**
+- 需要 yq 安装
+- 额外依赖
+- 可能并非在所有系统上可用
 
-**Recommendation:** Use sed/grep for simple fields, yq for complex structures.
+**建议：** 对简单字段使用 sed/grep，对复杂结构使用 yq。
 
-## Complete Example
+## 完整示例
 
 ```bash
 #!/bin/bash
 set -euo pipefail
 
-# Configuration
+# 配置
 SETTINGS_FILE=".claude/my-plugin.local.md"
 
-# Quick exit if not configured
+# 如果未配置则快速退出
 if [[ ! -f "$SETTINGS_FILE" ]]; then
-  # Use defaults
+  # 使用默认值
   ENABLED=true
   MODE=standard
   MAX_SIZE=1000000
 else
-  # Parse frontmatter
+  # 解析 frontmatter
   FRONTMATTER=$(sed -n '/^---$/,/^---$/{ /^---$/d; p; }' "$SETTINGS_FILE")
 
-  # Extract fields with defaults
+  # 提取带默认值的字段
   ENABLED=$(echo "$FRONTMATTER" | grep '^enabled:' | sed 's/enabled: *//')
   ENABLED=${ENABLED:-true}
 
@@ -512,38 +512,38 @@ else
   MAX_SIZE=$(echo "$FRONTMATTER" | grep '^max_size:' | sed 's/max_size: *//')
   MAX_SIZE=${MAX_SIZE:-1000000}
 
-  # Validate values
+  # 验证值
   if [[ "$ENABLED" != "true" ]] && [[ "$ENABLED" != "false" ]]; then
-    echo "⚠️  Invalid enabled value, using default" >&2
+    echo "⚠  无效的 enabled 值，使用默认值" >&2
     ENABLED=true
   fi
 
   if ! [[ "$MAX_SIZE" =~ ^[0-9]+$ ]]; then
-    echo "⚠️  Invalid max_size, using default" >&2
+    echo "⚠  无效的 max_size，使用默认值" >&2
     MAX_SIZE=1000000
   fi
 fi
 
-# Quick exit if disabled
+# 如果已禁用则快速退出
 if [[ "$ENABLED" != "true" ]]; then
   exit 0
 fi
 
-# Use configuration
-echo "Configuration loaded: mode=$MODE, max_size=$MAX_SIZE" >&2
+# 使用配置
+echo "配置已加载：mode=$MODE，max_size=$MAX_SIZE" >&2
 
-# Apply logic based on settings
+# 根据设置应用逻辑
 case "$MODE" in
   strict)
-    # Strict validation
+    # 严格验证
     ;;
   standard)
-    # Standard validation
+    # 标准验证
     ;;
   lenient)
-    # Lenient validation
+    # 宽松验证
     ;;
 esac
 ```
 
-This provides robust settings handling with defaults, validation, and error recovery.
+这提供了带有默认值、验证和错误恢复的稳健设置处理。

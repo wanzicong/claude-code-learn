@@ -1,16 +1,16 @@
-# MCP Server Types: Deep Dive
+# MCP 服务器类型深入解析
 
-Complete reference for all MCP server types supported in Claude Code plugins.
+Claude Code 插件支持的所有 MCP 服务器类型的完整参考。
 
-## stdio (Standard Input/Output)
+## stdio（标准输入/输出）
 
-### Overview
+### 概述
 
-Execute local MCP servers as child processes with communication via stdin/stdout. Best choice for local tools, custom servers, and NPM packages.
+通过 stdin/stdout 通信以子进程方式执行本地 MCP 服务器。最适合本地工具、自定义服务器和 NPM 包。
 
-### Configuration
+### 配置
 
-**Basic:**
+**基本配置：**
 ```json
 {
   "my-server": {
@@ -20,7 +20,7 @@ Execute local MCP servers as child processes with communication via stdin/stdout
 }
 ```
 
-**With environment:**
+**带环境变量：**
 ```json
 {
   "my-server": {
@@ -35,16 +35,16 @@ Execute local MCP servers as child processes with communication via stdin/stdout
 }
 ```
 
-### Process Lifecycle
+### 进程生命周期
 
-1. **Startup**: Claude Code spawns process with `command` and `args`
-2. **Communication**: JSON-RPC messages via stdin/stdout
-3. **Lifecycle**: Process runs for entire Claude Code session
-4. **Shutdown**: Process terminated when Claude Code exits
+1. **启动**：Claude Code 使用 `command` 和 `args` 生成进程
+2. **通信**：通过 stdin/stdout 进行 JSON-RPC 消息传递
+3. **生命周期**：进程在整个 Claude Code 会话期间运行
+4. **关闭**：Claude Code 退出时终止进程
 
-### Use Cases
+### 使用场景
 
-**NPM Packages:**
+**NPM 包：**
 ```json
 {
   "filesystem": {
@@ -54,7 +54,7 @@ Execute local MCP servers as child processes with communication via stdin/stdout
 }
 ```
 
-**Custom Scripts:**
+**自定义脚本：**
 ```json
 {
   "custom": {
@@ -64,7 +64,7 @@ Execute local MCP servers as child processes with communication via stdin/stdout
 }
 ```
 
-**Python Servers:**
+**Python 服务器：**
 ```json
 {
   "python-server": {
@@ -77,36 +77,36 @@ Execute local MCP servers as child processes with communication via stdin/stdout
 }
 ```
 
-### Best Practices
+### 最佳实践
 
-1. **Use absolute paths or ${CLAUDE_PLUGIN_ROOT}**
-2. **Set PYTHONUNBUFFERED for Python servers**
-3. **Pass configuration via args or env, not stdin**
-4. **Handle server crashes gracefully**
-5. **Log to stderr, not stdout (stdout is for MCP protocol)**
+1. **使用绝对路径或 ${CLAUDE_PLUGIN_ROOT}**
+2. **为 Python 服务器设置 PYTHONUNBUFFERED**
+3. **通过 args 或 env 传递配置，而非 stdin**
+4. **优雅地处理服务器崩溃**
+5. **记录到 stderr，而非 stdout（stdout 用于 MCP 协议）**
 
-### Troubleshooting
+### 故障排除
 
-**Server won't start:**
-- Check command exists and is executable
-- Verify file paths are correct
-- Check permissions
-- Review `claude --debug` logs
+**服务器无法启动：**
+- 检查命令存在且可执行
+- 验证文件路径正确
+- 检查权限
+- 查看 `claude --debug` 日志
 
-**Communication fails:**
-- Ensure server uses stdin/stdout correctly
-- Check for stray print/console.log statements
-- Verify JSON-RPC format
+**通信失败：**
+- 确保服务器正确使用 stdin/stdout
+- 检查是否有杂散的 print/console.log 语句
+- 验证 JSON-RPC 格式
 
-## SSE (Server-Sent Events)
+## SSE（服务器发送事件）
 
-### Overview
+### 概述
 
-Connect to hosted MCP servers via HTTP with server-sent events for streaming. Best for cloud services and OAuth authentication.
+通过 HTTP 和服务器发送事件以流方式连接到托管的 MCP 服务器。最适合云服务和 OAuth 身份验证。
 
-### Configuration
+### 配置
 
-**Basic:**
+**基本配置：**
 ```json
 {
   "hosted-service": {
@@ -116,7 +116,7 @@ Connect to hosted MCP servers via HTTP with server-sent events for streaming. Be
 }
 ```
 
-**With headers:**
+**带请求头：**
 ```json
 {
   "service": {
@@ -130,17 +130,17 @@ Connect to hosted MCP servers via HTTP with server-sent events for streaming. Be
 }
 ```
 
-### Connection Lifecycle
+### 连接生命周期
 
-1. **Initialization**: HTTP connection established to URL
-2. **Handshake**: MCP protocol negotiation
-3. **Streaming**: Server sends events via SSE
-4. **Requests**: Client sends HTTP POST for tool calls
-5. **Reconnection**: Automatic reconnection on disconnect
+1. **初始化**：建立到 URL 的 HTTP 连接
+2. **握手**：MCP 协议协商
+3. **流式传输**：服务器通过 SSE 发送事件
+4. **请求**：客户端发送 HTTP POST 进行工具调用
+5. **重连**：断开连接时自动重连
 
-### Authentication
+### 身份验证
 
-**OAuth (Automatic):**
+**OAuth（自动）：**
 ```json
 {
   "asana": {
@@ -150,13 +150,13 @@ Connect to hosted MCP servers via HTTP with server-sent events for streaming. Be
 }
 ```
 
-Claude Code handles OAuth flow:
-1. User prompted to authenticate on first use
-2. Opens browser for OAuth flow
-3. Tokens stored securely
-4. Automatic token refresh
+Claude Code 处理 OAuth 流程：
+1. 首次使用时提示用户进行身份验证
+2. 打开浏览器进行 OAuth 流程
+3. 安全存储令牌
+4. 自动令牌刷新
 
-**Custom Headers:**
+**自定义请求头：**
 ```json
 {
   "service": {
@@ -169,47 +169,47 @@ Claude Code handles OAuth flow:
 }
 ```
 
-### Use Cases
+### 使用场景
 
-**Official Services:**
-- Asana: `https://mcp.asana.com/sse`
-- GitHub: `https://mcp.github.com/sse`
-- Other hosted MCP servers
+**官方服务：**
+- Asana：`https://mcp.asana.com/sse`
+- GitHub：`https://mcp.github.com/sse`
+- 其他托管的 MCP 服务器
 
-**Custom Hosted Servers:**
-Deploy your own MCP server and expose via HTTPS + SSE.
+**自定义托管服务器：**
+部署您自己的 MCP 服务器并通过 HTTPS + SSE 暴露。
 
-### Best Practices
+### 最佳实践
 
-1. **Always use HTTPS, never HTTP**
-2. **Let OAuth handle authentication when available**
-3. **Use environment variables for tokens**
-4. **Handle connection failures gracefully**
-5. **Document OAuth scopes required**
+1. **始终使用 HTTPS，不要使用 HTTP**
+2. **在可用时让 OAuth 处理身份验证**
+3. **对令牌使用环境变量**
+4. **优雅地处理连接失败**
+5. **记录所需的 OAuth 范围**
 
-### Troubleshooting
+### 故障排除
 
-**Connection refused:**
-- Check URL is correct and accessible
-- Verify HTTPS certificate is valid
-- Check network connectivity
-- Review firewall settings
+**连接拒绝：**
+- 检查 URL 正确且可访问
+- 验证 HTTPS 证书有效
+- 检查网络连接性
+- 查看防火墙设置
 
-**OAuth fails:**
-- Clear cached tokens
-- Check OAuth scopes
-- Verify redirect URLs
-- Re-authenticate
+**OAuth 失败：**
+- 清除缓存的令牌
+- 检查 OAuth 范围
+- 验证重定向 URL
+- 重新进行身份验证
 
-## HTTP (REST API)
+## HTTP（REST API）
 
-### Overview
+### 概述
 
-Connect to RESTful MCP servers via standard HTTP requests. Best for token-based auth and stateless interactions.
+通过标准 HTTP 请求连接到 RESTful MCP 服务器。最适合基于令牌的身份验证和无状态交互。
 
-### Configuration
+### 配置
 
-**Basic:**
+**基本配置：**
 ```json
 {
   "api": {
@@ -219,7 +219,7 @@ Connect to RESTful MCP servers via standard HTTP requests. Best for token-based 
 }
 ```
 
-**With authentication:**
+**带身份验证：**
 ```json
 {
   "api": {
@@ -234,16 +234,16 @@ Connect to RESTful MCP servers via standard HTTP requests. Best for token-based 
 }
 ```
 
-### Request/Response Flow
+### 请求/响应流程
 
-1. **Tool Discovery**: GET to discover available tools
-2. **Tool Invocation**: POST with tool name and parameters
-3. **Response**: JSON response with results or errors
-4. **Stateless**: Each request independent
+1. **工具发现**：GET 以发现可用工具
+2. **工具调用**：POST 并带有工具名称和参数
+3. **响应**：包含结果或错误的 JSON 响应
+4. **无状态**：每个请求独立
 
-### Authentication
+### 身份验证
 
-**Token-Based:**
+**基于令牌：**
 ```json
 {
   "headers": {
@@ -252,7 +252,7 @@ Connect to RESTful MCP servers via standard HTTP requests. Best for token-based 
 }
 ```
 
-**API Key:**
+**API 密钥：**
 ```json
 {
   "headers": {
@@ -261,7 +261,7 @@ Connect to RESTful MCP servers via standard HTTP requests. Best for token-based 
 }
 ```
 
-**Custom Auth:**
+**自定义身份验证：**
 ```json
 {
   "headers": {
@@ -271,43 +271,43 @@ Connect to RESTful MCP servers via standard HTTP requests. Best for token-based 
 }
 ```
 
-### Use Cases
+### 使用场景
 
-- REST API backends
-- Internal services
-- Microservices
-- Serverless functions
+- REST API 后端
+- 内部服务
+- 微服务
+- 无服务器函数
 
-### Best Practices
+### 最佳实践
 
-1. **Use HTTPS for all connections**
-2. **Store tokens in environment variables**
-3. **Implement retry logic for transient failures**
-4. **Handle rate limiting**
-5. **Set appropriate timeouts**
+1. **对所有连接使用 HTTPS**
+2. **将令牌存储在环境变量中**
+3. **为瞬时故障实现重试逻辑**
+4. **处理速率限制**
+5. **设置适当的超时**
 
-### Troubleshooting
+### 故障排除
 
-**HTTP errors:**
-- 401: Check authentication headers
-- 403: Verify permissions
-- 429: Implement rate limiting
-- 500: Check server logs
+**HTTP 错误：**
+- 401：检看身份验证请求头
+- 403：验证权限
+- 429：实现速率限制
+- 500：检看服务器日志
 
-**Timeout issues:**
-- Increase timeout if needed
-- Check server performance
-- Optimize tool implementations
+**超时问题：**
+- 如需要则增加超时
+- 检查服务器性能
+- 优化工具实现
 
-## WebSocket (Real-time)
+## WebSocket（实时）
 
-### Overview
+### 概述
 
-Connect to MCP servers via WebSocket for real-time bidirectional communication. Best for streaming and low-latency applications.
+通过 WebSocket 连接到 MCP 服务器以实现实时双向通信。最适合流式传输和低延迟应用。
 
-### Configuration
+### 配置
 
-**Basic:**
+**基本配置：**
 ```json
 {
   "realtime": {
@@ -315,9 +315,9 @@ Connect to MCP servers via WebSocket for real-time bidirectional communication. 
     "url": "wss://mcp.example.com/ws"
   }
 }
-```
+```"
 
-**With authentication:**
+**带身份验证：**
 ```json
 {
   "realtime": {
@@ -331,87 +331,87 @@ Connect to MCP servers via WebSocket for real-time bidirectional communication. 
 }
 ```
 
-### Connection Lifecycle
+### 连接生命周期
 
-1. **Handshake**: WebSocket upgrade request
-2. **Connection**: Persistent bidirectional channel
-3. **Messages**: JSON-RPC over WebSocket
-4. **Heartbeat**: Keep-alive messages
-5. **Reconnection**: Automatic on disconnect
+1. **握手**：WebSocket 升级请求
+2. **连接**：持久双向通道
+3. **消息**：通过 WebSocket 进行 JSON-RPC
+4. **心跳**：保持活动消息
+5. **重连**：断开连接时自动
 
-### Use Cases
+### 使用场景
 
-- Real-time data streaming
-- Live updates and notifications
-- Collaborative editing
-- Low-latency tool calls
-- Push notifications from server
+- 实时数据流传输
+- 实时更新和通知
+- 协作编辑
+- 低延迟工具调用
+- 来自服务器的推送通知
 
-### Best Practices
+### 最佳实践
 
-1. **Use WSS (secure WebSocket), never WS**
-2. **Implement heartbeat/ping-pong**
-3. **Handle reconnection logic**
-4. **Buffer messages during disconnection**
-5. **Set connection timeouts**
+1. **使用 WSS（安全 WebSocket），不要使用 WS**
+2. **实现心跳/ping-pong**
+3. **处理重连逻辑**
+4. **断开连接期间缓冲消息**
+5. **设置连接超时**
 
-### Troubleshooting
+### 故障排除
 
-**Connection drops:**
-- Implement reconnection logic
-- Check network stability
-- Verify server supports WebSocket
-- Review firewall settings
+**连接掉线：**
+- 实现重连逻辑
+- 检查网络稳定性
+- 验证服务器支持 WebSocket
+- 查看防火墙设置
 
-**Message delivery:**
-- Implement message acknowledgment
-- Handle out-of-order messages
-- Buffer during disconnection
+**消息传递：**
+- 实现消息确认
+- 处理乱序消息
+- 断开连接期间缓冲
 
-## Comparison Matrix
+## 对比矩阵
 
-| Feature | stdio | SSE | HTTP | WebSocket |
+| 功能 | stdio | SSE | HTTP | WebSocket |
 |---------|-------|-----|------|-----------|
-| **Transport** | Process | HTTP/SSE | HTTP | WebSocket |
-| **Direction** | Bidirectional | Server→Client | Request/Response | Bidirectional |
-| **State** | Stateful | Stateful | Stateless | Stateful |
-| **Auth** | Env vars | OAuth/Headers | Headers | Headers |
-| **Use Case** | Local tools | Cloud services | REST APIs | Real-time |
-| **Latency** | Lowest | Medium | Medium | Low |
-| **Setup** | Easy | Medium | Easy | Medium |
-| **Reconnect** | Process respawn | Automatic | N/A | Automatic |
+| **传输** | 进程 | HTTP/SSE | HTTP | WebSocket |
+| **方向** | 双向 | 服务器→客户端 | 请求/响应 | 双向 |
+| **状态** | 有状态 | 有状态 | 无状态 | 有`状态 |
+| **身份验证** | 环境变量 | OAuth/请求头 | 请求头 | 请求头 |
+| **使用场景** | 本地工具 | 云服务 | REST API | 实时 |
+| **延迟** | 最低 | 中等 | 中等 | 低 |
+| **设置** | 容易 | 中等 | 容易 | 中等 |
+| **重连** | 进程重启 | 自动 | 不适用 | 自动 |
 
-## Choosing the Right Type
+## 选择正确的类型
 
-**Use stdio when:**
-- Running local tools or custom servers
-- Need lowest latency
-- Working with file systems or local databases
-- Distributing server with plugin
+**使用 stdio 当：**
+- 运行本地工具或自定义服务器
+- 需要最低延迟
+- 使用文件系统或本地数据库
+- 随插件分发服务器
 
-**Use SSE when:**
-- Connecting to hosted services
-- Need OAuth authentication
-- Using official MCP servers (Asana, GitHub)
-- Want automatic reconnection
+**使用 SSE 当：**
+- 连接到托管服务
+- 需要 OAuth 身份验证
+- 使用官方 MCP 服务器（Asana、GitHub）
+- 希望自动重连
 
-**Use HTTP when:**
-- Integrating with REST APIs
-- Need stateless interactions
-- Using token-based auth
-- Simple request/response pattern
+`**使用 HTTP 当：**
+- 与 REST API 集成
+- 需要无状态交互
+- 使用基于令牌的身份验证
+- 简单的请求/响应模式
 
-**Use WebSocket when:**
-- Need real-time updates
-- Building collaborative features
-- Low-latency critical
-- Bi-directional streaming required
+**使用 WebSocket 当：**
+- 需要实时更新
+- 构建协作功能
+- 低延迟至关重要
+- 需要双向流式传输
 
-## Migration Between Types
+## 类型之间迁移
 
-### From stdio to SSE
+### 从 stdio 到 SSE
 
-**Before (stdio):**
+**之前（stdio）：**
 ```json
 {
   "local-server": {
@@ -421,7 +421,7 @@ Connect to MCP servers via WebSocket for real-time bidirectional communication. 
 }
 ```
 
-**After (SSE - deploy server):**
+**之后（SSE - 部署服务器）：**
 ```json
 {
   "hosted-server": {
@@ -431,9 +431,9 @@ Connect to MCP servers via WebSocket for real-time bidirectional communication. 
 }
 ```
 
-### From HTTP to WebSocket
+### 从 HTTP 到 WebSocket
 
-**Before (HTTP):**
+**之前（HTTP）：**
 ```json
 {
   "api": {
@@ -443,7 +443,7 @@ Connect to MCP servers via WebSocket for real-time bidirectional communication. 
 }
 ```
 
-**After (WebSocket):**
+**之后（WebSocket）：**
 ```json
 {
   "realtime": {
@@ -453,13 +453,13 @@ Connect to MCP servers via WebSocket for real-time bidirectional communication. 
 }
 ```
 
-Benefits: Real-time updates, lower latency, bi-directional communication.
+优点：实时更新、更低延迟、双向通信。
 
-## Advanced Configuration
+## 高级配置
 
-### Multiple Servers
+### 多个服务器
 
-Combine different types:
+组合不同类型：
 
 ```json
 {
@@ -481,9 +481,9 @@ Combine different types:
 }
 ```
 
-### Conditional Configuration
+### 条件配置
 
-Use environment variables to switch servers:
+使用环境变量切换服务器：
 
 ```json
 {
@@ -497,40 +497,40 @@ Use environment variables to switch servers:
 }
 ```
 
-Set different values for dev/prod:
-- Dev: `API_URL=http://localhost:8080/mcp`
-- Prod: `API_URL=https://api.production.com/mcp`
+为开发/生产环境设置不同的值：
+- 开发：`API_URL=http://localhost:8080/mcp`
+- 生产：`API_URL=https://api.production.com/mcp`
 
-## Security Considerations
+## 安全考虑
 
-### Stdio Security
+### Stdio 安全
 
-- Validate command paths
-- Don't execute user-provided commands
-- Limit environment variable access
-- Restrict file system access
+- 验证命令路径
+- 不执行用户提供的命令
+- 限制环境变量访问
+- 限制文件系统访问
 
-### Network Security
+### 网络安全
 
-- Always use HTTPS/WSS
-- Validate SSL certificates
-- Don't skip certificate verification
-- Use secure token storage
+- 始终使用 HTTPS/WSS
+- 验证 SSL 证书
+- 不要跳过证书验证
+- 使用安全令牌存储
 
-### Token Management
+### 令牌管理
 
-- Never hardcode tokens
-- Use environment variables
-- Rotate tokens regularly
-- Implement token refresh
-- Document scopes required
+- 永远不硬编码令牌
+- 使用环境变量
+- 定期轮换令牌
+- 实现令牌刷新
+- 记录所需的范围
 
-## Conclusion
+## 结论
 
-Choose the MCP server type based on your use case:
-- **stdio** for local, custom, or NPM-packaged servers
-- **SSE** for hosted services with OAuth
-- **HTTP** for REST APIs with token auth
-- **WebSocket** for real-time bidirectional communication
+根据您的用例选择 MCP 服务器类型：
+- **stdio** 用于本地、自定义或 NPM 打包的服务器
+- **SSE** 用于具有 OAuth 的托管服务
+- **HTTP** 用于具有令牌认证的 REST API
+- **WebSocket** 用于实时双向通信
 
-Test thoroughly and handle errors gracefully for robust MCP integration.
+彻底测试并优雅地处理错误以实现稳健的 MCP 集成。

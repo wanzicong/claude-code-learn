@@ -1,67 +1,67 @@
-# Using MCP Tools in Commands and Agents
+# 在命令和代理中使用 MCP 工具
 
-Complete guide to using MCP tools effectively in Claude Code plugin commands and agents.
+在 Claude Code 插件命令和代理中有效使用 MCP 工具的完整指南。
 
-## Overview
+## 概述
 
-Once an MCP server is configured, its tools become available with the prefix `mcp__plugin_<plugin-name>_<server-name>__<tool-name>`. Use these tools in commands and agents just like built-in Claude Code tools.
+配置 MCP 服务器后，其工具将以前缀 `mcp__plugin_<插件名>_<服务器名>__<工具名>` 可用。在命令和代理中使用这些工具，就像使用 Claude Code 内置工具一样。
 
-## Tool Naming Convention
+## 工具命名约定
 
-### Format
+### 格式
 
 ```
-mcp__plugin_<plugin-name>_<server-name>__<tool-name>
+mcp__plugin_<插件名>_<服务器名>__<工具名>
 ```
 
-### Examples
+### 示例
 
-**Asana plugin with asana server:**
+**带有 asana 服务器的 Asana 插件：**
 - `mcp__plugin_asana_asana__asana_create_task`
 - `mcp__plugin_asana_asana__asana_search_tasks`
 - `mcp__plugin_asana_asana__asana_get_project`
 
-**Custom plugin with database server:**
+**带有数据库服务器的自定义插件：**
 - `mcp__plugin_myplug_database__query`
 - `mcp__plugin_myplug_database__execute`
 - `mcp__plugin_myplug_database__list_tables`
 
-### Discovering Tool Names
+### 发现工具名称
 
-**Use `/mcp` command:**
+**使用 `/mcp` 命令：**
 ```bash
 /mcp
 ```
 
-This shows:
-- All available MCP servers
-- Tools provided by each server
-- Tool schemas and descriptions
-- Full tool names for use in configuration
+这会显示：
+- 所有可用的 MCP 服务器
+- 每个服务器提供的工具
+- 工具架构和描述
+- 用于配置的完整工具名称
 
-## Using Tools in Commands
+## 在命令中使用工具
 
-### Pre-Allowing Tools
+### 预允许工具
 
-Specify MCP tools in command frontmatter:
+在命令 frontmatter 中指定 MCP 工具：
 
 ```markdown
 ---
-description: Create a new Asana task
+description: 创建新的 Asana 任务
 allowed-tools: [
   "mcp__plugin_asana_asana__asana_create_task"
 ]
 ---
 
-# Create Task Command
+# 创建任务命令
 
-To create a task:
-1. Gather task details from user
-2. Use mcp__plugin_asana_asana__asana_create_task with the details
-3. Confirm creation to user
+创建任务：
+1. 从用户收集任务详细信息
+2. 使用 mcp__plugin_asana_asana__asana_create_task 并附带详细信息
+3. 向用户确认创建
 ```
 
-### Multiple Tools
+### 多个工具
 
 ```markdown
 ---
@@ -73,7 +73,7 @@ allowed-tools: [
 ---
 ```
 
-### Wildcard (Use Sparingly)
+### 通配符（谨慎使用）
 
 ```markdown
 ---
@@ -81,157 +81,157 @@ allowed-tools: ["mcp__plugin_asana_asana__*"]
 ---
 ```
 
-**Caution:** Only use wildcards if the command truly needs access to all tools from a server.
+**注意：** 仅当命令确实需要访问服务器的所有工具时才使用通配符。
 
-### Tool Usage in Command Instructions
+### 命令指令中的工具使用
 
-**Example command:**
+**示例命令：**
 ```markdown
 ---
-description: Search and create Asana tasks
+description: 搜索和创建 Asana 任务
 allowed-tools: [
   "mcp__plugin_asana_asana__asana_search_tasks",
   "mcp__plugin_asana_asana__asana_create_task"
 ]
 ---
 
-# Asana Task Management
+# Asana 任务管理
 
-## Searching Tasks
+## 搜索任务
 
-To search for tasks:
-1. Use mcp__plugin_asana_asana__asana_search_tasks
-2. Provide search filters (assignee, project, etc.)
-3. Display results to user
+搜索任务：
+1. 使用 mcp__plugin_asana_asana__asana_search_tasks
+2. 提供搜索筛选器（分配者、项目等）
+3. 向用户显示结果
 
-## Creating Tasks
+## 创建任务
 
-To create a task:
-1. Gather task details:
-   - Title (required)
-   - Description
-   - Project
-   - Assignee
-   - Due date
-2. Use mcp__plugin_asana_asana__asana_create_task
-3. Show confirmation with task link
+创建任务：
+1. 收集任务详细信息：
+   - 标题（必需）
+   - 描述
+   - 项目
+   - 分配者
+   - 截止日期
+2. 使用 mcp__plugin_asana_asana__asana_create_task
+3. 显示任务链接的确认
 ```
 
-## Using Tools in Agents
+## 在代理中使用工具
 
-### Agent Configuration
+### 代理配置
 
-Agents can use MCP tools autonomously without pre-allowing them:
+代理可以自主使用 MCP 工具而无需预允许：
 
 ```markdown
 ---
 name: asana-status-updater
-description: This agent should be used when the user asks to "update Asana status", "generate project report", or "sync Asana tasks"
+description: 当用户要求"更新 Asana 状态"、"生成项目报告"或"同步 Asana 任务"时使用此代理
 model: inherit
 color: blue
 ---
 
-## Role
+## 角色
 
-Autonomous agent for generating Asana project status reports.
+用于生成 Asana 项目状态报告的自主代理。
 
-## Process
+## 过程
 
-1. **Query tasks**: Use mcp__plugin_asana_asana__asana_search_tasks to get all tasks
-2. **Analyze progress**: Calculate completion rates and identify blockers
-3. **Generate report**: Create formatted status update
-4. **Update Asana**: Use mcp__plugin_asana_asana__asana_create_comment to post report
+1. **查询任务**：使用 mcp__plugin_asana_asana__asana_search_tasks 获取所有任务
+2. **分析进度**：计算完成率并识别阻塞项
+3. **生成报告**：创建格式化的状态更新
+4. **更新 Asana**：使用 mcp__plugin_asana_asana__asana_create_comment 发布报告
 
-## Available Tools
+## 可用工具
 
-The agent has access to all Asana MCP tools without pre-approval.
+该代理无需预批准即可访问所有 Asana MCP 工具。
 ```
 
-### Agent Tool Access
+### 代理工具访问
 
-Agents have broader tool access than commands:
-- Can use any tool Claude determines is necessary
-- Don't need pre-allowed lists
-- Should document which tools they typically use
+代理比命令具有更广泛的工具访问：
+- 可以使用 Claude 认为必要的任何工具
+- 不需要预允许列表
+- 应记录它们通常使用的工具
 
-## Tool Call Patterns
+## 工具调用模式
 
-### Pattern 1: Simple Tool Call
+### 模式 1：简单工具调用
 
-Single tool call with validation:
+带验证的单个工具调用：
 
 ```markdown
-Steps:
-1. Validate user provided required fields
-2. Call mcp__plugin_api_server__create_item with validated data
-3. Check for errors
-4. Display confirmation
+步骤：
+1. 验证用户提供的必需字段
+2. 使用验证后的数据调用 mcp__plugin_api_server__create_item
+3. 检查错误
+4. 显示确认
 ```
 
-### Pattern 2: Sequential Tools
+### 模式 2：顺序工具调用
 
-Chain multiple tool calls:
+链式多个工具调用：
 
 ```markdown
-Steps:
-1. Search for existing items: mcp__plugin_api_server__search
-2. If not found, create new: mcp__plugin_api_server__create
-3. Add metadata: mcp__plugin_api_server__update_metadata
-4. Return final item ID
+步骤：
+1. 搜索现有项：mcp__plugin_api_server__search
+2. 如果未找到，则创建新项：mcp__plugin_api_server__create
+3. 添加元数据：mcp__plugin_api_server__update_metadata
+4. 返回最终项 ID
 ```
 
-### Pattern 3: Batch Operations
+### 模式 3：批处理操作
 
-Multiple calls with same tool:
+使用同一工具的多次调用：
 
 ```markdown
-Steps:
-1. Get list of items to process
-2. For each item:
-   - Call mcp__plugin_api_server__update_item
-   - Track success/failure
-3. Report results summary
+步骤：
+1. 获取要处理的项目列表
+2. 对每个项目：
+   - 调用 mcp__plugin_api_server__update_item
+   - 跟踪成功/失败
+3. 报告结果摘要
 ```
 
-### Pattern 4: Error Handling
+### 模式 4：错误处理
 
-Graceful error handling:
+优雅的错误处理：
 
 ```markdown
-Steps:
-1. Try to call mcp__plugin_api_server__get_data
-2. If error (rate limit, network, etc.):
-   - Wait and retry (max 3 attempts)
-   - If still failing, inform user
-   - Suggest checking configuration
-3. On success, process data
+步骤：
+1. 尝试调用 mcp__plugin_api_server__get_data
+2. 如果发生错误（速率限制、网络等）：
+   - 等待并重试（最多 3 次尝试）
+   - 如果仍然失败，通知用户
+   - 建议检看配置
+3. 成功时，处理数据
 ```
 
-## Tool Parameters
+## 工具参数
 
-### Understanding Tool Schemas
+### 理解工具架构
 
-Each MCP tool has a schema defining its parameters. View with `/mcp`.
+每个 MCP 工具都有定义其参数的架构。使用 `/mcp` 查看。
 
-**Example schema:**
+**示例架构：**
 ```json
 {
   "name": "asana_create_task",
-  "description": "Create a new Asana task",
+  "description": "创建新的 Asana 任务",
   "inputSchema": {
     "type": "object",
     "properties": {
       "name": {
         "type": "string",
-        "description": "Task title"
+        "description": "任务标题"
       },
       "notes": {
         "type": "string",
-        "description": "Task description"
+        "description": "任务描述"
       },
       "workspace": {
         "type": "string",
-        "description": "Workspace GID"
+        "description": "工作区 GID"
       }
     },
     "required": ["name", "workspace"]
@@ -239,17 +239,17 @@ Each MCP tool has a schema defining its parameters. View with `/mcp`.
 }
 ```
 
-### Calling Tools with Parameters
+### 带参数调用工具
 
-Claude automatically structures tool calls based on schema:
+Claude 根据架构自动构建工具调用：
 
 ```typescript
-// Claude generates this internally
+// Claude 内部生成此内容
 {
   toolName: "mcp__plugin_asana_asana__asana_create_task",
   input: {
-    name: "Review PR #123",
-    notes: "Code review for new feature",
+    name: "审查 PR #123",
+    notes: "新功能的代码审查",
     workspace: "12345",
     assignee: "67890",
     due_on: "2025-01-15"
@@ -257,197 +257,197 @@ Claude automatically structures tool calls based on schema:
 }
 ```
 
-### Parameter Validation
+### 参数验证
 
-**In commands, validate before calling:**
+**在命令中，调用前验证：**
 
 ```markdown
-Steps:
-1. Check required parameters:
-   - Title is not empty
-   - Workspace ID is provided
-   - Due date is valid format (YYYY-MM-DD)
-2. If validation fails, ask user to provide missing data
-3. If validation passes, call MCP tool
-4. Handle tool errors gracefully
+步骤：
+1. 检查必需参数：
+   - 标题不为非空
+   - 提供了工作区 ID
+   - 截止日期为有效格式（YYYY-MM-DD）
+2. 如果验证失败，要求用户提供缺失数据
+3. 如果验证通过，调用 MCP 工具
+4. 优雅地处理工具错误
 ```
 
-## Response Handling
+## 响应处理
 
-### Success Responses
+### 成功响应
 
 ```markdown
-Steps:
-1. Call MCP tool
-2. On success:
-   - Extract relevant data from response
-   - Format for user display
-   - Provide confirmation message
-   - Include relevant links or IDs
+步骤：
+1. 调用 MCP 工具
+2. 成功时：
+   - 从响应中提取相关数据
+   - 为用户显示进行格式化
+   - 提供确认消息
+   - 包含相关链接或 ID
 ```
 
-### Error Responses
+### 错误响应
 
 ```markdown
-Steps:
-1. Call MCP tool
-2. On error:
-   - Check error type (auth, rate limit, validation, etc.)
-   - Provide helpful error message
-   - Suggest remediation steps
-   - Don't expose internal error details to user
+步骤：
+1. 调用 MCP 工具
+2. 发生错误时：
+   - 检查错误类型（身份验证、速率限制、验证等）
+   - 提供有用的错误消息
+   - 建议补救步骤
+   - 不要向用户暴露内部错误详细信息
 ```
 
-### Partial Success
+### 部分成功
 
 ```markdown
-Steps:
-1. Batch operation with multiple MCP calls
-2. Track successes and failures separately
-3. Report summary:
-   - "Successfully processed 8 of 10 items"
-   - "Failed items: [item1, item2] due to [reason]"
-   - Suggest retry or manual intervention
+步骤：
+1. 带有多个 MCP 调用的批处理操作
+2. 分别跟踪成功和失败
+3. 报告摘要：
+   - "成功处理 10 个项目中的 8 个"
+   - "失败的项目：[item1, item2]，原因：[原因]"
+   - 建议重试或手动干预
 ```
 
-## Performance Optimization
+## 性能优化
 
-### Batching Requests
+### 批处理请求
 
-**Good: Single query with filters**
+**好：带筛选器的单个查询**
 ```markdown
-Steps:
-1. Call mcp__plugin_api_server__search with filters:
+步骤：
+1. 使用带筛选器的 mcp__plugin_api_server__search：
    - project_id: "123"
    - status: "active"
    - limit: 100
-2. Process all results
+2. 处理所有结果
 ```
 
-**Avoid: Many individual queries**
+**避免：多个单独查询**
 ```markdown
-Steps:
-1. For each item ID:
-   - Call mcp__plugin_api_server__get_item
-   - Process item
+步骤：
+1. 对每个项 ID：
+   - 调用 mcp__plugin_api_server__get_item
+   - 处理项
 ```
 
-### Caching Results
+### 缓存结果
 
 ```markdown
-Steps:
-1. Call expensive MCP operation: mcp__plugin_api_server__analyze
-2. Store results in variable for reuse
-3. Use cached results for subsequent operations
-4. Only re-fetch if data changes
+步骤：
+1. 调用昂贵的 MCP 操作：mcp__plugin_api_server__analyze
+2. 在变量中存储结果以供重用
+3. 对后续操作使用缓存的结果
+4. 仅在数据更改时重新获取
 ```
 
-### Parallel Tool Calls
+### 并行工具调用
 
-When tools don't depend on each other, call in parallel:
+当工具互不依赖时，并行调用：
 
 ```markdown
-Steps:
-1. Make parallel calls (Claude handles this automatically):
+步骤：
+1. 进行并行调用（Claude 自动处理）：
    - mcp__plugin_api_server__get_project
    - mcp__plugin_api_server__get_users
    - mcp__plugin_api_server__get_tags
-2. Wait for all to complete
-3. Combine results
+2. 等待所有完成
+3. 合并结果
 ```
 
-## Integration Best Practices
+## 集成最佳实践
 
-### User Experience
+### 用户体验
 
-**Provide feedback:**
+**提供反馈：**
 ```markdown
-Steps:
-1. Inform user: "Searching Asana tasks..."
-2. Call mcp__plugin_asana_asana__asana_search_tasks
-3. Show progress: "Found 15 tasks, analyzing..."
-4. Present results
+步骤：
+1. 通知用户："正在搜索 Asana 任务..."
+2. 调用 mcp__plugin_asana_asana__asana_search_tasks
+3. 显示进度："找到 15 个任务，分析中..."
+4. 展示结果
 ```
 
-**Handle long operations:**
+**处理长时间操作：**
 ```markdown
-Steps:
-1. Warn user: "This may take a minute..."
-2. Break into smaller steps with updates
-3. Show incremental progress
-4. Final summary when complete
+步骤：
+1. 警告用户："这可能需要一分钟..."
+2. 分解为带有更新的较小步骤
+3. 显示增量进度
+4. 完成后显示最终摘要
 ```
 
-### Error Messages
+### 错误消息
 
-**Good error messages:**
+**好的错误消息：**
 ```
-❌ "Could not create task. Please check:
-   1. You're logged into Asana
-   2. You have access to workspace 'Engineering'
-   3. The project 'Q1 Goals' exists"
-```
-
-**Poor error messages:**
-```
-❌ "Error: MCP tool returned 403"
+❌ 无法创建任务。请检看：
+   1. 您已登录 Asana
+   2. 您有权访问工作区 'Engineering'
+   3. 项目 'Q1 Goals' 存在
 ```
 
-### Documentation
+**差的错误消息：**
+```
+❌ 错误：MCP 工具返回 403
+```
 
-**Document MCP tool usage in command:**
+### 文档
+
+**在命令中记录 MCP 工具使用：**
 ```markdown
-## MCP Tools Used
+## 使用的 MCP 工具
 
-This command uses the following Asana MCP tools:
-- **asana_search_tasks**: Search for tasks matching criteria
-- **asana_create_task**: Create new task with details
-- **asana_update_task**: Update existing task properties
+此命令使用以下 Asana MCP 工具：
+- **asana_search_tasks**：搜索匹配条件的任务
+- **asana_create_task**：附带详细信息创建新任务
+- **asana_update_task**：更新现有任务属性
 
-Ensure you're authenticated to Asana before running this command.
+运行此命令前确保已对 Asana 进行身份验证。
 ```
 
-## Testing Tool Usage
+## 测试工具使用
 
-### Local Testing
+### 本地测试
 
-1. **Configure MCP server** in `.mcp.json`
-2. **Install plugin locally** in `.claude-plugin/`
-3. **Verify tools available** with `/mcp`
-4. **Test command** that uses tools
-5. **Check debug output**: `claude --debug`
+1. 在 `.mcp.json` 中配置 MCP 服务器
+2. 在 `.claude-plugin/` 中本地安装插件
+3. 使用 `/mcp` 验证工具可用
+4. 测试使用工具的命令
+5. 检查调试输出：`claude --debug`
 
-### Test Scenarios
+### 测试场景
 
-**Test successful calls:**
+**测试成功调用：**
 ```markdown
-Steps:
-1. Create test data in external service
-2. Run command that queries this data
-3. Verify correct results returned
+步骤：
+1. 在外部服务中创建测试数据
+2. 运行查询此数据的命令
+3. 验证返回正确结果
 ```
 
-**Test error cases:**
+**测试错误场景：**
 ```markdown
-Steps:
-1. Test with missing authentication
-2. Test with invalid parameters
-3. Test with non-existent resources
-4. Verify graceful error handling
+步骤：
+1. 使用缺少的身份验证进行测试
+2. 使用无效参数进行测试
+3. 使用不存在的资源进行测试
+4. 验证优雅的错误处理
 ```
 
-**Test edge cases:**
+**测试边界情况：**
 ```markdown
-Steps:
-1. Test with empty results
-2. Test with maximum results
-3. Test with special characters
-4. Test with concurrent access
+步骤：
+1. 测试空结果
+2. 测试最大结果
+3. 测试特殊字符
+4. 测试并发访问
 ```
 
-## Common Patterns
+## 常见模式
 
-### Pattern: CRUD Operations
+### 模式：CRUD 操作
 
 ```markdown
 ---
@@ -459,80 +459,80 @@ allowed-tools: [
 ]
 ---
 
-# Item Management
+# 项目管理
 
-## Create
-Use create_item with required fields...
+## 创建
+使用 create_item 并附带必需字段...
 
-## Read
-Use read_item with item ID...
+## 读取
+使用 read_item 并附带项 ID...
 
-## Update
-Use update_item with item ID and changes...
+## 更新
+使用 update_item 并附带项 ID 和更改...
 
-## Delete
-Use delete_item with item ID (ask for confirmation first)...
+## 删除
+使用 delete_item 并附带项 ID（先请求确认）...
 ```
 
-### Pattern: Search and Process
+### 模式：搜索和处理
 
 ```markdown
-Steps:
-1. **Search**: mcp__plugin_api_server__search with filters
-2. **Filter**: Apply additional local filtering if needed
-3. **Transform**: Process each result
-4. **Present**: Format and display to user
+步骤：
+1. **搜索**：使用带筛选器的 mcp__plugin_api_server__search
+2. **筛选**：如需要则应用额外的本地筛选
+3. **转换**：处理每个结果
+4. **展示**：格式化并向用户显示
 ```
 
-### Pattern: Multi-Step Workflow
+### 模式：多步骤工作流
 
 ```markdown
-Steps:
-1. **Setup**: Gather all required information
-2. **Validate**: Check data completeness
-3. **Execute**: Chain of MCP tool calls:
-   - Create parent resource
-   - Create child resources
-   - Link resources together
-   - Add metadata
-4. **Verify**: Confirm all steps succeeded
-5. **Report**: Provide summary to user
+步骤：
+1. **设置**：收集所有必需信息
+2. **验证**：检看数据完整性
+3. **执行**：MCP 工具调用链：
+   - 创建父资源
+   - 创建子资源
+   - 链接资源在一起
+   - 添加元数据
+4. **验证**：确认所有步骤成功
+5. **报告**：向用户提供摘要
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Tools Not Available
+### 工具不可用
 
-**Check:**
-- MCP server configured correctly
-- Server connected (check `/mcp`)
-- Tool names match exactly (case-sensitive)
-- Restart Claude Code after config changes
+**检看：**
+- MCP 服务器配置正确
+- 服务器已连接（检看 `/mcp`）
+- 工具名称完全匹配（区分大小写）
+- 配置更改后重启 Claude Code
 
-### Tool Calls Failing
+### 工具调用失败
 
-**Check:**
-- Authentication is valid
-- Parameters match tool schema
-- Required parameters provided
-- Check `claude --debug` logs
+**检看：**
+- 身份验证有效
+- 参数匹配工具架构
+- 提供了必需参数
+- 检查 `claude --debug` 日志
 
-### Performance Issues
+### 性能问题
 
-**Check:**
-- Batching queries instead of individual calls
-- Caching results when appropriate
-- Not making unnecessary tool calls
-- Parallel calls when possible
+**检看：**
+- 批处理查询而非单独调用
+- 适当时缓存结果
+- 不进行不必要的工具调用
+- 可能时并行调用
 
-## Conclusion
+## 结论
 
-Effective MCP tool usage requires:
-1. **Understanding tool schemas** via `/mcp`
-2. **Pre-allowing tools** in commands appropriately
-3. **Handling errors gracefully**
-4. **Optimizing performance** with batching and caching
-5. **Providing good UX** with feedback and clear errors
-6. **Testing thoroughly** before deployment
+有效的 MCP 工具使用需要：
+1. **通过 `/mcp` 理解工具架构**
+2. **在命令中适当预允许工具**
+3. **优雅地处理错误**
+4. **通过批处理和缓存优化性能**
+5. **通过反馈和清晰错误提供良好的用户体验**
+6. **部署前彻底测试**
 
-Follow these patterns for robust MCP tool integration in your plugin commands and agents.
+遵循这些模式以在插件命令和代理中实现稳健的 MCP 工具集成。

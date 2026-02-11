@@ -1,47 +1,47 @@
-# Plugin Recommendations
+# 插件推荐
 
-Plugins are installable collections of skills, commands, agents, and hooks. Install via `/plugin install`.
+插件是可安装的技能、命令、代理和 hooks 集合。通过 `/plugin install` 安装。
 
-**Note**: These are plugins from the official repository. Use web search to discover additional community plugins.
+**注意**：这些是来自官方仓库的插件。使用网络搜索发现其他社区插件。
 
 ---
 
-## Official Plugins
+## 官方插件
 
-### Development & Code Quality
+### 开发与代码质量
 
-| Plugin | Best For | Key Features |
+| 插件 | 最适用于 | 主要功能 |
 |--------|----------|--------------|
-| **plugin-dev** | Building Claude Code plugins | Skills for creating skills, hooks, commands, agents |
-| **pr-review-toolkit** | PR review workflows | Specialized review agents (code, tests, types) |
-| **code-review** | Automated code review | Multi-agent review with confidence scoring |
-| **code-simplifier** | Code refactoring | Simplify code while preserving functionality |
-| **feature-dev** | Feature development | End-to-end feature workflow with agents |
+| **plugin-dev** | 构建 Claude Code 插件 | 用于创建技能、hooks、命令、代理的技能 |
+| **pr-review-toolkit** | PR 审查工作流 | 专门的审查代理（代码、测试、类型） |
+| **code-review** | 自动化代码审查 | 带置信度评分的多代理审查 |
+| **code-simplifier** | 代码重构 | 在保持功能的同时简化代码 |
+| **feature-dev** | 功能开发 | 带代理的端到端功能工作流 |
 
-### Git & Workflow
+### Git 与工作流
 
-| Plugin | Best For | Key Features |
+| 插件 | 最适用于 | 主要功能 |
 |--------|----------|--------------|
-| **commit-commands** | Git workflows | /commit, /commit-push-pr commands |
-| **hookify** | Automation rules | Create hooks from conversation patterns |
+| **commit-commands** | Git 工作流 | /commit、/commit-push-pr 命令 |
+| **hookify** | 自动化规则 | 从对话模式创建 hooks |
 
-### Frontend
+### 前端
 
-| Plugin | Best For | Key Features |
+| 插件 | 最适用于 | 主要功能 |
 |--------|----------|--------------|
-| **frontend-design** | UI development | Production-grade UI, avoids generic aesthetics |
+| **frontend-design** | UI 开发 | 生产级 UI，避免通用美学 |
 
-### Learning & Guidance
+### 学习与指导
 
-| Plugin | Best For | Key Features |
+| 插件 | 最适用于 | 主要功能 |
 |--------|----------|--------------|
-| **explanatory-output-style** | Learning | Educational insights about code choices |
-| **learning-output-style** | Interactive learning | Requests contributions at decision points |
-| **security-guidance** | Security awareness | Warns about security issues when editing |
+| **explanatory-output-style** | 学习 | 关于代码选择的教育见解 |
+| **learning-output-style** | 交互式学习 | 在决策点请求贡献 |
+| **security-guidance** | 安全意识 | 编辑时警告安全问题 |
 
-### Language Servers (LSP)
+### 语言服务器 (LSP)
 
-| Plugin | Language |
+| 插件 | 语言 |
 |--------|----------|
 | **typescript-lsp** | TypeScript/JavaScript |
 | **pyright-lsp** | Python |
@@ -57,42 +57,42 @@ Plugins are installable collections of skills, commands, agents, and hooks. Inst
 
 ---
 
-## Quick Reference: Codebase → Plugin
+## 快速参考：代码库 → 插件
 
-| Codebase Signal | Recommended Plugin |
+| 代码库信号 | 推荐的插件 |
 |-----------------|-------------------|
-| Building plugins | plugin-dev |
-| PR-based workflow | pr-review-toolkit |
-| Git commits | commit-commands |
+| 构建插件 | plugin-dev |
+| 基于 PR 的工作流 | pr-review-toolkit |
+| Git 提交 | commit-commands |
 | React/Vue/Angular | frontend-design |
-| Want automation rules | hookify |
-| TypeScript project | typescript-lsp |
-| Python project | pyright-lsp |
-| Go project | gopls-lsp |
-| Security-sensitive code | security-guidance |
-| Learning/onboarding | explanatory-output-style |
+| 想要自动化规则 | hookify |
+| TypeScript 项目 | typescript-lsp |
+| Python 项目 | pyright-lsp |
+| Go 项目 | gopls-lsp |
+| 安全敏感代码 | security-guidance |
+| 学习/入职 | explanatory-output-style |
 
 ---
 
-## Plugin Management
+## 插件管理
 
 ```bash
-# Install a plugin
-/plugin install <plugin-name>
+# 安装插件
+/plugin install <插件名称>
 
-# List installed plugins
+# 列出已安装的插件
 /plugin list
 
-# View plugin details
-/plugin info <plugin-name>
+# 查看插件详情
+/plugin info <插件名称>
 ```
 
 ---
 
-## When to Recommend Plugins
+## 何时推荐插件
 
-**Recommend plugin installation when:**
-- User wants to install Claude Code automations from Anthropic's official repository or another shared marketplace
-- User needs multiple related capabilities
-- Team wants standardized workflows
-- First-time Claude Code setup
+**在以下情况下推荐插件安装：**
+- 用户希望从 Anthropic 官方仓库或其他共享市场安装 Claude Code 自动化功能
+- 用户需要多个相关功能
+- 团队想要标准化工作流
+- 首次设置 Claude Code

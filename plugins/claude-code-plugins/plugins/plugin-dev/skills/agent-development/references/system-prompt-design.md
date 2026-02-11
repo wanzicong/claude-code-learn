@@ -1,411 +1,411 @@
-# System Prompt Design Patterns
+# 系统提示设计模式
 
-Complete guide to writing effective agent system prompts that enable autonomous, high-quality operation.
+编写有效的代理系统提示以实现自主、高质量操作的完整指南。
 
-## Core Structure
+## 核心结构
 
-Every agent system prompt should follow this proven structure:
+每个代理系统提示应遵循这个经过验证的结构：
 
 ```markdown
-You are [specific role] specializing in [specific domain].
+你是[特定角色]，专门从事[特定领域]。
 
-**Your Core Responsibilities:**
-1. [Primary responsibility - the main task]
-2. [Secondary responsibility - supporting task]
-3. [Additional responsibilities as needed]
+**你的核心职责：**
+1. [主要职责 - 主要任务]
+2. [次要职责 - 支持任务]
+3. [根据需要的附加职责]
 
-**[Task Name] Process:**
-1. [First concrete step]
-2. [Second concrete step]
-3. [Continue with clear steps]
+**[任务名称] 过程：**
+1. [第一步具体步骤]
+2. [第二步具体步骤]
+3. [继续清晰的步骤]
 [...]
 
-**Quality Standards:**
-- [Standard 1 with specifics]
-- [Standard 2 with specifics]
-- [Standard 3 with specifics]
+**质量标准：**
+- [带有具体的标准 1]
+- [带有具体的标准 2]
+- [带有具体的标准 3]
 
-**Output Format:**
-Provide results structured as:
-- [Component 1]
-- [Component 2]
-- [Include specific formatting requirements]
+**输出格式：**
+按以下结构提供结果：
+- [组件 1]
+- [组件 2]
+- [包含特定的格式化要求]
 
-**Edge Cases:**
-Handle these situations:
-- [Edge case 1]: [Specific handling approach]
-- [Edge case 2]: [Specific handling approach]
+**边缘情况：**
+处理这些情况：
+- [边缘情况 1]：[具体的处理方法]
+- [边缘情况 2]：[具体的处理方法]
 ```
 
-## Pattern 1: Analysis Agents
+## 模式 1：分析代理
 
-For agents that analyze code, PRs, or documentation:
+用于分析代码、PR 或文档的代理：
 
 ```markdown
-You are an expert [domain] analyzer specializing in [specific analysis type].
+你是一个专家[领域]分析员，专门从事[特定分析类型]。
 
-**Your Core Responsibilities:**
-1. Thoroughly analyze [what] for [specific issues]
-2. Identify [patterns/problems/opportunities]
-3. Provide actionable recommendations
+**你的核心职责：**
+1. 彻底分析[什么]以查找[特定问题]
+2. 识别[模式/问题/机会]
+3. 提供可操作的建议
 
-**Analysis Process:**
-1. **Gather Context**: Read [what] using available tools
-2. **Initial Scan**: Identify obvious [issues/patterns]
-3. **Deep Analysis**: Examine [specific aspects]:
-   - [Aspect 1]: Check for [criteria]
-   - [Aspect 2]: Verify [criteria]
-   - [Aspect 3]: Assess [criteria]
-4. **Synthesize Findings**: Group related issues
-5. **Prioritize**: Rank by [severity/impact/urgency]
-6. **Generate Report**: Format according to output template
+**分析过程：**
+1. **收集上下文**：使用可用工具读取[什么]
+2. **初始扫描**：识别明显的[问题/模式]
+3. **深度分析**：检查[特定方面]：
+   - [方面 1]：检入[标准]
+   - [方面 2]：验证[标准]
+   - [方面 3]：评估[标准]
+4. **综合发现**：分组相关问题
+5. **优先排序**：按[严重性/影响/紧急性]排名
+6. **生成报告**：根据输出模板格式化
 
-**Quality Standards:**
-- Every finding includes file:line reference
-- Issues categorized by severity (critical/major/minor)
-- Recommendations are specific and actionable
-- Positive observations included for balance
+**质量标准：**
+- 每个发现都包含文件:行引用
+- 问题按严重性分类（严重/主要/次要）
+- 建议是具体的和可操作的
+- 为平衡包含正面观察
 
-**Output Format:**
-## Summary
-[2-3 sentence overview]
+**输出格式：**
+## 摘要
+[2-3 个句子概述]
 
-## Critical Issues
-- [file:line] - [Issue description] - [Recommendation]
+## 严重问题
+- [file:line] - [问题描述] - [建议]
 
-## Major Issues
+## 主要问题
 [...]
 
-## Minor Issues
+## 次要问题
 [...]
 
-## Recommendations
+## 建议
 [...]
 
-**Edge Cases:**
-- No issues found: Provide positive feedback and validation
-- Too many issues: Group and prioritize top 10
-- Unclear code: Request clarification rather than guessing
+**边缘情况：**
+- 未发现问题：提供正面反馈和验证
+- 问题太多：分组并优先考虑前 10 个严重/主要
+- 不清楚的代码：请求澄清而不是猜测
 ```
 
-## Pattern 2: Generation Agents
+## 模式 2：生成代理
 
-For agents that create code, tests, or documentation:
+用于创建代码、测试或文档的代理：
 
 ```markdown
-You are an expert [domain] engineer specializing in creating high-quality [output type].
+你是一个专家[领域]工程师，专门创建高质量[输出类型]。
 
-**Your Core Responsibilities:**
-1. Generate [what] that meets [quality standards]
-2. Follow [specific conventions/patterns]
-3. Ensure [correctness/completeness/clarity]
+**你的核心职责：**
+1. 生成满足[质量标准]的[什么]
+2. 遵循[特定约定/模式]
+3. 确保[正确性/完整性/清晰度]
 
-**Generation Process:**
-1. **Understand Requirements**: Analyze what needs to be created
-2. **Gather Context**: Read existing [code/docs/tests] for patterns
-3. **Design Structure**: Plan [architecture/organization/flow]
-4. **Generate Content**: Create [output] following:
-   - [Convention 1]
-   - [Convention 2]
-   - [Best practice 1]
-5. **Validate**: Verify [correctness/completeness]
-6. **Document**: Add comments/explanations as needed
+**生成过程：**
+1. **了解需求**：分析需要创建什么
+2. **收集上下文**：读取现有的[代码/文档/测试]以了解模式
+3. **设计结构**：计划[架构/组织/流]
+4. **生成内容**：创建遵循以下内容的[输出]：
+   - [约定 1]
+   - [约定 2]
+   - [最佳实践 1]
+5. **验证**：验证[正确性/完整性]
+6. **记录**：根据需要添加注释/解释
 
-**Quality Standards:**
-- Follows project conventions (check CLAUDE.md)
-- [Specific quality metric 1]
-- [Specific quality metric 2]
-- Includes error handling
-- Well-documented and clear
+**质量标准：**
+- 遵循项目约定（检查 CLAUDE.md）
+- [特定质量指标 1]
+- [特定质量指标 2]
+-` 包含错误处理
+- 文档良好且清晰
 
-**Output Format:**
-Create [what] with:
-- [Structure requirement 1]
-- [Structure requirement 2]
-- Clear, descriptive naming
-- Comprehensive coverage
+**输出格式：**
+创建[什么]并包含：
+- [结构要求 1]
+- [结构要求 2]
+- 清晰、描述性命名
+- 全面的覆盖
 
-**Edge Cases:**
-- Insufficient context: Ask user for clarification
-- Conflicting patterns: Follow most recent/explicit pattern
-- Complex requirements: Break into smaller pieces
+**边缘情况：**
+- 上下文不足：请求用户澄清
+- 冲突模式：遵循最近/显式的模式
+- 复杂需求：分解为较小的片段
 ```
 
-## Pattern 3: Validation Agents
+## 模式 3：验证代理
 
-For agents that validate, check, or verify:
+用于验证、检查或验证的代理：
 
 ```markdown
-You are an expert [domain] validator specializing in ensuring [quality aspect].
+你是一个专家[领域]验证器，专门确保[质量方面]。
 
-**Your Core Responsibilities:**
-1. Validate [what] against [criteria]
-2. Identify violations and issues
-3. Provide clear pass/fail determination
+**你的核心职责：**
+1. 根据[标准]验证[什么]
+2. 识别违规和问题
+3. 提供清晰的通过/失败确定
 
-**Validation Process:**
-1. **Load Criteria**: Understand validation requirements
-2. **Scan Target**: Read [what] needs validation
-3. **Check Rules**: For each rule:
-   - [Rule 1]: [Validation method]
-   - [Rule 2]: [Validation method]
-4. **Collect Violations**: Document each failure with details
-5. **Assess Severity**: Categorize issues
-6. **Determine Result**: Pass only if [criteria met]
+**验证过程：**
+1. **加载标准**：了解验证需求
+2. **扫描目标**：读取[什么]需要验证
+3. **检查规则**：对于每条规则：
+   - [规则 1]：[验证方法]
+   - [规则 2]：[验证方法]
+4. **收集违规**：详细记录每个失败
+5. **评估严重性**：分类问题
+6. **确定结果**：仅在满足[标准]时通过
 
-**Quality Standards:**
-- All violations include specific locations
-- Severity clearly indicated
-- Fix suggestions provided
-- No false positives
+**质量标准：**
+- 所有违规都包含特定位置
+- 清晰指示严重性
+- 提供修复建议
+- 没有误报
 
-**Output Format:**
-## Validation Result: [PASS/FAIL]
+**输出格式：**
+## 验证结果：[通过/失败]
 
-## Summary
-[Overall assessment]
+## 摘要
+[总体评估]
 
-## Violations Found: [count]
-### Critical ([count])
-- [Location]: [Issue] - [Fix]
+## 发现的违规：[数量]
+### 严重（[数量]）
+- [位置]：[问题] - [修复]
 
-### Warnings ([count])
-- [Location]: [Issue] - [Fix]
+### 警告（[数量]）
+- [位置]：[问题] - [修复]
 
-## Recommendations
-[How to fix violations]
+## 建议
+[如何修复违规]
 
-**Edge Cases:**
-- No violations: Confirm validation passed
-- Too many violations: Group by type, show top 20
-- Ambiguous rules: Document uncertainty, request clarification
+**边缘情况：**
+- 无违规：确认验证通过
+- 违规太多：按类型分组，显示前 20 个
+- 含糊规则：记录不确定性，请求澄清
 ```
 
-## Pattern 4: Orchestration Agents
+## 模式 4：编排代理
 
-For agents that coordinate multiple tools or steps:
+用于协调多个工具或步骤的代理：
 
 ```markdown
-You are an expert [domain] orchestrator specializing in coordinating [complex workflow].
+你是一个专家[领域]编排器，专门协调[复杂工作流]。
 
-**Your Core Responsibilities:**
-1. Coordinate [multi-step process]
-2. Manage [resources/tools/dependencies]
-3. Ensure [successful completion/integration]
+**你的核心职责：**
+1. 协调[多步骤过程]
+2. 管理[资源/工具/依赖项]
+3. 确保[成功完成/集成]
 
-**Orchestration Process:**
-1. **Plan**: Understand full workflow and dependencies
-2. **Prepare**: Set up prerequisites
-3. **Execute Phases**:
-   - Phase 1: [What] using [tools]
-   - Phase 2: [What] using [tools]
-   - Phase 3: [What] using [tools]
-4. **Monitor**: Track progress and handle failures
-5. **Verify**: Confirm successful completion
-6. **Report**: Provide comprehensive summary
+**编排过程：**
+1. **计划**：了解完整工作流和依赖项
+2. **准备**：设置先决条件
+3. **执行阶段**：
+   - 阶段 1：[什么]使用[工具]
+   - 阶段 2：[什么]使用[工具]
+   - 阶段 3：[什么]使用[工具]
+4. **监控**：跟踪进度并处理失败
+5. **验证**：确认成功完成
+6. **报告**：提供综合摘要
 
-**Quality Standards:**
-- Each phase completes successfully
-- Errors handled gracefully
-- Progress reported to user
-- Final state verified
+**质量标准：**
+- 每个阶段都成功完成
+- 优雅地处理错误
+- 向用户报告进度
+- 验证最终状态
 
-**Output Format:**
-## Workflow Execution Report
+**输出格式：**
+## 工作流执行报告报告
 
-### Completed Phases
-- [Phase]: [Result]
+### 已完成阶段
+- [阶段]：[结果]
 
-### Results
-- [Output 1]
-- [Output 2]
+### 结果
+- [输出 1]
+- [输出 2]
 
-### Next Steps
-[If applicable]
+### 后续步骤
+[如果适用]
 
-**Edge Cases:**
-- Phase failure: Attempt retry, then report and stop
-- Missing dependencies: Request from user
-- Timeout: Report partial completion
+**边缘情况：**
+- 阶段失败：尝试重试，然后报告并停止
+- 缺少依赖项：请求从用户
+- 超时：报告部分完成
 ```
 
-## Writing Style Guidelines
+## 编写风格指南
 
-### Tone and Voice
+### 语气和声音
 
-**Use second person (addressing the agent):**
+**使用第二人称（称呼代理）：**
 ```
-✅ You are responsible for...
-✅ You will analyze...
-✅ Your process should...
+✅ 你负责...
+✅ 你将分析...
+✅ 你的过程应该...
 
-❌ The agent is responsible for...
-❌ This agent will analyze...
-❌ I will analyze...
-```
-
-### Clarity and Specificity
-
-**Be specific, not vague:**
-```
-✅ Check for SQL injection by examining all database queries for parameterization
-❌ Look for security issues
-
-✅ Provide file:line references for each finding
-❌ Show where issues are
-
-✅ Categorize as critical (security), major (bugs), or minor (style)
-❌ Rate the severity of issues
+❌ 代理负责...
+❌ 此代理将分析...
+❌ 我将分析...
 ```
 
-### Actionable Instructions
+### 清晰度和具体性
 
-**Give concrete steps:**
+**具体而不是含糊：**
 ```
-✅ Read the file using the Read tool, then search for patterns using Grep
-❌ Analyze the code
+✅ 通过检查所有数据库查询的参数化来检查 SQL 注入
+❌ 查找安全问题
 
-✅ Generate test file at test/path/to/file.test.ts
-❌ Create tests
+✅ 为每个发现提供文件:行引用
+❌ 显示问题所在
+
+✅ 分类为严重（（安全）、主要（（错误）或次要（（风格）
+❌ 评估问题的严重性
 ```
 
-## Common Pitfalls
+### 可操作指令
 
-### ❌ Vague Responsibilities
+**给出具体步骤：**
+```
+✅ 使用 Read 工具读取文件，然后使用 Grep 搜索模式
+❌ 分析代码
+
+✅ 在 test/path/to/file.test.ts 生成测试文件
+❌ 创建测试
+```
+
+## 常见陷阱
+
+### ❌ 含糊的职责
 
 ```markdown
-**Your Core Responsibilities:**
-1. Help the user with their code
-2. Provide assistance
-3. Be helpful
+**你的核心职责：**
+1. 帮助用户处理其代码
+2. 提供协助
+3. 有帮助
 ```
 
-**Why bad:** Not specific enough to guide behavior.
+**为什么不好：** 不足以指导行为。
 
-### ✅ Specific Responsibilities
+### ✅ 具体的职责
 
 ```markdown
-**Your Core Responsibilities:**
-1. Analyze TypeScript code for type safety issues
-2. Identify missing type annotations and improper 'any' usage
-3. Recommend specific type improvements with examples
+**你的核心职责：**
+1. 分析 TypeScript 代码的类型安全问题
+2. 识别缺失的类型注解和不正确的 'any' 使用
+3. 建议具体的类型改进并附带示例
 ```
 
-### ❌ Missing Process Steps
+### ❌ 缺少过程步骤
 
 ```markdown
-Analyze the code and provide feedback.
+分析代码并提供反馈。
 ```
 
-**Why bad:** Agent doesn't know HOW to analyze.
+**为什么不好：** 代理不知道如何分析。
 
-### ✅ Clear Process
+### ✅ 清晰的过程
 
 ```markdown
-**Analysis Process:**
-1. Read code files using Read tool
-2. Scan for type annotations on all functions
-3. Check for 'any' type usage
-4. Verify generic type parameters
-5. List findings with file:line references
+**分析过程：**
+1. 使用 Read 工具读取代码文件
+2. 扫描所有函数的类型注解
+3. 检查 'any' 类型使用
+4. 验证泛型参数
+5. 列出发现并附带 file:行引用
 ```
 
-### ❌ Undefined Output
+### ❌ 未定义的输出
 
 ```markdown
-Provide a report.
+提供报告。
 ```
 
-**Why bad:** Agent doesn't know what format to use.
+**为什么不好：** 代理不知道使用什么格式。
 
-### ✅ Defined Output Format
+### ✅ 定义的输出格式
 
 ```markdown
-**Output Format:**
-## Type Safety Report
+**输出格式：**
+## 类型安全报告
 
-### Summary
-[Overview of findings]
+### 摘要
+[发现的概述]
 
-### Issues Found
-- `file.ts:42` - Missing return type on `processData`
-- `utils.ts:15` - Unsafe 'any' usage in parameter
+### 发现的问题
+- `file.ts:42` - 缺少 `processData` 的返回类型
+- `utils.ts:15` - 在参数中使用不安全的 'any'
 
-### Recommendations
-[Specific fixes with examples]
+### 建议
+[带有示例的具体修复]
 ```
 
-## Length Guidelines
+## 长度指南
 
-### Minimum Viable Agent
+### 最小可行代理
 
-**~500 words minimum:**
-- Role description
-- 3 core responsibilities
-- 5-step process
-- Output format
+**~500 词最少：**
+- 角色描述
+- 3 个核心职责
+- 5 步过程
+- 输出格式
 
-### Standard Agent
+### 标准代理
 
-**~1,000-2,000 words:**
-- Detailed role and expertise
-- 5-8 responsibilities
-- 8-12 process steps
-- Quality standards
-- Output format
-- 3-5 edge cases
+**~1,000-2,000 词：**
+- 详细的角色和专业技能
+- 5-8 个职责
+- 8-12 个过程步骤
+- 质量标准
+- 输出格式
+- 3-5 个边缘情况
 
-### Comprehensive Agent
+### 全面代理
 
-**~2,000-5,000 words:**
-- Complete role with background
-- Comprehensive responsibilities
-- Detailed multi-phase process
-- Extensive quality standards
-- Multiple output formats
-- Many edge cases
-- Examples within system prompt
+**~2,000-5,000 词：**
+- 完整的角色并附带背景
+- 全面的职责
+- 详细的多阶段过程
+- 扩展的质量标准
+- 多个输出格式
+- 许多边缘情况
+- 系统提示内的示例
 
-**Avoid > 10,000 words:** Too long, diminishing returns.
+**避免 > 10,000 词：** 太长，收益递减。
 
-## Testing System Prompts
+## 测试系统提示
 
-### Test Completeness
+### 测试完整性
 
-Can the agent handle these based on system prompt alone?
+代理能否仅基于系统提示处理这些？
 
-- [ ] Typical task execution
-- [ ] Edge cases mentioned
-- [ ] Error scenarios
-- [ ] Unclear requirements
-- [ ] Large/complex inputs
-- [ ] Empty/missing inputs
+- [ ] 典型任务执行
+- [ ] 提到的边缘情况
+- [ ] 错误场景
+- [ ] 不清楚的需求
+- [ ] 大/复杂输入
+- [ ] 空/缺失输入
 
-### Test Clarity
+### 测试清晰度
 
-Read the system prompt and ask:
+阅读系统提示并询问：
 
-- Can another developer understand what this agent does?
-- Are process steps clear and actionable?
-- Is output format unambiguous?
-- Are quality standards measurable?
+- 另一个开发人员能理解此代理做什么吗？
+- 过程步骤清晰且可操作吗？
+- 输出格式不含糊吗？
+- 质量标准可测量吗？
 
-### Iterate Based on Results
+### 基于结果迭代
 
-After testing agent:
-1. Identify where it struggled
-2. Add missing guidance to system prompt
-3. Clarify ambiguous instructions
-4. Add process steps for edge cases
-5. Re-test
+测试代理后：
+1. 识别其困难的地方
+2. 将缺失的指导添加到系统提示
+3. 澄清含糊的指令
+4. 为边缘情况添加过程步骤
+5. 重新测试
 
-## Conclusion
+## 结论
 
-Effective system prompts are:
-- **Specific**: Clear about what and how
-- **Structured**: Organized with clear sections
-- **Complete**: Covers normal and edge cases
-- **Actionable**: Provides concrete steps
-- **Testable**: Defines measurable standards
+有效的系统提示是：
+- **具体**：明确关于什么和如何
+- **结构化**：组织清晰的部分
+- **完整**：覆盖正常和边缘情况
+- **可操作**：提供具体步骤
+- **可测试**：定义可测量的标准
 
-Use the patterns above as templates, customize for your domain, and iterate based on agent performance.
+使用上述模式作为模板，为您的领域自定义，并基于代理性能进行迭代。

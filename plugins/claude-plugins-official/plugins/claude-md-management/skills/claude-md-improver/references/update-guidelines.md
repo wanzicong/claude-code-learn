@@ -1,150 +1,149 @@
-# CLAUDE.md Update Guidelines
+# CLAUDE.md 更新指南
 
-## Core Principle
+## 核心原则
 
-Only add information that will genuinely help future Claude sessions. The context window is precious - every line must earn its place.
+只添加真正有助于未来 Claude 会话的信息。上下文窗口很宝贵 - 每行都必须证明其价值。
 
-## What TO Add
+## 应该添加的内容
 
-### 1. Commands/Workflows Discovered
-
-```markdown
-## Build
-
-`npm run build:prod` - Full production build with optimization
-`npm run build:dev` - Fast dev build (no minification)
-```
-
-Why: Saves future sessions from discovering these again.
-
-### 2. Gotchas and Non-Obvious Patterns
+### 1. 发现的命令/工作流
 
 ```markdown
-## Gotchas
+## 构建
 
-- Tests must run sequentially (`--runInBand`) due to shared DB state
-- `yarn.lock` is authoritative; delete `node_modules` if deps mismatch
+`npm run build:prod` - 带优化的完整生产构建
+`npm run build:dev` - 快速开发构建（无压缩）
 ```
 
-Why: Prevents repeating debugging sessions.
+原因：节省未来的会话再次发现这些内容。
 
-### 3. Package Relationships
+### 2. 注意事项和非显而易见的模式
 
 ```markdown
-## Dependencies
+## 注意事项
 
-The `auth` module depends on `crypto` being initialized first.
-Import order matters in `src/bootstrap.ts`.
+- 由于共享数据库状态，测试必须按顺序运行（`--runInBand`）
+- `yarn.lock` 具有权威性；如果依赖不匹配则删除 `node_modules`
 ```
 
-Why: Architecture knowledge that isn't obvious from code.
+原因：避免重复调试会话。
 
-### 4. Testing Approaches That Worked
+### 3. 包关系
 
 ```markdown
-## Testing
+## 依赖
 
-For API endpoints: Use `supertest` with the test helper in `tests/setup.ts`
-Mocking: Factory functions in `tests/factories/` (not inline mocks)
+`auth` 模块依赖于先初始化 `crypto`。
+在 `src/bootstrap.ts` 中导入顺序很重要。
 ```
 
-Why: Establishes patterns that work.
+原因：从代码中不明显的架构知识。
 
-### 5. Configuration Quirks
+### 4. 有效的测试方法
 
 ```markdown
-## Config
+## 测试
 
-- `NEXT_PUBLIC_*` vars must be set at build time, not runtime
-- Redis connection requires `?family=0` suffix for IPv6
+对于 API 端点：使用 `supertest` 配合 `tests/setup.ts` 中的测试辅助工具
+模拟：使用 `tests/factories/` 中的工厂函数（不是内联模拟）
 ```
 
-Why: Environment-specific knowledge.
+原因：建立有效的模式。
 
-## What NOT to Add
+### 5. 配置特殊之处
 
-### 1. Obvious Code Info
-
-Bad:
 ```markdown
-The `UserService` class handles user operations.
+## 配置
+
+- `NEXT_PUBLIC_*` 变量必须在构建时设置，而非运行时
+- Redis 连接需要 IPv6 的 `?family=0` 后缀
 ```
 
-The class name already tells us this.
+原因：环境特定知识。
 
-### 2. Generic Best Practices
+## 不应该添加的内容
 
-Bad:
+### 1. 明显的代码信息
+
+不好：
 ```markdown
-Always write tests for new features.
-Use meaningful variable names.
+`UserService` 类处理用户操作。
 ```
 
-This is universal advice, not project-specific.
+类名已经告诉我们这一点。
 
-### 3. One-Off Fixes
+### 2. 通用最佳实践
 
-Bad:
+不好：
 ```markdown
-We fixed a bug in commit abc123 where the login button didn't work.
+始终为新功能编写测试。
+使用有意义的变量名。
 ```
 
-Won't recur; clutters the file.
+这是通用建议，而非项目特定建议。
 
-### 4. Verbose Explanations
+### 3. 一次性修复
 
-Bad:
+不好：
 ```markdown
-The authentication system uses JWT tokens. JWT (JSON Web Tokens) are
-an open standard (RFC 7519) that defines a compact and self-contained
-way for securely transmitting information between parties as a JSON
-object. In our implementation, we use the HS256 algorithm which...
+我们在提交 abc123 中修复了一个错误，登录按钮不起作用。
 ```
 
-Good:
+不会再次发生；使文件混乱。
+
+### 4. 冗长的解释
+
+不好：
 ```markdown
-Auth: JWT with HS256, tokens in `Authorization: Bearer <token>` header.
+身份验证系统使用 JWT 令牌。JWT (JSON Web Tokens) 是
+一种开放标准 (RFC 7519)，它定义了一种紧凑和自包含的
+方式，用于在各方之间安全地传输信息，作为 JSON
+对象。在我们的实现中，我们使用 HS256 算法，它...
 ```
 
-## Diff Format for Updates
-
-For each suggested change:
-
-### 1. Identify the File
-
-```
-File: ./CLAUDE.md
-Section: Commands (new section after ## Architecture)
+好：
+```markdown
+身份验证：使用 HS256 的 JWT，令牌在 `Authorization: Bearer <token>` 标头中。
 ```
 
-### 2. Show the Change
+## 更新的差异格式
+
+对于每个建议的更改：
+
+### 1. 识别文件
+
+```
+文件：./CLAUDE.md
+部分：命令（## Architecture 之后的新部分）
+```
+
+### 2. 显示更改
 
 ```diff
  ## Architecture
  ...
 
-+## Commands
++## 命令
 +
-+| Command | Purpose |
++| 命令 | 用途 |
 +|---------|---------|
-+| `npm run dev` | Dev server with HMR |
-+| `npm run build` | Production build |
-+| `npm test` | Run test suite |
++| `npm run dev` | 带有 HMR 的开发服务器 |
++| `npm run build` | 生产构建 |
++| `npm test` | 运行测试套件 |
 ```
 
-### 3. Explain Why
+### 3. 解释原因
 
-> **Why this helps:** The build commands weren't documented, causing
-> confusion about how to run the project. This saves future sessions
-> from needing to inspect `package.json`.
+> **为何有帮助：** 构建命令没有记录，导致对如何运行项目感到困惑。
+> 这节省了未来的会话需要检查 `package.json`。
 
-## Validation Checklist
+## 验证检查清单
 
-Before finalizing an update, verify:
+在完成更新之前，验证：
 
-- [ ] Each addition is project-specific
-- [ ] No generic advice or obvious info
-- [ ] Commands are tested and work
-- [ ] File paths are accurate
-- [ ] Would a new Claude session find this helpful?
-- [ ] Is this the most concise way to express the info?
+- [ ] 每个添加都是项目特定的
+- [ ] 没有通用建议或明显信息
+- [ ] 命令已测试并可工作
+- [ ] 文件路径准确
+- [ ] 新的 Claude 会话会发现这有帮助吗？
+- [ ] 这是最简洁的表达信息的方式吗？

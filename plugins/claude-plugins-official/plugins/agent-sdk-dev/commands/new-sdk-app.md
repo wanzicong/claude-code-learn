@@ -1,176 +1,176 @@
 ---
-description: Create and setup a new Claude Agent SDK application
+description: 创建和设置新的 Claude Agent SDK 应用程序
 argument-hint: [project-name]
 ---
 
-You are tasked with helping the user create a new Claude Agent SDK application. Follow these steps carefully:
+你的任务是帮助用户创建新的 Claude Agent SDK 应用程序。请仔细遵循以下步骤：
 
-## Reference Documentation
+## 参考文档
 
-Before starting, review the official documentation to ensure you provide accurate and up-to-date guidance. Use WebFetch to read these pages:
+在开始之前，查看官方文档以确保你提供准确和最新的指导。使用 WebFetch 阅读这些页面：
 
-1. **Start with the overview**: https://docs.claude.com/en/api/agent-sdk/overview
-2. **Based on the user's language choice, read the appropriate SDK reference**:
-   - TypeScript: https://docs.claude.com/en/api/agent-sdk/typescript
-   - Python: https://docs.claude.com/en/api/agent-sdk/python
-3. **Read relevant guides mentioned in the overview** such as:
-   - Streaming vs Single Mode
-   - Permissions
-   - Custom Tools
-   - MCP integration
-   - Subagents
-   - Sessions
-   - Any other relevant guides based on the user's needs
+1. **首先从概述开始**：https://docs.claude.com/en/api/agent-sdk/overview
+2. **根据用户的语言选择，阅读适当的 SDK 参考**：
+   - TypeScript：https://docs.claude.com/en/api/agent-sdk/typescript
+   - Python：https://docs.claude.com/en/api/agent-sdk/python
+3. **阅读概述中提到的相关指南**，例如：
+   - 流式与单次模式
+   - 权限
+   - 自定义工具
+   - MCP 集成
+   - 子代理
+   - 会话
+   - 根据用户需求的其他相关指南
 
-**IMPORTANT**: Always check for and use the latest versions of packages. Use WebSearch or WebFetch to verify current versions before installation.
+**重要**：始终检查并使用最新版本的软件包。在安装前使用 WebSearch 或 WebFetch 验证当前版本。
 
-## Gather Requirements
+## 收集需求
 
-IMPORTANT: Ask these questions one at a time. Wait for the user's response before asking the next question. This makes it easier for the user to respond.
+重要：一次问一个问题。在问下一个问题之前等待用户的回答。这样用户更容易回答。
 
-Ask the questions in this order (skip any that the user has already provided via arguments):
+按此顺序询问问题（跳过用户已通过参数提供的任何问题）：
 
-1. **Language** (ask first): "Would you like to use TypeScript or Python?"
+1. **语言**（首先问）："您想使用 TypeScript 还是 Python？"
 
-   - Wait for response before continuing
+   - 在继续之前等待回答
 
-2. **Project name** (ask second): "What would you like to name your project?"
+2. **项目名称**（第二问）："您想给您的项目起什么名字？"
 
-   - If $ARGUMENTS is provided, use that as the project name and skip this question
-   - Wait for response before continuing
+   - 如果提供了 $ARGUMENTS，则将其用作项目名称并跳过此问题
+   - 在继续之前等待回答
 
-3. **Agent type** (ask third, but skip if #2 was sufficiently detailed): "What kind of agent are you building? Some examples:
+3. **代理类型**（第三问，但如果 #2 已经足够详细则跳过）："您正在构建什么类型的代理？一些示例：
 
-   - Coding agent (SRE, security review, code review)
-   - Business agent (customer support, content creation)
-   - Custom agent (describe your use case)"
-   - Wait for response before continuing
+   - 编码代理（SRE、安全审查、代码审查）
+   - 业务代理（客户支持、内容创建）
+   - 自定义代理（描述您的用例）"
+   - 在继续之前等待回答
 
-4. **Starting point** (ask fourth): "Would you like:
+4. **起点**（第四问）："您想要：
 
-   - A minimal 'Hello World' example to start
-   - A basic agent with common features
-   - A specific example based on your use case"
-   - Wait for response before continuing
+   - 一个最小的 'Hello World' 示例来开始
+   - 一个具有常用功能的基本代理
+   - 基于您的用例的特定示例"
+   - 在继续之前等待回答
 
-5. **Tooling choice** (ask fifth): Let the user know what tools you'll use, and confirm with them that these are the tools they want to use (for example, they may prefer pnpm or bun over npm). Respect the user's preferences when executing on the requirements.
+5. **工具选择**（第五问）：让用户知道您将使用哪些工具，并确认这些是他们想要使用的工具（例如，他们可能更喜欢 pnpm 或 bun 而不是 npm）。在执行需求时尊重用户的偏好。
 
-After all questions are answered, proceed to create the setup plan.
+在所有问题都回答后，继续创建设置计划。
 
-## Setup Plan
+## 设置计划
 
-Based on the user's answers, create a plan that includes:
+根据用户的回答，创建一个包含以下内容的计划：
 
-1. **Project initialization**:
+1. **项目初始化**：
 
-   - Create project directory (if it doesn't exist)
-   - Initialize package manager:
-     - TypeScript: `npm init -y` and setup `package.json` with type: "module" and scripts (include a "typecheck" script)
-     - Python: Create `requirements.txt` or use `poetry init`
-   - Add necessary configuration files:
-     - TypeScript: Create `tsconfig.json` with proper settings for the SDK
-     - Python: Optionally create config files if needed
+   - 创建项目目录（如果不存在）
+   - 初始化包管理器：
+     - TypeScript：`npm init -y` 并设置 `package.json`，包含 type: "module" 和脚本（包括 "typecheck" 脚本）
+     - Python：创建 `requirements.txt` 或使用 `poetry init`
+   - 添加必要的配置文件：
+     - TypeScript：创建具有 SDK 正确设置的 `tsconfig.json`
+     - Python：如果需要，可选地创建配置文件
 
-2. **Check for Latest Versions**:
+2. **检查最新版本**：
 
-   - BEFORE installing, use WebSearch or check npm/PyPI to find the latest version
-   - For TypeScript: Check https://www.npmjs.com/package/@anthropic-ai/claude-agent-sdk
-   - For Python: Check https://pypi.org/project/claude-agent-sdk/
-   - Inform the user which version you're installing
+   - 在安装之前，使用 WebSearch 或检查 npm/PyPI 查找最新版本
+   - 对于 TypeScript：检查 https://www.npmjs.com/package/@anthropic-ai/claude-agent-sdk
+   - 对于 Python：检查 https://pypi.org/project/claude-agent-sdk/
+   - 通知用户您正在安装的版本
 
-3. **SDK Installation**:
+3. **SDK 安装**：
 
-   - TypeScript: `npm install @anthropic-ai/claude-agent-sdk@latest` (or specify latest version)
-   - Python: `pip install claude-agent-sdk` (pip installs latest by default)
-   - After installation, verify the installed version:
-     - TypeScript: Check package.json or run `npm list @anthropic-ai/claude-agent-sdk`
-     - Python: Run `pip show claude-agent-sdk`
+   - TypeScript：`npm install @anthropic-ai/claude-agent-sdk@latest`（或指定最新版本）
+   - Python：`pip install claude-agent-sdk`（pip 默认安装最新版本）
+   - 安装后，验证安装的版本：
+     - TypeScript：检查 package.json 或运行 `npm list @anthropic-ai/claude-agent-sdk`
+     - Python：运行 `pip show claude-agent-sdk`
 
-4. **Create starter files**:
+4. **创建起始文件**：
 
-   - TypeScript: Create an `index.ts` or `src/index.ts` with a basic query example
-   - Python: Create a `main.py` with a basic query example
-   - Include proper imports and basic error handling
-   - Use modern, up-to-date syntax and patterns from the latest SDK version
+   - TypeScript：创建带有基本查询示例的 `index.ts` 或 `src/index.ts`
+   - Python：创建带有基本查询示例的 `main.py`
+   - 包含正确的导入和基本错误处理
+   - 使用最新 SDK 版本的现代、最新语法和模式
 
-5. **Environment setup**:
+5. **环境设置**：
 
-   - Create a `.env.example` file with `ANTHROPIC_API_KEY=your_api_key_here`
-   - Add `.env` to `.gitignore`
-   - Explain how to get an API key from https://console.anthropic.com/
+   - 创建包含 `ANTHROPIC_API_KEY=your_api_key_here` 的 `.env.example` 文件
+   - 将 `.env` 添加到 `.gitignore`
+   - 解释如何从 https://console.anthropic.com/ 获取 API 密钥
 
-6. **Optional: Create .claude directory structure**:
-   - Offer to create `.claude/` directory for agents, commands, and settings
-   - Ask if they want any example subagents or slash commands
+6. **可选：创建 .claude 目录结构**：
+   - 提议为代理、命令和设置创建 `.claude/` 目录
+   - 询问他们是否想要任何示例子代理或斜杠命令
 
-## Implementation
+## 实施
 
-After gathering requirements and getting user confirmation on the plan:
+在收集需求并获得用户对计划的确认后：
 
-1. Check for latest package versions using WebSearch or WebFetch
-2. Execute the setup steps
-3. Create all necessary files
-4. Install dependencies (always use latest stable versions)
-5. Verify installed versions and inform the user
-6. Create a working example based on their agent type
-7. Add helpful comments in the code explaining what each part does
-8. **VERIFY THE CODE WORKS BEFORE FINISHING**:
-   - For TypeScript:
-     - Run `npx tsc --noEmit` to check for type errors
-     - Fix ALL type errors until types pass completely
-     - Ensure imports and types are correct
-     - Only proceed when type checking passes with no errors
-   - For Python:
-     - Verify imports are correct
-     - Check for basic syntax errors
-   - **DO NOT consider the setup complete until the code verifies successfully**
+1. 使用 WebSearch 或 WebFetch 检查最新软件包版本
+2. 执行设置步骤
+3. 创建所有必要的文件
+4. 安装依赖项（始终使用最新的稳定版本）
+5. 验证安装的版本并通知用户
+6. 根据他们的代理类型创建工作示例
+7. 在代码中添加有用的注释，解释每个部分的作用
+8. **在完成之前验证代码工作**：
+   - 对于 TypeScript：
+     - 运行 `npx tsc --noEmit` 检查类型类型错误
+     - 修复所有类型错误，直到类型完全通过
+     - 确保导入和类型正确
+     - 只有在类型检查通过无错误时才继续
+   - 对于 Python：
+     - 验证导入正确
+     - 检查基本语法错误
+   - **不要认为设置完成，直到代码成功验证**
 
-## Verification
+## 验证
 
-After all files are created and dependencies are installed, use the appropriate verifier agent to validate that the Agent SDK application is properly configured and ready for use:
+在创建所有文件并安装依赖项后，使用适当的验证器代理来验证 Agent SDK 应用程序是否正确配置并准备使用：
 
-1. **For TypeScript projects**: Launch the **agent-sdk-verifier-ts** agent to validate the setup
-2. **For Python projects**: Launch the **agent-sdk-verifier-py** agent to validate the setup
-3. The agent will check SDK usage, configuration, functionality, and adherence to official documentation
-4. Review the verification report and address any issues
+1. **对于 TypeScript 项目**：启动 **agent-sdk-verifier-ts** 代理来验证设置
+2. **对于 Python 项目**：启动 **agent-sdk-verifier-py** 代理来验证设置
+3. 代理将检查 SDK 使用、配置、功能以及是否遵循官方文档
+4. 查看验证报告并解决任何问题
 
-## Getting Started Guide
+## 入门指南
 
-Once setup is complete and verified, provide the user with:
+设置和验证完成后，为用户提供：
 
-1. **Next steps**:
+1. **后续步骤**：
 
-   - How to set their API key
-   - How to run their agent:
-     - TypeScript: `npm start` or `node --loader ts-node/esm index.ts`
-     - Python: `python main.py`
+   - 如何设置他们的 API 密钥
+   - 如何运行他们的代理：
+     - TypeScript：`npm start` 或 `node --loader ts-node/esm index.ts`
+     - Python：`python main.py`
 
-2. **Useful resources**:
+2. **有用资源**：
 
-   - Link to TypeScript SDK reference: https://docs.claude.com/en/api/agent-sdk/typescript
-   - Link to Python SDK reference: https://docs.claude.com/en/api/agent-sdk/python
-   - Explain key concepts: system prompts, permissions, tools, MCP servers
+   - 链接到 TypeScript SDK 参考：https://docs.claude.com/en/api/agent-sdk/typescript
+   - 链接到 Python SDK 参考：https://docs.claude.com/en/api/agent-sdk/python
+   - 解释关键概念：系统提示、权限、工具、MCP 服务器
 
-3. **Common next steps**:
-   - How to customize the system prompt
-   - How to add custom tools via MCP
-   - How to configure permissions
-   - How to create subagents
+3. **常见后续步骤**：
+   - 如何自定义系统提示
+   - 如何通过 MCP 添加自定义工具
+   - 如何配置权限
+   - 如何创建子代理
 
-## Important Notes
+## 重要说明
 
-- **ALWAYS USE LATEST VERSIONS**: Before installing any packages, check for the latest versions using WebSearch or by checking npm/PyPI directly
-- **VERIFY CODE RUNS CORRECTLY**:
-  - For TypeScript: Run `npx tsc --noEmit` and fix ALL type errors before finishing
-  - For Python: Verify syntax and imports are correct
-  - Do NOT consider the task complete until the code passes verification
-- Verify the installed version after installation and inform the user
-- Check the official documentation for any version-specific requirements (Node.js version, Python version, etc.)
-- Always check if directories/files already exist before creating them
-- Use the user's preferred package manager (npm, yarn, pnpm for TypeScript; pip, poetry for Python)
-- Ensure all code examples are functional and include proper error handling
-- Use modern syntax and patterns that are compatible with the latest SDK version
-- Make the experience interactive and educational
-- **ASK QUESTIONS ONE AT A TIME** - Do not ask multiple questions in a single response
+- **始终使用最新版本**：在安装任何软件包之前，使用 WebSearch 或直接检查 npm/PyPI 查找最新版本
+- **验证代码正确运行**：
+  - 对于 TypeScript：在完成前运行 `npx tsc --noEmit` 并修复所有类型错误
+  - 对于 Python：验证语法和导入正确
+  - 不要认为任务完成，直到代码通过验证
+- 安装后验证安装的版本并通知用户
+- 检查官方文档是否有任何特定版本要求（Node.js 版本、Python 版本等）
+- 在创建目录/文件之前始终检查它们是否已存在
+- 使用用户首选的包管理器（TypeScript 用 npm、yarn、pnpm；Python 用 pip、poetry）
+- 确保所有代码示例都功能正常且包含适当的错误处理
+- 使用与最新 SDK 版本兼容的现代语法和模式
+- 使体验具有互动性和教育性
+- **一次问一个问题** - 不要在单个回答中问多个问题
 
-Begin by asking the FIRST requirement question only. Wait for the user's answer before proceeding to the next question.
+首先只问第一个需求问题。在继续下一个问题之前等待用户的回答。

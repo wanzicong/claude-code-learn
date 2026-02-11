@@ -9,14 +9,14 @@ conditions:
     pattern: npm test|pytest|cargo test
 ---
 
-**Tests not detected in transcript!**
+**未在对话记录中检测到测试！**
 
-Before stopping, please run tests to verify your changes work correctly.
+停止前，请运行测试以验证您的更改正常工作。
 
-Look for test commands like:
+查找测试命令，例如：
 - `npm test`
 - `pytest`
 - `cargo test`
 
-**Note:** This rule blocks stopping if no test commands appear in the transcript.
-Enable this rule only when you want strict test enforcement.
+**注意：** 如果对话记录中没有出现测试命令，此规则将阻止停止。
+仅在您需要严格的测试执行时启用此规则。

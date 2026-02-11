@@ -1,24 +1,24 @@
 ---
-description: Display Stripe test card numbers for various testing scenarios
+description: 显示用于各种测试场景的 Stripe 测试卡号
 argument-hint: [scenario]
 ---
 
-# Test Cards Reference
+# 测试卡参考
 
-Provide a quick reference for Stripe test card numbers:
+提供 Stripe 测试卡号的快速参考：
 
-1. If a scenario argument is provided (e.g., "declined", "3dsecure", "fraud"), show relevant test cards for that scenario
-2. Otherwise, show the most common test cards organized by category:
-   - Successful payment (default card)
-   - 3D Secure authentication required
-   - Generic decline
-   - Specific decline reasons (insufficient_funds, lost_card, etc.)
-3. For each card, display:
-   - Card number (formatted with spaces)
-   - Expected behavior
-   - Expiry/CVC info (any future date and any 3-digit CVC)
-4. Use clear visual indicators (✓ for success, ⚠️ for auth required, ✗ for decline)
-5. Mention that these only work in test mode
-6. Provide link to full testing documentation: https://docs.stripe.com/testing.md
+1. 如果提供了场景参数（例如 "declined"、"3dsecure"、"fraud"），则显示该场景相关的测试卡
+2. 否则，按类别显示最常见的测试卡：
+   - 成功支付（默认卡）
+   - 需要 3D 安全身份验证
+   - 通用拒绝
+   - 特定拒绝原因（insufficient_funds、lost_card 等）
+3. 对于每张卡，显示：
+   - 卡号（格式化带空格）
+   - 预期行为
+   - 有效期/CVC 信息（任何未来日期和任何 3 位 CVC）
+4. 使用清晰的视觉指示符（✓ 表示成功，⚠️ 表示需要身份验证，✗ 表示拒绝）
+5. 提到这些仅在测试模式下工作
+6. 提供完整测试文档的链接：https://docs.stripe.com/testing.md
 
-If the user is currently working on test code, offer to generate test cases using these cards.
+如果用户当前正在编写测试代码，则提供使用这些卡生成测试用例的服务。

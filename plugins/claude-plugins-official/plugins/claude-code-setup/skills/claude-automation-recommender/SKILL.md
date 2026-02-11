@@ -1,190 +1,190 @@
 ---
 name: claude-automation-recommender
-description: Analyze a codebase and recommend Claude Code automations (hooks, subagents, skills, plugins, MCP servers). Use when user asks for automation recommendations, wants to optimize their Claude Code setup, mentions improving Claude Code workflows, asks how to first set up Claude Code for a project, or wants to know what Claude Code features they should use.
+description: 分析代码库并推荐 Claude Code 自动化功能（hooks、subagents、skills、plugins、MCP 服务器）。当用户请求自动化推荐、希望优化 Claude Code 设置、提及改进 Claude Code 工作流、询问如何首次为项目设置 Claude Code，或想知道应该使用哪些 Claude Code 功能时使用。
 tools: Read, Glob, Grep, Bash
 ---
 
-# Claude Automation Recommender
+# Claude 自动化推荐器
 
-Analyze codebase patterns to recommend tailored Claude Code automations across all extensibility options.
+分析代码库模式，为所有可扩展选项推荐定制的 Claude Code 自动化功能。
 
-**This skill is read-only.** It analyzes the codebase and outputs recommendations. It does NOT create or modify any files. Users implement the recommendations themselves or ask Claude separately to help build them.
+**此技能是只读的。** 它分析代码库并输出推荐建议。它不会创建或修改任何文件。用户可以自己实施推荐建议，或单独要求 Claude 帮助构建它们。
 
-## Output Guidelines
+## 输出指南
 
-- **Recommend 1-2 of each type**: Don't overwhelm - surface the top 1-2 most valuable automations per category
-- **If user asks for a specific type**: Focus only on that type and provide more options (3-5 recommendations)
-- **Go beyond the reference lists**: The reference files contain common patterns, but use web search to find recommendations specific to the codebase's tools, frameworks, and libraries
-- **Tell users they can ask for more**: End by noting they can request more recommendations for any specific category
+- **每种类型推荐 1-2 个**：不要压倒用户 - 只提供每个类别中前 1-2 个最有价值的自动化功能
+- **如果用户要求特定类型**：只关注该类型并提供更多选项（3-5 个推荐）
+- **超越参考列表**：参考文件包含常见模式，但使用网络搜索找到针对代码库工具、框架和库的具体推荐
+- **告诉用户可以要求更多**：最后说明他们可以请求任何特定类别的更多推荐
 
-## Automation Types Overview
+## 自动化类型概述
 
-| Type | Best For |
+| 类型 | 最适用于 |
 |------|----------|
-| **Hooks** | Automatic actions on tool events (format on save, lint, block edits) |
-| **Subagents** | Specialized reviewers/analyzers that run in parallel |
-| **Skills** | Packaged expertise, workflows, and repeatable tasks (invoked by Claude or user via `/skill-name`) |
-| **Plugins** | Collections of skills that can be installed |
-| **MCP Servers** | External tool integrations (databases, APIs, browsers, docs) |
+| **Hooks** | 工具事件上的自动操作（保存时格式化、Lint、阻止编辑） |
+| **Subagents** | 并行运行的专门审查者/分析器 |
+| **Skills** | 封装的专业知识、工作流和可重复任务（通过 Claude 或用户使用 `/skill-name` 调用） |
+| **Plugins** | 可安装的技能集合 |
+| **MCP 服务器** | 外部工具集成（数据库、API、浏览器、文档） |
 
-## Workflow
+## 工作流程
 
-### Phase 1: Codebase Analysis
+### 阶段 1：代码库分析
 
-Gather project context:
+收集项目上下文：
 
 ```bash
-# Detect project type and tools
+# 检测项目类型和工具
 ls -la package.json pyproject.toml Cargo.toml go.mod pom.xml 2>/dev/null
 cat package.json 2>/dev/null | head -50
 
-# Check dependencies for MCP server recommendations
+# 检查依赖项以进行 MCP 服务器推荐
 cat package.json 2>/dev/null | grep -E '"(react|vue|angular|next|express|fastapi|django|prisma|supabase|stripe)"'
 
-# Check for existing Claude Code config
+# 检查现有的 Claude Code 配置
 ls -la .claude/ CLAUDE.md 2>/dev/null
 
-# Analyze project structure
+# 分析项目结构
 ls -la src/ app/ lib/ tests/ components/ pages/ api/ 2>/dev/null
 ```
 
-**Key Indicators to Capture:**
+**需要捕获的关键指标：**
 
-| Category | What to Look For | Informs Recommendations For |
+| 类别 | 查找内容 | 为此提供推荐 |
 |----------|------------------|----------------------------|
-| Language/Framework | package.json, pyproject.toml, import patterns | Hooks, MCP servers |
-| Frontend stack | React, Vue, Angular, Next.js | Playwright MCP, frontend skills |
-| Backend stack | Express, FastAPI, Django | API documentation tools |
-| Database | Prisma, Supabase, raw SQL | Database MCP servers |
-| External APIs | Stripe, OpenAI, AWS SDKs | context7 MCP for docs |
-| Testing | Jest, pytest, Playwright configs | Testing hooks, subagents |
-| CI/CD | GitHub Actions, CircleCI | GitHub MCP server |
-| Issue tracking | Linear, Jira references | Issue tracker MCP |
-| Docs patterns | OpenAPI, JSDoc, docstrings | Documentation skills |
+| 语言/框架 | package.json、pyproject.toml、导入模式 | Hooks、MCP 服务器 |
+| 前端技术栈 | React、Vue、Angular、Next.js | Playwright MCP、前端技能 |
+| 后端技术栈 | Express、FastAPI、Django | API 文档工具 |
+| 数据库 | Prisma、Supabase、原始 SQL | 数据库 MCP 服务器 |
+| 外部 API | Stripe、OpenAI、AWS SDK | context7 MCP 用于文档 |
+| 测试 | Jest、pytest、Playwright 配置 | 测试 hooks、subagents |
+| CI/CD | GitHub Actions、CircleCI | GitHub MCP 服务器 |
+| 问题跟踪 | Linear、Jira 引用 | 问题跟踪器 MCP |
+| 文档模式 | OpenAPI、JSDoc、docstrings | 文档技能 |
 
-### Phase 2: Generate Recommendations
+### 阶段 2：生成推荐
 
-Based on analysis, generate recommendations across all categories:
+基于分析，生成所有类别的推荐：
 
-#### A. MCP Server Recommendations
+#### A. MCP 服务器推荐
 
-See [references/mcp-servers.md](references/mcp-servers.md) for detailed patterns.
+详见 [references/mcp-servers.md](references/mcp-servers.md)。
 
-| Codebase Signal | Recommended MCP Server |
+| 代码库信号 | 推荐的 MCP 服务器 |
 |-----------------|------------------------|
-| Uses popular libraries (React, Express, etc.) | **context7** - Live documentation lookup |
-| Frontend with UI testing needs | **Playwright** - Browser automation/testing |
-| Uses Supabase | **Supabase MCP** - Direct database operations |
-| PostgreSQL/MySQL database | **Database MCP** - Query and schema tools |
-| GitHub repository | **GitHub MCP** - Issues, PRs, actions |
-| Uses Linear for issues | **Linear MCP** - Issue management |
-| AWS infrastructure | **AWS MCP** - Cloud resource management |
-| Slack workspace | **Slack MCP** - Team notifications |
-| Memory/context persistence | **Memory MCP** - Cross-session memory |
-| Sentry error tracking | **Sentry MCP** - Error investigation |
-| Docker containers | **Docker MCP** - Container management |
+| 使用流行库（React、Express 等） | **context7** - 实时文档查询 |
+| 有 UI 测试需求的前端 | **Playwright** - 浏览器自动化/测试 |
+| 使用 Supabase | **Supabase MCP** - 直接数据库操作 |
+| PostgreSQL/MySQL 数据库 | **Database MCP** - 查询和架构工具 |
+| GitHub 仓库 | **GitHub MCP** - 问题、PR、操作 |
+| 使用 Linear 进行问题跟踪 | **Linear MCP** - 问题管理 |
+| AWS 基础设施 | **AWS MCP** - 云资源管理 |
+| Slack 工作区 | **Slack MCP** - 团队通知 |
+| 内存/上下文持久化 | **Memory MCP** - 跨会话记忆 |
+| Sentry 错误跟踪 | **Sentry MCP** - 错误调查 |
+| Docker 容器 | **Docker MCP** - 容器管理 |
 
-#### B. Skills Recommendations
+#### B. Skills 推荐
 
-See [references/skills-reference.md](references/skills-reference.md) for details.
+详见 [references/skills-reference.md](references/skills-reference.md)。
 
-Create skills in `.claude/skills/<name>/SKILL.md`. Some are also available via plugins:
+在 `.claude/skills/<name>/SKILL.md` 中创建技能。某些技能也可通过插件获得：
 
-| Codebase Signal | Skill | Plugin |
+| 代码库信号 | 技能 | 插件 |
 |-----------------|-------|--------|
-| Building plugins | skill-development | plugin-dev |
-| Git commits | commit | commit-commands |
+| 构建插件 | skill-development | plugin-dev |
+| Git 提交 | commit | commit-commands |
 | React/Vue/Angular | frontend-design | frontend-design |
-| Automation rules | writing-rules | hookify |
-| Feature planning | feature-dev | feature-dev |
+| 自动化规则 | writing-rules | hookify |
+| 功能规划 | feature-dev | feature-dev |
 
-**Custom skills to create** (with templates, scripts, examples):
+**要创建的自定义技能**（包含模板、脚本、示例）：
 
-| Codebase Signal | Skill to Create | Invocation |
+| 代码库信号 | 要创建的技能 | 调用方式 |
 |-----------------|-----------------|------------|
-| API routes | **api-doc** (with OpenAPI template) | Both |
-| Database project | **create-migration** (with validation script) | User-only |
-| Test suite | **gen-test** (with example tests) | User-only |
-| Component library | **new-component** (with templates) | User-only |
-| PR workflow | **pr-check** (with checklist) | User-only |
-| Releases | **release-notes** (with git context) | User-only |
-| Code style | **project-conventions** | Claude-only |
-| Onboarding | **setup-dev** (with prereq script) | User-only |
+| API 路由 | **api-doc**（带 OpenAPI 模板） | 两者均可 |
+| 数据库项目 | **create-migration**（带验证脚本） | 仅用户 |
+| 测试套件 | **gen-test**（带示例测试） | 仅用户 |
+| 组件库 | **new-component**（带模板） | 仅用户 |
+| PR 工作流 | **pr-check**（带检查清单） | 仅用户 |
+| 发布 | **release-notes**（带 git 上下文） | 仅用户 |
+| 代码风格 | **project-conventions** | 仅 Claude |
+| 新人入职 | **setup-dev**（带先决条件脚本） | 仅用户 |
 
-#### C. Hooks Recommendations
+#### C. Hooks 推荐
 
-See [references/hooks-patterns.md](references/hooks-patterns.md) for configurations.
+详见 [references/hooks-patterns.md](references/hooks-patterns.md) 了解配置。
 
-| Codebase Signal | Recommended Hook |
+| 代码库信号 | 推荐的 Hook |
 |-----------------|------------------|
-| Prettier configured | PostToolUse: auto-format on edit |
-| ESLint/Ruff configured | PostToolUse: auto-lint on edit |
-| TypeScript project | PostToolUse: type-check on edit |
-| Tests directory exists | PostToolUse: run related tests |
-| `.env` files present | PreToolUse: block `.env` edits |
-| Lock files present | PreToolUse: block lock file edits |
-| Security-sensitive code | PreToolUse: require confirmation |
+| 配置了 Prettier | PostToolUse：编辑时自动格式化 |
+| 配置了 ESLint/Ruff | PostToolUse：编辑时自动 Lint |
+| TypeScript 项目 | PostToolUse：编辑时类型检查 |
+| 存在测试目录 | PostToolUse：运行相关测试 |
+| 存在 `.env` 文件 | PreToolUse：阻止 `.env` 编辑 |
+| 存在锁定文件 | PreToolUse：阻止锁定文件编辑 |
+| 安全敏感代码 | PreToolUse：需要确认 |
 
-#### D. Subagent Recommendations
+#### D. Subagent 推荐
 
-See [references/subagent-templates.md](references/subagent-templates.md) for templates.
+详见 [references/subagent-templates.md](references/subagent-templates.md) 了解模板。
 
-| Codebase Signal | Recommended Subagent |
+| 代码库信号 | 推荐的 Subagent |
 |-----------------|---------------------|
-| Large codebase (>500 files) | **code-reviewer** - Parallel code review |
-| Auth/payments code | **security-reviewer** - Security audits |
-| API project | **api-documenter** - OpenAPI generation |
-| Performance critical | **performance-analyzer** - Bottleneck detection |
-| Frontend heavy | **ui-reviewer** - Accessibility review |
-| Needs more tests | **test-writer** - Test generation |
+| 大型代码库（>500 个文件） | **code-reviewer** - 并行代码审查 |
+| 认证/支付代码 | **security-reviewer** - 安全审计 |
+| API 项目 | **api-documenter** - OpenAPI 生成 |
+| 性能关键 | **performance-analyzer** - 瓶颈检测 |
+| 前端项目 | **ui-reviewer** - 可访问性审查 |
+| 需要更多测试 | **test-writer** - 测试生成 |
 
-#### E. Plugin Recommendations
+#### E. 插件推荐
 
-See [references/plugins-reference.md](references/plugins-reference.md) for available plugins.
+详见 [references/plugins-reference.md](references/plugins-reference.md) 了解可用插件。
 
-| Codebase Signal | Recommended Plugin |
+| 代码库信号 | 推荐的插件 |
 |-----------------|-------------------|
-| General productivity | **anthropic-agent-skills** - Core skills bundle |
-| Document workflows | Install docx, xlsx, pdf skills |
-| Frontend development | **frontend-design** plugin |
-| Building AI tools | **mcp-builder** for MCP development |
+| 通用生产力 | **anthropic-agent-skills** - 核心技能包 |
+| 文档工作流 | 安装 docx、xlsx、pdf 技能 |
+| 前端开发 | **frontend-design** 插件 |
+| 构建 AI 工具 | **mcp-builder** 用于 MCP 开发 |
 
-### Phase 3: Output Recommendations Report
+### 阶段 3：输出推荐报告
 
-Format recommendations clearly. **Only include 1-2 recommendations per category** - the most valuable ones for this specific codebase. Skip categories that aren't relevant.
+清晰格式化推荐建议。**每个类别只包含 1-2 个推荐** - 对此特定代码库最有价值的那些。跳过不相关的类别。
 
 ```markdown
-## Claude Code Automation Recommendations
+## Claude Code 自动化推荐建议
 
-I've analyzed your codebase and identified the top automations for each category. Here are my top 1-2 recommendations per type:
+我已经分析了您的代码库，并确定了每个类别的顶级自动化功能。以下是我对每种类型的前 1-2 个推荐：
 
-### Codebase Profile
-- **Type**: [detected language/runtime]
-- **Framework**: [detected framework]
-- **Key Libraries**: [relevant libraries detected]
+### 代码库概况
+- **类型**：[检测到的语言/运行时]
+- **框架**：[检测到的框架]
+- **关键库**：[检测到的相关库]
 
 ---
 
-### 🔌 MCP Servers
+### 🔌 MCP 服务器
 
 #### context7
-**Why**: [specific reason based on detected libraries]
-**Install**: `claude mcp add context7`
+**原因**：[基于检测到的库的具体原因]
+**安装**：`claude mcp add context7`
 
 ---
 
 ### 🎯 Skills
 
-#### [skill name]
-**Why**: [specific reason]
-**Create**: `.claude/skills/[name]/SKILL.md`
-**Invocation**: User-only / Both / Claude-only
-**Also available in**: [plugin-name] plugin (if applicable)
+#### [技能名称]
+**原因**：[具体原因]
+**创建**：`.claude/skills/[name]/SKILL.md`
+**调用方式**：仅用户 / 两者均可 / 仅 Claude
+**也可在**中获得：[插件名称] 插件（如适用）
 ```yaml
 ---
 name: [skill-name]
-description: [what it does]
-disable-model-invocation: true  # for user-only
+description: [功能描述]
+disable-model-invocation: true  # 仅用户
 ---
 ```
 
@@ -192,92 +192,92 @@ disable-model-invocation: true  # for user-only
 
 ### ⚡ Hooks
 
-#### [hook name]
-**Why**: [specific reason based on detected config]
-**Where**: `.claude/settings.json`
+#### [hook 名称]
+**原因**：[基于检测到的配置的具体原因]
+**位置**：`.claude/settings.json`
 
 ---
 
 ### 🤖 Subagents
 
-#### [agent name]
-**Why**: [specific reason based on codebase patterns]
-**Where**: `.claude/agents/[name].md`
+#### [agent 名称]
+**原因**：[基于代码库模式的具体原因]
+**位置**：`.claude/agents/[name].md`
 
 ---
 
-**Want more?** Ask for additional recommendations for any specific category (e.g., "show me more MCP server options" or "what other hooks would help?").
+**想要更多？** 可以请求任何特定类别的更多推荐（例如，"显示更多 MCP 服务器选项"或"还有哪些 hooks 会有帮助？"）。
 
-**Want help implementing any of these?** Just ask and I can help you set up any of the recommendations above.
+**想要帮助实现其中任何一个？** 只需提出要求，我可以帮您设置上述任何推荐。
 ```
 
-## Decision Framework
+## 决策框架
 
-### When to Recommend MCP Servers
-- External service integration needed (databases, APIs)
-- Documentation lookup for libraries/SDKs
-- Browser automation or testing
-- Team tool integration (GitHub, Linear, Slack)
-- Cloud infrastructure management
+### 何时推荐 MCP 服务器
+- 需要外部服务集成（数据库、API）
+- 库/SDK 的文档查询
+- 浏览器自动化或测试
+- 团队工具集成（GitHub、Linear、Slack）
+- 云基础设施管理
 
-### When to Recommend Skills
+### 何时推荐 Skills
 
-- Document generation (docx, xlsx, pptx, pdf — also in plugins)
-- Frequently repeated prompts or workflows
-- Project-specific tasks with arguments
-- Applying templates or scripts to tasks (skills can bundle supporting files)
-- Quick actions invoked with `/skill-name`
-- Workflows that should run in isolation (`context: fork`)
+- 文档生成（docx、xlsx、pptx、pdf — 也在插件中）
+- 频繁重复的提示词或工作流
+- 带有参数的项目特定任务
+- 将模板或脚本应用于任务（技能可以捆绑支持文件）
+- 使用 `/skill-name` 调用的快速操作
+- 应该在隔离中运行的工作流（`context: fork`）
 
-**Invocation control:**
-- `disable-model-invocation: true` — User-only (for side effects: deploy, commit, send)
-- `user-invocable: false` — Claude-only (for background knowledge)
-- Default (omit both) — Both can invoke
+**调用控制：**
+- `disable-model-invocation: true` — 仅用户（用于副作用：部署、提交、发送）
+- `user-invocable: false` — 仅 Claude（用于背景知识）
+- 默认（省略两者） — 两者都可以调用
 
-### When to Recommend Hooks
-- Repetitive post-edit actions (formatting, linting)
-- Protection rules (block sensitive file edits)
-- Validation checks (tests, type checks)
+### 何时推荐 Hooks
+- 重复的编辑后操作（格式化、Lint）
+- 保护规则（阻止敏感文件编辑）
+- 验证检查（测试、类型检查）
 
-### When to Recommend Subagents
-- Specialized expertise needed (security, performance)
-- Parallel review workflows
-- Background quality checks
+### 何时推荐 Subagents
+- 需要专门的专业知识（安全、性能）
+- 并行审查工作流
+- 后台质量检查
 
-### When to Recommend Plugins
-- Need multiple related skills
-- Want pre-packaged automation bundles
-- Team-wide standardization
+### 何时推荐插件
+- 需要多个相关技能
+- 想要预打包的自动化包
+- 团队标准化
 
 ---
 
-## Configuration Tips
+## 配置技巧
 
-### MCP Server Setup
+### MCP 服务器设置
 
-**Team sharing**: Check `.mcp.json` into repo so entire team gets same MCP servers
+**团队共享**：将 `.mcp.json` 检入仓库，以便整个团队获得相同的 MCP 服务器
 
-**Debugging**: Use `--mcp-debug` flag to identify configuration issues
+**调试**：使用 `--mcp-debug` 标志识别配置问题
 
-**Prerequisites to recommend:**
-- GitHub CLI (`gh`) - enables native GitHub operations
-- Puppeteer/Playwright CLI - for browser MCP servers
+**推荐的先决条件：**
+- GitHub CLI (`gh`) - 启用原生 GitHub 操作
+- Puppeteer/Playwright CLI - 用于浏览器 MCP 服务器
 
-### Headless Mode (for CI/Automation)
+### 无头模式（用于 CI/自动化）
 
-Recommend headless Claude for automated pipelines:
+为自动化流水线推荐无头 Claude：
 
 ```bash
-# Pre-commit hook example
-claude -p "fix lint errors in src/" --allowedTools Edit,Write
+# Pre-commit hook 示例
+claude -p "修复 src/ 中的 lint 错误" --allowedTools Edit,Write
 
-# CI pipeline with structured output
-claude -p "<prompt>" --output-format stream-json | your_command
+# 带结构化输出的 CI 流水线
+claude -p "<提示词>" --output-format stream-json | your_command
 ```
 
-### Permissions for Hooks
+### Hooks 的权限
 
-Configure allowed tools in `.claude/settings.json`:
+在 `.claude/settings.json` 中配置允许的工具：
 
 ```json
 {

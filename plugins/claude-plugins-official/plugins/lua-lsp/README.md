@@ -1,20 +1,20 @@
 # lua-lsp
 
-Lua language server for Claude Code, providing code intelligence and diagnostics.
+Lua 语言服务器，用于 Claude Code，提供代码智能和诊断功能。
 
-## Supported Extensions
+## 支持的扩展名
 `.lua`
 
-## Installation
+## 安装
 
-### Via Homebrew (macOS)
+### 通过 Homebrew (macOS)
 ```bash
 brew install lua-language-server
 ```
 
-### Via package manager (Linux)
+### 通过包管理器 (Linux)
 ```bash
-# Ubuntu/Debian (via snap)
+# Ubuntu/Debian (通过 snap)
 sudo snap install lua-language-server --classic
 
 # Arch Linux
@@ -24,9 +24,9 @@ sudo pacman -S lua-language-server
 sudo dnf install lua-language-server
 ```
 
-### Manual Installation
-Download pre-built binaries from the [releases page](https://github.com/LuaLS/lua-language-server/releases).
+### 手动安装
+从 [releases page](https://github.com/LuaLS/lua-language-server/releases) 下载预编译的二进制文件。
 
-## More Information
+## 更多信息
 - [Lua Language Server GitHub](https://github.com/LuaLS/lua-language-server)
-- [Documentation](https://luals.github.io/)
+- [文档](https://luals.github.io/)

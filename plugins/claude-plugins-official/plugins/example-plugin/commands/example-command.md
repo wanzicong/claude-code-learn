@@ -1,35 +1,35 @@
 ---
-description: An example slash command that demonstrates command frontmatter options
-argument-hint: <required-arg> [optional-arg]
+description: 演示命令前置元数据选项的示例斜杠命令
+argument-hint: <必需参数> [可选参数]
 allowed-tools: [Read, Glob, Grep, Bash]
 ---
 
-# Example Command
+# 示例命令
 
-This command demonstrates slash command structure and frontmatter options.
+此命令演示斜杠命令结构和前置元数据选项。
 
-## Arguments
+## 参数
 
-The user invoked this command with: $ARGUMENTS
+用户使用以下参数调用了此命令：$ARGUMENTS
 
-## Instructions
+## 指令
 
-When this command is invoked:
+当调用此命令时：
 
-1. Parse the arguments provided by the user
-2. Perform the requested action using allowed tools
-3. Report results back to the user
+1. 解析用户提供的参数
+2. 使用允许的工具执行请求的操作
+3. 向用户报告结果
 
-## Frontmatter Options Reference
+## 前置元数据选项参考
 
-Commands support these frontmatter fields:
+命令支持以下前置元数据字段：
 
-- **description**: Short description shown in /help
-- **argument-hint**: Hints for command arguments shown to user
-- **allowed-tools**: Pre-approved tools for this command (reduces permission prompts)
-- **model**: Override the model (e.g., "haiku", "sonnet", "opus")
+- **description**：在 /help 中显示的简短描述
+- **argument-hint**：向用户显示的命令参数提示
+- **allowed-tools**：此命令的预批准工具（减少权限提示）
+- **model**：覆盖模型（例如 "haiku"、"sonnet"、"opus"）
 
-## Example Usage
+## 使用示例
 
 ```
 /example-command my-argument

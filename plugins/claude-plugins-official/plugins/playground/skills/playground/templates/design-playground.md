@@ -1,39 +1,39 @@
-# Design Playground Template
+# 设计 Playground 模板
 
-Use this template when the playground is about visual design decisions: components, layouts, spacing, color, typography, animation, responsive behavior.
+当 playground 是关于视觉设计决策时使用此模板：组件、布局、间距、颜色、排版、动画、响应式行为。
 
-## Layout
+## 布局
 
 ```
 +-------------------+----------------------+
 |                   |                      |
-|  Controls         |  Live component/     |
-|  grouped by:      |  layout preview      |
-|  • Spacing        |  (renders in a       |
-|  • Color          |   mock page or       |
-|  • Typography     |   isolated card)     |
-|  • Shadow/Border  |                      |
-|  • Interaction    |                      |
+|  控件             |  实时组件/          |
+|  按以下分组:      |  布局预览            |
+|  • 间距           |  (在模拟页面或       |
+|  • 颜色           |   独立卡片中渲染)    |
+|  • 排版           |                      |
+|  • 阴影/边框      |                      |
+|  • 交互           |                      |
 |                   +----------------------+
-|                   |  Prompt output       |
-|                   |  [ Copy Prompt ]     |
+|                   |  提示词输出          |
+|                   |  [ 复制提示词 ]      |
 +-------------------+----------------------+
 ```
 
-## Control types by decision
+## 按决策分类的控件类型
 
-| Decision | Control | Example |
+| 决策 | 控件 | 示例 |
 |---|---|---|
-| Sizes, spacing, radius | Slider | border-radius 0–24px |
-| On/off features | Toggle | show border, hover effect |
-| Choosing from a set | Dropdown | font-family, easing curve |
-| Colors | Hue + saturation + lightness sliders | shadow color, accent |
-| Layout structure | Clickable cards | sidebar-left / top-nav / no-nav |
-| Responsive behavior | Viewport-width slider | watch grid reflow at breakpoints |
+| 尺寸、间距、半径 | 滑块 | border-radius 0–24px |
+| 开/关功能 | 切换开关 | 显示边框、悬停效果 |
+| 从集合中选择 | 下拉列表 | font-family、缓动曲线 |
+| 颜色 | 色相 + 饱和度 + 亮度滑块 | 阴影颜色、强调色 |
+| 布局结构 | 可点击卡片 | 侧边栏左侧 / 顶部导航 / 无导航 |
+| 响应式行为 | 视口宽度滑块 | 在断点处观察网格重排 |
 
-## Preview rendering
+## 预览渲染
 
-Apply state values directly to a preview element's inline styles:
+将状态值直接应用于预览元素的内联样式：
 
 ```javascript
 function renderPreview() {
@@ -46,22 +46,22 @@ function renderPreview() {
 }
 ```
 
-Show the preview on both light and dark backgrounds if relevant. Include a context toggle.
+如果相关，在浅色和深色背景上显示预览。包含上下文切换。
 
-## Prompt output for design
+## 设计的提示词输出
 
-Frame it as a direction to a developer, not a spec sheet:
+将其构建为给开发者的指示，而不是规范表：
 
-> "Update the card to feel soft and elevated: 12px border-radius, 24px horizontal padding, a medium box-shadow (0 4px 12px rgba(0,0,0,0.1)). On hover, lift it with translateY(-1px) and deepen the shadow slightly."
+> "更新卡片使其感觉柔和且有提升感：12px border-radius，24px 水平内边距，中等 box-shadow（0 4px 12px rgba(0,0,0,0.1)）。悬停时，使用 translateY(-1px) 将其提升，并略微加深阴影。"
 
-If the user is working in Tailwind, suggest Tailwind classes. If raw CSS, use CSS properties.
+如果用户使用 Tailwind，建议 Tailwind 类。如果是原始 CSS，使用 CSS 属性。
 
-## Example topics
+## 示例主题
 
-- Button style explorer (radius, padding, weight, hover/active states)
-- Card component (shadow depth, radius, content layout, image)
-- Layout builder (sidebar width, content max-width, header height, grid)
-- Typography scale (base size, ratio, line heights across h1-body-caption)
-- Color palette generator (primary hue, derive secondary/accent/surface)
-- Dashboard density (airy → compact slider that scales everything proportionally)
-- Modal/dialog (width, overlay opacity, entry animation, corner radius)
+- 按钮样式探索器（半径、内边距、字重、悬停/活动状态）
+- 卡片组件（阴影深度、半径、内容布局、图片）
+- 布局构建器（侧边栏宽度、内容最大宽度、标题高度、网格）
+- 排版比例（基础大小、比例、h1-body-caption 的行高）
+- 调色板生成器（主色相，派生次要色/强调色/表面色）
+- 仪表板密度（宽敞 → 紧凑滑块，按比例缩放所有内容）
+- 模态框/对话框（宽度、叠加不透明度、进入动画、圆角）

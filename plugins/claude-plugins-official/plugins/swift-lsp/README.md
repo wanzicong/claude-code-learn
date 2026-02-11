@@ -1,25 +1,25 @@
 # swift-lsp
 
-Swift language server (SourceKit-LSP) for Claude Code, providing code intelligence for Swift projects.
+Swift 语言服务器 (SourceKit-LSP)，用于 Claude Code，为 Swift 项目提供代码智能功能。
 
-## Supported Extensions
+## 支持的扩展名
 `.swift`
 
-## Installation
+## 安装
 
-SourceKit-LSP is included with the Swift toolchain.
+SourceKit-LSP 包含在 Swift 工具链中。
 
 ### macOS
-Install Xcode from the App Store, or install Swift via:
+从 App Store 安装 Xcode，或通过以下方式安装 Swift：
 ```bash
 brew install swift
 ```
 
 ### Linux
-Download and install Swift from [swift.org](https://www.swift.org/download/).
+从 [swift.org](https://www.swift.org/download/) 下载并安装 Swift。
 
-After installation, `sourcekit-lsp` should be available in your PATH.
+安装完成后，`sourcekit-lsp` 应该在你的 PATH 中可用。
 
-## More Information
+## 更多信息
 - [SourceKit-LSP GitHub](https://github.com/apple/sourcekit-lsp)
 - [Swift.org](https://www.swift.org/)

@@ -4,89 +4,89 @@ description: Code review a pull request
 disable-model-invocation: false
 ---
 
-Provide a code review for the given pull request.
+为给定的拉取请求提供代码审查。
 
-To do this, follow these steps precisely:
+为此，请精确遵循以下步骤：
 
-1. Use a Haiku agent to check if the pull request (a) is closed, (b) is a draft, (c) does not need a code review (eg. because it is an automated pull request, or is very simple and obviously ok), or (d) already has a code review from you from earlier. If so, do not proceed.
-2. Use another Haiku agent to give you a list of file paths to (but not the contents of) any relevant CLAUDE.md files from the codebase: the root CLAUDE.md file (if one exists), as well as any CLAUDE.md files in the directories whose files the pull request modified
-3. Use a Haiku agent to view the pull request, and ask the agent to return a summary of the change
-4. Then, launch 5 parallel Sonnet agents to independently code review the change. The agents should do the following, then return a list of issues and the reason each issue was flagged (eg. CLAUDE.md adherence, bug, historical git context, etc.):
-   a. Agent #1: Audit the changes to make sure they compily with the CLAUDE.md. Note that CLAUDE.md is guidance for Claude as it writes code, so not all instructions will be applicable during code review.
-   b. Agent #2: Read the file changes in the pull request, then do a shallow scan for obvious bugs. Avoid reading extra context beyond the changes, focusing just on the changes themselves. Focus on large bugs, and avoid small issues and nitpicks. Ignore likely false positives.
-   c. Agent #3: Read the git blame and history of the code modified, to identify any bugs in light of that historical context
-   d. Agent #4: Read previous pull requests that touched these files, and check for any comments on those pull requests that may also apply to the current pull request.
-   e. Agent #5: Read code comments in the modified files, and make sure the changes in the pull request comply with any guidance in the comments.
-5. For each issue found in #4, launch a parallel Haiku agent that takes the PR, issue description, and list of CLAUDE.md files (from step 2), and returns a score to indicate the agent's level of confidence for whether the issue is real or false positive. To do that, the agent should score each issue on a scale from 0-100, indicating its level of confidence. For issues that were flagged due to CLAUDE.md instructions, the agent should double check that the CLAUDE.md actually calls out that issue specifically. The scale is (give this rubric to the agent verbatim):
-   a. 0: Not confident at all. This is a false positive that doesn't stand up to light scrutiny, or is a pre-existing issue.
-   b. 25: Somewhat confident. This might be a real issue, but may also be a false positive. The agent wasn't able to verify that it's a real issue. If the issue is stylistic, it is one that was not explicitly called out in the relevant CLAUDE.md.
-   c. 50: Moderately confident. The agent was able to verify this is a real issue, but it might be a nitpick or not happen very often in practice. Relative to the rest of the PR, it's not very important.
-   d. 75: Highly confident. The agent double checked the issue, and verified that it is very likely it is a real issue that will be hit in practice. The existing approach in the PR is insufficient. The issue is very important and will directly impact the code's functionality, or it is an issue that is directly mentioned in the relevant CLAUDE.md.
-   e. 100: Absolutely certain. The agent double checked the issue, and confirmed that it is definitely a real issue, that will happen frequently in practice. The evidence directly confirms this.
-6. Filter out any issues with a score less than 80. If there are no issues that meet this criteria, do not proceed.
-7. Use a Haiku agent to repeat the eligibility check from #1, to make sure that the pull request is still eligible for code review.
-8. Finally, use the gh bash command to comment back on the pull request with the result. When writing your comment, keep in mind to:
-   a. Keep your output brief
-   b. Avoid emojis
-   c. Link and cite relevant code, files, and URLs
+1. 使用 Haiku 代理检查拉取请求是否（a）已关闭，（b）是草稿，（c）不需要代码审查（例如，因为它是自动拉取请求，或非常简单且明显没问题），或者（d）之前已有您的代码审查。如果是，请不要继续。
+2. 使用另一个 Haiku 代理为您提供代码库中任何相关 CLAUDE.md 文件的文件路径（但不是内容）：根 CLAUDE.md 文件（如果存在），以及拉取请求修改的文件所在目录中的任何 CLAUDE.md 文件
+3. 使用 Haiku 代理查看拉取请求，并要求代理返回变更的摘要
+4. 然后，启动 5 个并行的 Sonnet 代理来独立代码审查变更。代理应执行以下操作，然后返回问题列表以及每个问题被标记的原因（例如，CLAUDE.md 遵守、错误、历史 git 上下文等）：
+   a. 代理 #1：审查变更以确保它们符合 CLAUDE.md。注意 CLAUDE.md 是 Claude 编写代码时的指导，因此并非所有指令都适用于代码审查。
+   b. 代理 #2：读取拉取请求中的文件变更，然后进行浅层扫描以发现明显错误。避免阅读变更之外的额外上下文，只关注变更本身。专注于大错误，避免小问题和吹毛求疵。忽略可能的误报。
+   c. 代理 #3：读取已修改代码的 git blame 和历史，以根据该历史上下文识别任何错误
+   d. 代理 #4：读取之前触及这些文件的拉取请求，并检查这些拉取请求上的任何可能也适用于当前拉取请求的评论。
+   e. 代理 #5：读取已修改文件中的代码注释，并确保拉取请求中的变更符合注释中的任何指导。
+5. 对于 #4 中发现的每个问题，启动一个并行的 Haiku 代理，该代理接受 PR、问题描述和 CLAUDE.md 文件列表（来自步骤 2），并返回一个分数以指示代理对该问题是真实的还是误报的置信度。为此，代理应在 0-100 的标度上对每个问题进行评分，表示其置信度水平。对于由于 CLAUDE.md 指令而标记的问题，代理应再次检查 CLAUDE.md 是否实际明确指出了该问题。标度如下（将此评分标准原样提供给代理）：
+   a. 0：完全不确信。这是经不起轻度审查的误报，或者是现有问题。
+   b. 25：有些确信。这可能是一个真实问题，但也可能是误报。代理无法验证它是真实问题。如果问题是风格问题，则是相关 CLAUDE.md 中未明确指出的问题。
+   c. 50：中等确信。代理能够验证这是真实问题，但可能是吹毛求疵或在实践中很少发生。相对于 PR 的其余部分，它并不重要。
+   d. 75：高度确信。代理再次检查了问题，并验证它很可能是实践中会遇到的真实问题。PR 中的现有方法不足。该问题非常重要并将直接影响代码的功能，或者是相关 CLAUDE.md 中直接提到的问题。
+   e. 100：绝对确信。代理再次检查了问题，并确认它确实是一个真实问题，在实践中会频繁发生。证据直接证实了这一点。
+6. 过滤掉任何评分低于 80 的问题。如果没有符合此条件的问题，请不要继续。
+7. 使用 Haiku 代理重复 #1 中的资格检查，以确保拉取请求仍然有资格进行代码审查。
+8. 最后，使用 gh bash 命令将结果评论回拉取请求。在编写评论时，请记住：
+   a. 保持输出简短
+   b. 避免使用表情符号
+   c. 链接并引用相关代码、文件和 URL
 
-Examples of false positives, for steps 4 and 5:
+步骤 4 和 5 中误报的示例：
 
-- Pre-existing issues
-- Something that looks like a bug but is not actually a bug
-- Pedantic nitpicks that a senior engineer wouldn't call out
-- Issues that a linter, typechecker, or compiler would catch (eg. missing or incorrect imports, type errors, broken tests, formatting issues, pedantic style issues like newlines). No need to run these build steps yourself -- it is safe to assume that they will be run separately as part of CI.
-- General code quality issues (eg. lack of test coverage, general security issues, poor documentation), unless explicitly required in CLAUDE.md
-- Issues that are called out in CLAUDE.md, but explicitly silenced in the code (eg. due to a lint ignore comment)
-- Changes in functionality that are likely intentional or are directly related to the broader change
-- Real issues, but on lines that the user did not modify in their pull request
+- 现有问题
+- 看起来像错误但实际上不是错误的东西
+- 资深工程师不会指出的吹毛求疵的挑剔问题
+- linter、类型检查器或编译器会捕获的问题（例如，缺少或不正确的导入、类型错误、损坏的测试、格式问题、换行等吹毛求疵的风格问题）。无需自己运行这些构建步骤 - 可以安全假设它们将作为 CI 的一部分单独运行。
+- 一般代码质量问题（例如，缺乏测试覆盖率、一般安全问题、文档糟糕），除非 CLAUDE.md 中明确要求
+- CLAUDE.md 中指出的问题，但在代码中显式静音（例如，由于 lint 忽略注释）
+- 可能是有意或与更广泛变更直接相关的功能变更
+- 真实问题，但用户在拉取请求中未修改的行上
 
-Notes:
+注意事项：
 
-- Do not check build signal or attempt to build or typecheck the app. These will run separately, and are not relevant to your code review.
-- Use `gh` to interact with Github (eg. to fetch a pull request, or to create inline comments), rather than web fetch
-- Make a todo list first
-- You must cite and link each bug (eg. if referring to a CLAUDE.md, you must link it)
-- For your final comment, follow the following format precisely (assuming for this example that you found 3 issues):
-
----
-
-### Code review
-
-Found 3 issues:
-
-1. <brief description of bug> (CLAUDE.md says "<...>")
-
-<link to file and line with full sha1 + line range for context, note that you MUST provide the full sha and not use bash here, eg. https://github.com/anthropics/claude-code/blob/1d54823877c4de72b2316a64032a54afc404e619/README.md#L13-L17>
-
-2. <brief description of bug> (some/other/CLAUDE.md says "<...>")
-
-<link to file and line with full sha1 + line range for context>
-
-3. <brief description of bug> (bug due to <file and code snippet>)
-
-<link to file and line with full sha1 + line range for context>
-
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-<sub>- If this code review was useful, please react with 👍. Otherwise, react with 👎.</sub>
-
----
-
-- Or, if you found no issues:
+- 不要检查构建信号或尝试构建或类型检查应用程序。这些将单独运行，与您的代码审查无关。
+- 使用 `gh` 与 Github 交互（例如，获取拉取请求或创建内联评论），而不是 web fetch
+- 首先创建待办事项列表
+- 您必须引用并链接每个错误（例如，如果引用 CLAUDE.md，必须链接它）
+- 对于您的最终评论，请精确遵循以下格式（假设在此示例中您发现了 3 个问题）：
 
 ---
 
 ### Code review
 
-No issues found. Checked for bugs and CLAUDE.md compliance.
+发现 3 个问题：
+
+1. <错误的简要描述>（CLAUDE.md 说"<...>"）
+
+<使用完整 sha1 + 行范围上下文的文件和行链接，注意您必须提供完整 sha 且不要在此处使用 bash，例如 https://github.com/anthropics/claude-code/blob/1d54823877c4de72b2316a64032a54afc404e619/README.md#L13-L17>
+
+2. <错误的简要描述>（some/other/CLAUDE.md 说"<...>"）
+
+<使用完整 sha1 + 行范围上下文的文件和行链接>
+
+3. <错误的简要描述>（由于<文件和代码片段>导致的错误）
+
+<使用完整 sha1 + 行范围上下文的文件和行链接>
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
 
-- When linking to code, follow the following format precisely, otherwise the Markdown preview won't render correctly: https://github.com/anthropics/claude-cli-internal/blob/c21d3c10bc8e898b7ac1a2d745bdc9bc4e423afe/package.json#L10-L15
-  - Requires full git sha
-  - You must provide the full sha. Commands like `https://github.com/owner/repo/blob/$(git rev-parse HEAD)/foo/bar` will not work, since your comment will be directly rendered in Markdown.
-  - Repo name must match the repo you're code reviewing
-  - # sign after the file name
-  - Line range format is L[start]-L[end]
-  - Provide at least 1 line of context before and after, centered on the line you are commenting about (eg. if you are commenting about lines 5-6, you should link to `L4-7`)
+<sub>- 如果此代码审查有用，请用 👍 反应。否则，用 👎 反应。</sub>
+
+---
+
+- 或者，如果您未发现问题：
+
+---
+
+### Code review
+
+未发现问题。已检查错误和 CLAUDE.md 合规性。
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+- 链接到代码时，请精确遵循以下格式，否则 Markdown 预览将无法正确渲染：https://github.com/anthropics/claude-cli-internal/blob/c21d3c10bc8e898b7ac1a2d745bdc9bc4e423afe/package.json#L10-L15
+  - 需要完整的 git sha
+  - 您必须提供完整 sha。像 `https://github.com/owner/repo/blob/$(git rev-parse HEAD)/foo/bar` 这样的命令将不起作用，因为您的评论将直接在 Markdown 中渲染。
+  - 仓库名称必须与您正在代码审查的仓库匹配
+  - 文件名后的 # 符号
+  - 行范围格式为 L[start]-L[end]
+  - 在评论的行之前和之后提供至少 1 行上下文，以您评论的行为中心（例如，如果您评论 5-6 行，您应链接到 `L4-7`）

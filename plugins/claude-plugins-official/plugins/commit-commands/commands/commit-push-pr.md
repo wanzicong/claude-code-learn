@@ -1,20 +1,20 @@
 ---
 allowed-tools: Bash(git checkout --branch:*), Bash(git add:*), Bash(git status:*), Bash(git push:*), Bash(git commit:*), Bash(gh pr create:*)
-description: Commit, push, and open a PR
+description: 提交、推送并打开一个 PR
 ---
 
-## Context
+## 上下文
 
-- Current git status: !`git status`
-- Current git diff (staged and unstaged changes): !`git diff HEAD`
-- Current branch: !`git branch --show-current`
+- 当前 git 状态：!`git status`
+- 当前 git diff（已暂存和未暂存的更改）：!`git diff HEAD`
+- 当前分支：!`git branch --show-current`
 
-## Your task
+## 您的任务
 
-Based on the above changes:
+基于以上更改：
 
-1. Create a new branch if on main
-2. Create a single commit with an appropriate message
-3. Push the branch to origin
-4. Create a pull request using `gh pr create`
-5. You have the capability to call multiple tools in a single response. You MUST do all of the above in a single message. Do not use any other tools or do anything else. Do not send any other text or messages besides these tool calls.
+1. 如果在 main 上，创建一个新分支
+2. 使用适当的消息创建单个提交
+3. 将分支推送到 origin
+4. 使用 `gh pr create` 创建拉取请求
+5. 您有能力在单个响应中调用多个工具。您必须在单个消息中完成上述所有操作。不要使用任何其他工具或做任何其他事情。除了这些工具调用外，不要发送任何其他文本或消息。

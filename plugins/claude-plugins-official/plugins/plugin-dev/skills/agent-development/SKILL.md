@@ -1,42 +1,42 @@
 ---
 name: agent-development
-description: This skill should be used when the user asks to "create an agent", "add an agent", "write a subagent", "agent frontmatter", "when to use description", "agent examples", "agent tools", "agent colors", "autonomous agent", or needs guidance on agent structure, system prompts, triggering conditions, or agent development best practices for Claude Code plugins.
+description: 此技能应在用户请求"创建代理"、"添加代理"、"编写子代理"、"代理前置内容"、"何时使用描述"、"代理示例"、"代理工具"、"代理颜色"、"自主代理"，或需要有关代理结构、系统提示、触发条件或 Claude Code 插件的代理开发最佳实践指导时使用。
 version: 0.1.0
 ---
 
-# Agent Development for Claude Code Plugins
+# Claude Code 插件的代理开发
 
-## Overview
+## 概述
 
-Agents are autonomous subprocesses that handle complex, multi-step tasks independently. Understanding agent structure, triggering conditions, and system prompt design enables creating powerful autonomous capabilities.
+代理是自主子进程，可以独立处理复杂的多步骤任务。理解代理结构、触发条件和系统提示设计，可以创建强大的自主能力。
 
-**Key concepts:**
-- Agents are FOR autonomous work, commands are FOR user-initiated actions
-- Markdown file format with YAML frontmatter
-- Triggering via description field with examples
-- System prompt defines agent behavior
-- Model and color customization
+**核心概念：**
+- 代理用于自主工作，命令用于用户发起的操作
+- 带 YAML 前置内容的 Markdown 文件格式
+- 通过带示例的描述字段触发
+- 系统提示定义代理行为
+- 模型和颜色自定义
 
-## Agent File Structure
+## 代理文件结构
 
-### Complete Format
+### 完整格式
 
 ```markdown
 ---
 name: agent-identifier
-description: Use this agent when [triggering conditions]. Examples:
+description: 当 [触发条件] 时使用此代理。示例：
 
 <example>
-Context: [Situation description]
-user: "[User request]"
-assistant: "[How assistant should respond and use this agent]"
+Context: [情况描述]
+user: "[用户请求]"
+assistant: "[助手应如何响应并使用此代理]"
 <commentary>
-[Why this agent should be triggered]
+[为何应触发此代理]
 </commentary>
 </example>
 
 <example>
-[Additional example...]
+[附加示例...]
 </example>
 
 model: inherit
@@ -44,249 +44,251 @@ color: blue
 tools: ["Read", "Write", "Grep"]
 ---
 
-You are [agent role description]...
+你是 [代理角色描述]...
 
-**Your Core Responsibilities:**
-1. [Responsibility 1]
-2. [Responsibility 2]
+**你的核心职责：**
+1. [职责 1]
+2. [职责 2]
 
-**Analysis Process:**
-[Step-by-step workflow]
+**分析流程：**
+[分步工作流程]
 
-**Output Format:**
-[What to return]
+**输出格式：**
+[返回内容]
 ```
 
-## Frontmatter Fields
+## 前置内容字段
 
-### name (required)
+### name (必填)
 
-Agent identifier used for namespacing and invocation.
+用于命名空间和调用的代理标识符。
 
-**Format:** lowercase, numbers, hyphens only
-**Length:** 3-50 characters
-**Pattern:** Must start and end with alphanumeric
+**格式：** 小写、数字、仅限连字符
+**长度：** 3-50 个字符
+**模式：** 必须以字母数字开头和结尾
 
-**Good examples:**
+**良好示例：**
 - `code-reviewer`
 - `test-generator`
 - `api-docs-writer`
 - `security-analyzer`
 
-**Bad examples:**
-- `helper` (too generic)
-- `-agent-` (starts/ends with hyphen)
-- `my_agent` (underscores not allowed)
-- `ag` (too short, < 3 chars)
+**不良示例：**
+- `helper` (过于通用)
+- `-agent-` (以连字符开头/结尾)
+- `my_agent` (不允许下划线)
+- `ag` (太短，< 3 个字符)
 
-### description (required)
+### description (必填)
 
-Defines when Claude should trigger this agent. **This is the most critical field.**
+定义 Claude 应何时触发此代理。**这是最关键的字段。**
 
-**Must include:**
-1. Triggering conditions ("Use this agent when...")
-2. Multiple `<example>` blocks showing usage
-3. Context, user request, and assistant response in each example
-4. `<commentary>` explaining why agent triggers
+**必须包含：**
+1. 触发条件（"当...时使用此代理"）
+2. 多个显示用法的 `<example>` 块
+3. 每个示例中的上下文、用户请求和助手响应
+4. 解释为何触发代理的 `<commentary>`
 
-**Format:**
+**格式：**
 ```
-Use this agent when [conditions]. Examples:
+当 [条件] 时使用此代理。示例：
 
 <example>
-Context: [Scenario description]
-user: "[What user says]"
-assistant: "[How Claude should respond]"
+Context: [场景描述]
+user: "[用户所说的内容]"
+assistant: "[Claude 应如何响应]"
 <commentary>
-[Why this agent is appropriate]
+[为何此代理合适]
 </commentary>
 </example>
 
-[More examples...]
+[更多示例...]
 ```
 
-**Best practices:**
-- Include 2-4 concrete examples
-- Show proactive and reactive triggering
-- Cover different phrasings of same intent
-- Explain reasoning in commentary
-- Be specific about when NOT to use the agent
+**最佳实践：**
+- 包含 2-4 个具体示例
+- 展示主动和被动触发
+- 覆盖相同意图的不同表达方式
+- 在注释中解释推理
+- 明确说明何时不使用代理
 
-### model (required)
+### model (必填)
 
-Which model the agent should use.
+代理应使用的模型。
 
-**Options:**
-- `inherit` - Use same model as parent (recommended)
-- `sonnet` - Claude Sonnet (balanced)
-- `opus` - Claude Opus (most capable, expensive)
-- `haiku` - Claude Haiku (fast, cheap)
+**选项：**
+- `inherit` - 使用与父级相同的模型（推荐）
+- `sonnet` - Claude Sonnet（平衡型）
+- `opus` - Claude Opus（最强能力，昂贵）
+- `haiku` - Claude Haiku（快速，便宜）
 
-**Recommendation:** Use `inherit` unless agent needs specific model capabilities.
+**建议：** 除非代理需要特定模型能力，否则使用 `inherit`
 
-### color (required)
+### color (必填)
 
-Visual identifier for agent in UI.
+UI 中代理的视觉标识符。
 
-**Options:** `blue`, `cyan`, `green`, `yellow`, `magenta`, `red`
+**选项：** `blue`, `cyan`, `green`, `yellow`, `magenta`, `red`
 
-**Guidelines:**
-- Choose distinct colors for different agents in same plugin
-- Use consistent colors for similar agent types
-- Blue/cyan: Analysis, review
-- Green: Success-oriented tasks
-- Yellow: Caution, validation
-- Red: Critical, security
-- Magenta: Creative, generation
+**指导原则：**
+- 为同一插件中的不同代理选择不同的颜色
+- 为相似的代理类型使用一致的颜色
+- Blue/cyan：分析、审查
+- Green：面向成功的任务
+- Yellow：警告、验证
+- Red：关键、安全
+- Magenta：创意、生成
 
-### tools (optional)
+### tools (可选)
 
-Restrict agent to specific tools.
+限制代理仅使用特定工具。
 
-**Format:** Array of tool names
+**格式：** 工具名称数组
 
 ```yaml
 tools: ["Read", "Write", "Grep", "Bash"]
 ```
 
-**Default:** If omitted, agent has access to all tools
+**默认：** 如果省略，代理可访问所有工具
 
-**Best practice:** Limit tools to minimum needed (principle of least privilege)
+**最佳实践：** 将工具限制为最少所需（最小权限原则）
 
-**Common tool sets:**
-- Read-only analysis: `["Read", "Grep", "Glob"]`
-- Code generation: `["Read", "Write", "Grep"]`
-- Testing: `["Read", "Bash", "Grep"]`
-- Full access: Omit field or use `["*"]`
+**常用工具集：**
+- 只读分析：`["Read", "Grep", "Glob"]`
+- 代码生成：`["Read", "Write", "Grep"]`
+- 测试：`["Read", "Bash", "Grep"]`
+- 完全访问：省略字段或使用 `["*"]`
 
-## System Prompt Design
+## 系统提示设计
 
-The markdown body becomes the agent's system prompt. Write in second person, addressing the agent directly.
+Markdown 正文成为代理的系统提示。使用第二人称编写，直接对代理说话。
 
-### Structure
+。
 
-**Standard template:**
+### 结构
+
+**标准模板：**
 ```markdown
-You are [role] specializing in [domain].
+你是 [角色]，专精于 [领域]。
 
-**Your Core Responsibilities:**
-1. [Primary responsibility]
-2. [Secondary responsibility]
-3. [Additional responsibilities...]
+**你的核心职责：**
+1. [主要职责]
+2. [次要职责]
+3. [其他职责...]
 
-**Analysis Process:**
-1. [Step one]
-2. [Step two]
-3. [Step three]
+**分析流程：**
+1. [步骤一]
+2. [步骤二]
+3. [步骤三]
 [...]
 
-**Quality Standards:**
-- [Standard 1]
-- [Standard 2]
+**质量标准：**
+- [标准 1]
+- [标准 2]
 
-**Output Format:**
-Provide results in this format:
-- [What to include]
-- [How to structure]
+**输出格式：**
+按以下格式提供结果：
+- [包含内容]
+- [结构方式]
 
-**Edge Cases:**
-Handle these situations:
-- [Edge case 1]: [How to handle]
-- [Edge case 2]: [How to handle]
+**边缘情况：**
+处理以下情况：
+- [边缘情况 1]：[处理方式]
+- [边缘情况 2]：[处理方式]
 ```
 
-### Best Practices
+### 最佳实践
 
-✅ **DO:**
-- Write in second person ("You are...", "You will...")
-- Be specific about responsibilities
-- Provide step-by-step process
-- Define output format
-- Include quality standards
-- Address edge cases
-- Keep under 10,000 characters
+✅ **应做：**
+- 使用第二人称（"你是..."，"你将..."）
+- 明确说明职责
+- 提供分步流程
+- 定义输出格式
+- 包含质量标准
+- 处理边缘情况
+- 保持在 10,000 字符以下
 
-❌ **DON'T:**
-- Write in first person ("I am...", "I will...")
-- Be vague or generic
-- Omit process steps
-- Leave output format undefined
-- Skip quality guidance
-- Ignore error cases
+❌ **不应做：**
+- 使用第一人称（"我是..."，"我将..."）
+- 含糊或通用
+- 省略流程步骤
+- 输出格式未定义
+- 跳过质量指导
+- 忽略错误情况
 
-## Creating Agents
+## 创建代理
 
-### Method 1: AI-Assisted Generation
+### 方法 1：AI 辅助生成
 
-Use this prompt pattern (extracted from Claude Code):
+使用此提示模式（提取自 Claude Code）：
 
 ```
-Create an agent configuration based on this request: "[YOUR DESCRIPTION]"
+根据此请求创建代理配置："[您的描述]"
 
-Requirements:
-1. Extract core intent and responsibilities
-2. Design expert persona for the domain
-3. Create comprehensive system prompt with:
-   - Clear behavioral boundaries
-   - Specific methodologies
-   - Edge case handling
-   - Output format
-4. Create identifier (lowercase, hyphens, 3-50 chars)
-5. Write description with triggering conditions
-6. Include 2-3 <example> blocks showing when to use
+要求：
+1. 提取核心意图和职责
+2. 为领域设计专家角色
+3. 创建包含以下内容的综合系统提示：
+   - 明确的行为边界
+   - 具体方法
+   - 边缘情况处理
+   - 输出格式
+4. 创建标识符（小写、连字符、3-50 个字符）
+5. 编写带触发条件的描述
+6. 包含 2-3 个显示使用时机的 <example> 块
 
-Return JSON with:
+返回 JSON：
 {
   "identifier": "agent-name",
-  "whenToUse": "Use this agent when... Examples: <example>...</example>",
-  "systemPrompt": "You are..."
+  "whenToUse": "当...时使用此代理。示例：<example>...</example>",
+  "systemPrompt": "你是..."
 }
 ```
 
-Then convert to agent file format with frontmatter.
+然后使用前置内容转换为代理文件格式。
 
-See `examples/agent-creation-prompt.md` for complete template.
+参见 `examples/agent-creation-prompt.md` 获取完整模板。
 
-### Method 2: Manual Creation
+### 方法 2：手动创建
 
-1. Choose agent identifier (3-50 chars, lowercase, hyphens)
-2. Write description with examples
-3. Select model (usually `inherit`)
-4. Choose color for visual identification
-5. Define tools (if restricting access)
-6. Write system prompt with structure above
-7. Save as `agents/agent-name.md`
+1. 选择代理标识符（3-50 个字符，小写，连字符）
+2. 编写带示例的描述
+3. 选择模型（通常为 `inherit`）
+4. 选择颜色以进行视觉识别
+5. 定义工具（如果限制访问）
+6. 使用上述结构编写系统提示
+7. 保存为 `agents/agent-name.md`
 
-## Validation Rules
+## 验证规则
 
-### Identifier Validation
+### 标识符验证
 
 ```
-✅ Valid: code-reviewer, test-gen, api-analyzer-v2
-❌ Invalid: ag (too short), -start (starts with hyphen), my_agent (underscore)
+✅ 有效：code-reviewer, test-gen, api-analyzer-v2
+❌ 无效：ag (太短), -start (以连字符开头), my_agent (下划线)
 ```
 
-**Rules:**
-- 3-50 characters
-- Lowercase letters, numbers, hyphens only
-- Must start and end with alphanumeric
-- No underscores, spaces, or special characters
+**规则：**
+- 3-50 个字符
+- 仅限小写字母、数字、连字符
+- 必须以字母数字开头和结尾
+- 无下划线、空格或特殊字符
 
-### Description Validation
+### 描述验证
 
-**Length:** 10-5,000 characters
-**Must include:** Triggering conditions and examples
-**Best:** 200-1,000 characters with 2-4 examples
+**长度：** 10-5,000 个字符
+**必须包含：** 触发条件和示例
+**最佳：** 200-1,000 个字符，2-4 个示例
 
-### System Prompt Validation
+### 系统提示验证
 
-**Length:** 20-10,000 characters
-**Best:** 500-3,000 characters
-**Structure:** Clear responsibilities, process, output format
+**长度：** 20-10,000 个字符
+**最佳：** 500-3,000 个字符
+**结构：** 明确职责、流程、输出格式
 
-## Agent Organization
+## 代理组织
 
-### Plugin Agents Directory
+### 插件代理目录
 
 ```
 plugin-name/
@@ -296,120 +298,120 @@ plugin-name/
     └── generator.md
 ```
 
-All `.md` files in `agents/` are auto-discovered.
+`agents/` 中的所有 `.md` 文件都会被自动发现。
 
-### Namespacing
+### 命名空间
 
-Agents are namespaced automatically:
-- Single plugin: `agent-name`
-- With subdirectories: `plugin:subdir:agent-name`
+代理自动具有命名空间：
+- 单个插件：`agent-name`
+- 带子目录：`plugin:subdir:agent-name`
 
-## Testing Agents
+## 测试代理
 
-### Test Triggering
+### 测试触发
 
-Create test scenarios to verify agent triggers correctly:
+创建测试场景以验证代理正确触发：
 
-1. Write agent with specific triggering examples
-2. Use similar phrasing to examples in test
-3. Check Claude loads the agent
-4. Verify agent provides expected functionality
+1. 编写带特定触发示例的代理
+2. 在测试中使用与示例类似的表述
+3. 检查 Claude 是否加载代理
+4. 验证代理提供预期功能
 
-### Test System Prompt
+### 测试系统提示
 
-Ensure system prompt is complete:
+确保系统提示完整：
 
-1. Give agent typical task
-2. Check it follows process steps
-3. Verify output format is correct
-4. Test edge cases mentioned in prompt
-5. Confirm quality standards are met
+1. 给代理典型任务
+2. 检查它是否遵循流程步骤
+3. 验证输出格式正确
+4. 测试提示中提到的边缘情况
+5. 确认符合质量标准
 
-## Quick Reference
+## 快速参考
 
-### Minimal Agent
+### 最小代理
 
 ```markdown
 ---
 name: simple-agent
-description: Use this agent when... Examples: <example>...</example>
+description: 当...时使用此代理。示例：<example>...</example>
 model: inherit
 color: blue
 ---
 
-You are an agent that [does X].
+你是执行 [X] 的代理。
 
-Process:
-1. [Step 1]
-2. [Step 2]
+流程：
+1. [步骤 1]
+2. [步骤 2]
 
-Output: [What to provide]
+输出：[提供内容]
 ```
 
-### Frontmatter Fields Summary
+### 前置内容字段摘要
 
-| Field | Required | Format | Example |
+| 字段 | 必填 | 格式 | 示例 |
 |-------|----------|--------|---------|
-| name | Yes | lowercase-hyphens | code-reviewer |
-| description | Yes | Text + examples | Use when... <example>... |
-| model | Yes | inherit/sonnet/opus/haiku | inherit |
-| color | Yes | Color name | blue |
-| tools | No | Array of tool names | ["Read", "Grep"] |
+| name | 是 | 小写-连字符 | code-reviewer |
+| description | 是 | 文本 + 示例 | 当...时使用 <example>... |
+| model | 是 | inherit/sonnet/opus/haiku | inherit |
+| color | 是 | 颜色名称 | blue |
+| tools | 否 | 工具名称数组 | ["Read", "Grep"] |
 
-### Best Practices
+### 最佳实践
 
-**DO:**
-- ✅ Include 2-4 concrete examples in description
-- ✅ Write specific triggering conditions
-- ✅ Use `inherit` for model unless specific need
-- ✅ Choose appropriate tools (least privilege)
-- ✅ Write clear, structured system prompts
-- ✅ Test agent triggering thoroughly
+**应做：**
+- ✅ 在描述中包含 2-4 个具体示例
+- ✅ 编写具体的触发条件
+- ✅ 除非有特定需求，否则对模型使用 `inherit`
+- ✅ 选择合适的工具（最小权限）
+- ✅ 编写清晰、结构化的系统提示
+- ✅ 彻底测试代理触发
 
-**DON'T:**
-- ❌ Use generic descriptions without examples
-- ❌ Omit triggering conditions
-- ❌ Give all agents same color
-- ❌ Grant unnecessary tool access
-- ❌ Write vague system prompts
-- ❌ Skip testing
+**不应做：**
+- ❌ 使用没有示例的通用描述
+- ❌ 省略触发条件
+- ❌ 给所有代理相同的颜色
+- ❌ 授予不必要的工具访问权限
+- ❌ 编写含糊的系统提示
+- ❌ 跳过测试
 
-## Additional Resources
+## 其他资源
 
-### Reference Files
+### 参考文件
 
-For detailed guidance, consult:
+有关详细指导，请查阅：
 
-- **`references/system-prompt-design.md`** - Complete system prompt patterns
-- **`references/triggering-examples.md`** - Example formats and best practices
-- **`references/agent-creation-system-prompt.md`** - The exact prompt from Claude Code
+- **`references/system-prompt-design.md`** - 完整的系统提示模式
+- **`references/triggering-examples.md`** - 示例格式和最佳实践
+- **`references/agent-creation-system-prompt.md`** - Claude Code 中的确切提示
 
-### Example Files
+### 示例文件
 
-Working examples in `examples/`:
+`examples/` 中的工作示例：
 
-- **`agent-creation-prompt.md`** - AI-assisted agent generation template
-- **`complete-agent-examples.md`** - Full agent examples for different use cases
+- **`agent-creation-prompt.md`** - AI 辅助代理生成模板
+- **`complete-agent-examples.md`** - 不同用例的完整代理示例
 
-### Utility Scripts
+### 实用脚本
 
-Development tools in `scripts/`:
+`scripts/` 中的开发工具：
 
-- **`validate-agent.sh`** - Validate agent file structure
-- **`test-agent-trigger.sh`** - Test if agent triggers correctly
+- **`validate-agent.sh`** - 验证代理文件结构
+- **`test-agent-trigger.sh`** - 测试代理是否正确触发
 
-## Implementation Workflow
+## 实施工作流程
 
-To create an agent for a plugin:
+为插件创建代理：
 
-1. Define agent purpose and triggering conditions
-2. Choose creation method (AI-assisted or manual)
-3. Create `agents/agent-name.md` file
-4. Write frontmatter with all required fields
-5. Write system prompt following best practices
-6. Include 2-4 triggering examples in description
-7. Validate with `scripts/validate-agent.sh`
-8. Test triggering with real scenarios
-9. Document agent in plugin README
+1. 定义代理用途和触发条件
+2. 选择创建方法（AI 辅助或手动）
+3. 创建 `agents/agent-name.md` 文件
+4. 编写包含所有必填字段的前置内容
+5. 遵循最佳实践编写系统提示
+6. 在描述中包含 2-4 个触发示例
+7. 使用 `scripts/validate-agent.sh` 验证
+8. 使用真实场景测试触发
+9. 在插件 README 中记录代理
 
-Focus on clear triggering conditions and comprehensive system prompts for autonomous operation.
+专注于清晰的触发条件和综合的系统提示，以实现自主操作。

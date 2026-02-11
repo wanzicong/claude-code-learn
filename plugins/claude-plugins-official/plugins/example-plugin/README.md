@@ -1,50 +1,50 @@
-# Example Plugin
+# 示例插件
 
-A comprehensive example plugin demonstrating Claude Code extension options.
+一个全面的示例插件，展示了 Claude Code 扩展选项。
 
-## Structure
+## 结构
 
 ```
 example-plugin/
 ├── .claude-plugin/
-│   └── plugin.json        # Plugin metadata
-├── .mcp.json              # MCP server configuration
+│   └── plugin.json        # 插件元数据
+├── .mcp.json              # MCP 服务器配置
 ├── commands/
-│   └── example-command.md # Slash command definition
+│   └── example-command.md # 斜杠命令定义
 └── skills/
     └── example-skill/
-        └── SKILL.md       # Skill definition
+        └── SKILL.md       # 技能定义
 ```
 
-## Extension Options
+## 扩展选项
 
-### Commands (`commands/`)
+### 命令 (`commands/`)
 
-Slash commands are user-invoked via `/command-name`. Define them as markdown files with frontmatter:
+斜杠命令通过用户使用 `/command-name` 调用。将它们定义为带有前置元数据的 markdown 文件：
 
 ```yaml
 ---
-description: Short description for /help
-argument-hint: <arg1> [optional-arg]
+description: 用于 /help 的简短描述
+argument-hint: <arg1> [可选参数]
 allowed-tools: [Read, Glob, Grep]
 ---
 ```
 
-### Skills (`skills/`)
+### 技能 (`skills/`)
 
-Skills are model-invoked capabilities. Create a `SKILL.md` in a subdirectory:
+技能是由模型调用的功能。在子目录中创建 `SKILL.md`：
 
 ```yaml
 ---
 name: skill-name
-description: Trigger conditions for this skill
+description: 此技能的触发条件
 version: 1.0.0
 ---
 ```
 
-### MCP Servers (`.mcp.json`)
+### MCP 服务器 (`.mcp.json`)
 
-Configure external tool integration via Model Context Protocol:
+通过模型上下文协议配置外部工具集成：
 
 ```json
 {
@@ -55,8 +55,8 @@ Configure external tool integration via Model Context Protocol:
 }
 ```
 
-## Usage
+## 使用方法
 
-- `/example-command [args]` - Run the example slash command
-- The example skill activates based on task context
-- The example MCP activates based on task context
+- `/example-command [args]` - 运行示例斜杠命令
+- 示例技能根据任务上下文激活
+- 示例 MCP 根据任务上下文激活

@@ -1,26 +1,26 @@
-# Hook Development Utility Scripts
+# Hook 开发实用脚本
 
-These scripts help validate, test, and lint hook implementations before deployment.
+这些脚本有助于在部署之前验证、测试和检查 hook 实现。
 
 ## validate-hook-schema.sh
 
-Validates `hooks.json` configuration files for correct structure and common issues.
+验证 `hooks.json` 配置文件的结构和常见问题。
 
-**Usage:**
+**用法：**
 ```bash
 ./validate-hook-schema.sh path/to/hooks.json
 ```
 
-**Checks:**
-- Valid JSON syntax
-- Required fields present
-- Valid hook event names
-- Proper hook types (command/prompt)
-- Timeout values in valid ranges
-- Hardcoded path detection
-- Prompt hook event compatibility
+**检查：**
+- 有效的 JSON 语法
+- 存在必需字段
+- 有效的 hook 事件名称
+- 正确的 hook 类型（command/prompt）
+- 有效的超时值范围
+- 硬编码路径检测
+- Prompt hook 事件兼容性
 
-**Example:**
+**示例：**
 ```bash
 cd my-plugin
 ./validate-hook-schema.sh hooks/hooks.json
@@ -28,137 +28,137 @@ cd my-plugin
 
 ## test-hook.sh
 
-Tests individual hook scripts with sample input before deploying to Claude Code.
+在部署到 Claude Code 之前，使用示例输入测试单个 hook 脚本。
 
-**Usage:**
+**用法：**
 ```bash
 ./test-hook.sh [options] <hook-script> <test-input.json>
 ```
 
-**Options:**
-- `-v, --verbose` - Show detailed execution information
-- `-t, --timeout N` - Set timeout in seconds (default: 60)
-- `--create-sample <event-type>` - Generate sample test input
+**选项：**
+- `-v, --verbose` - 显示详细执行信息
+- `-t, --timeout N` - 设置超时时间（秒）（默认：60）
+- `--create-sample <event-type>` - 生成示例测试输入
 
-**Example:**
+**示例：**
 ```bash
-# Create sample test input
+# 创建示例测试输入
 ./test-hook.sh --create-sample PreToolUse > test-input.json
 
-# Test a hook script
+# 测试 hook 脚本
 ./test-hook.sh my-hook.sh test-input.json
 
-# Test with verbose output and custom timeout
+# 使用详细输出和自定义超时进行测试
 ./test-hook.sh -v -t 30 my-hook.sh test-input.json
 ```
 
-**Features:**
-- Sets up proper environment variables (CLAUDE_PROJECT_DIR, CLAUDE_PLUGIN_ROOT)
-- Measures execution time
-- Validates output JSON
-- Shows exit codes and their meanings
-- Captures environment file output
+**功能：**
+- 设置正确的环境变量（CLAUDE_PROJECT_DIR、CLAUDE_PLUGIN_ROOT）
+- 测量执行时间
+- 验证输出 JSON
+- 显示退出码及其含义
+- 捕获环境文件输出
 
 ## hook-linter.sh
 
-Checks hook scripts for common issues and best practices violations.
+检查 hook 脚本是否存在常见问题和最佳实践违规。
 
-**Usage:**
+**用法：**
 ```bash
-./hook-linter.sh <hook-script.sh> [hook-script2.sh ...]
+./hook-linter.sh <hook-script.sh> [hook-script2.sh ... ...]
 ```
 
-**Checks:**
-- Shebang presence
-- `set -euo pipefail` usage
-- Stdin input reading
-- Proper error handling
-- Variable quoting (injection prevention)
-- Exit code usage
-- Hardcoded paths
-- Long-running code detection
-- Error output to stderr
-- Input validation
+**检查：**
+- Shebang 存在性
+- `set -euo pipefail` 使用情况
+- Stdin 输入读取
+- 正确的错误处理
+- 变量引用（注入预防）
+- 退出码使用情况
+- 硬编码路径
+- 长时间运行的代码检测
+- 错误输出到 stderr
+- 输入验证
 
-**Example:**
+**示例：**
 ```bash
-# Lint single script
+# 检查单个脚本
 ./hook-linter.sh ../examples/validate-write.sh
 
-# Lint multiple scripts
+# 检查多个脚本
 ./hook-linter.sh ../examples/*.sh
 ```
 
-## Typical Workflow
+## 典型工作流程
 
-1. **Write your hook script**
+1. **编写你的 hook 脚本**
    ```bash
    vim my-plugin/scripts/my-hook.sh
    ```
 
-2. **Lint the script**
+2. **检查脚本**
    ```bash
    ./hook-linter.sh my-plugin/scripts/my-hook.sh
    ```
 
-3. **Create test input**
+3. **创建测试输入**
    ```bash
    ./test-hook.sh --create-sample PreToolUse > test-input.json
-   # Edit test-input.json as needed
+   # 根据需要编辑 test-input.json
    ```
 
-4. **Test the hook**
+4. **测试 hook**
    ```bash
    ./test-hook.sh -v my-plugin/scripts/my-hook.sh test-input.json
    ```
 
-5. **Add to hooks.json**
+5. **添加到 hooks.json**
    ```bash
-   # Edit my-plugin/hooks/hooks.json
+   # 编辑 my-plugin/hooks/hooks.json
    ```
 
-6. **Validate configuration**
+6. **验证配置**
    ```bash
    ./validate-hook-schema.sh my-plugin/hooks/hooks.json
    ```
 
-7. **Test in Claude Code**
+7. **在 Claude Code 中测试**
    ```bash
    claude --debug
    ```
 
-## Tips
+## 提示
 
-- Always test hooks before deploying to avoid breaking user workflows
-- Use verbose mode (`-v`) to debug hook behavior
-- Check the linter output for security and best practice issues
-- Validate hooks.json after any changes
-- Create different test inputs for various scenarios (safe operations, dangerous operations, edge cases)
+- 始终在部署之前测试 hook，以避免破坏用户工作流程
+- 使用详细模式（`-v`）来调试 hook 行为
+- 检查检查器输出以获取安全和最佳实践问题
+- 在任何更改后验证 hooks.json
+- 为各种场景创建不同的测试输入（安全操作、危险操作、边缘情况）
 
-## Common Issues
+## 常见问题
 
-### Hook doesn't execute
+### Hook 不执行
 
-Check:
-- Script has shebang (`#!/bin/bash`)
-- Script is executable (`chmod +x`)
-- Path in hooks.json is correct (use `${CLAUDE_PLUGIN_ROOT}`)
+检查：
+- 脚本具有 shebang（`#!/bin/bash`）
+- 脚本是可执行的（`chmod +x`）
+- hooks.json 中的路径正确（使用 `${CLAUDE_PLUGIN_ROOT}`）
 
-### Hook times out
+### Hook 超时
 
-- Reduce timeout in hooks.json
-- Optimize hook script performance
-- Remove long-running operations
+- 在 hooks.json 中减少超时
+- 优化 hook 脚本性能
+- 删除长时间运行的操作
 
-### Hook fails silently
+### Hook 静默失败
 
-- Check exit codes (should be 0 or 2)
-- Ensure errors go to stderr (`>&2`)
-- Validate JSON output structure
+- 检查退出码（应该为 0 或 2）
+- 确保错误转到 stderr（`>&2`）
+- 验证 JSON 输出结构
 
-### Injection vulnerabilities
+### 注入漏洞
 
-- Always quote variables: `"$variable"`
-- Use `set -euo pipefail`
-- Validate all input fields
-- Run the linter to catch issues
+- 始终引用变量：`"$variable"`
+- 使用 `set -euo pipefail`
+- 验证所有输入字段
+- 运行检查器以捕获问题

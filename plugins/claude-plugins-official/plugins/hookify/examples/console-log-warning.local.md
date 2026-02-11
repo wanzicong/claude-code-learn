@@ -6,9 +6,9 @@ pattern: console\.log\(
 action: warn
 ---
 
-🔍 **Console.log detected**
+🔍 **检测到 Console.log**
 
-You're adding a console.log statement. Please consider:
-- Is this for debugging or should it be proper logging?
-- Will this ship to production?
-- Should this use a logging library instead?
+您正在添加 console.log 语句。请考虑：
+- 这是用于调试还是应该是适当的日志记录？
+- 这会发送到生产吗？
+- 这应该使用日志库代替吗？

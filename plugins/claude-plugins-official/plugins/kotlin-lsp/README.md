@@ -1,16 +1,18 @@
-Kotlin language server for Claude Code, providing code intelligence, refactoring, and analysis.
+# kotlin-lsp
 
-## Supported Extensions
+Kotlin 语言服务器，用于 Claude Code，提供代码智能、重构和分析功能。
+
+## 支持的扩展名
 `.kt`
 `.kts`
 
-## Installation
+## 安装
 
-Install the Kotlin LSP CLI.
+安装 Kotlin LSP CLI。
 
 ```bash
 brew install JetBrains/utils/kotlin-lsp
 ```
 
-## More Information
+## 更多信息
 - [kotlin LSP](https://github.com/Kotlin/kotlin-lsp)

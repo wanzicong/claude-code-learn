@@ -1,93 +1,94 @@
-# Learning Style Plugin
+# 学习风格插件
 
-This plugin combines the unshipped Learning output style with explanatory functionality as a SessionStart hook.
+此插件将未发布的学习输出风格与解释性功能结合，作为 SessionStart 钩子实现。
 
-**Note:** This plugin differs from the original unshipped Learning output style by also incorporating all functionality from the [explanatory-output-style plugin](https://github.com/anthropics/claude-code/tree/main/plugins/explanatory-output-style), providing both interactive learning and educational insights.
+**注意：** 此插件与原始未发布的学习输出风格不同，它还集成了[解释性输出风格插件](https://github.com/anthropics/claude-code/tree/main/plugins/explanatory-output-style)的所有功能，既提供交互式学习又提供教育见解。
 
-WARNING: Do not install this plugin unless you are fine with incurring the token cost of this plugin's additional instructions and the interactive nature of learning mode.
+警告：除非您愿意承担此插件额外指令的令牌成本以及学习模式的交互性质，否则不要安装此插件。
 
-## What it does
+## 功能
 
-When enabled, this plugin automatically adds instructions at the start of each session that encourage Claude to:
+启用后，此插件会在每个会话开始时自动添加指令，鼓励 Claude：
 
-1. **Learning Mode:** Engage you in active learning by requesting meaningful code contributions at decision points
-2. **Explanatory Mode:** Provide educational insights about implementation choices and codebase patterns
+1. **学习模式：** 在决策点请求有意义的代码贡献，让您积极参与学习
+2. **解释模式：** 提供关于实现选择和代码库模式的教育见解
 
-Instead of implementing everything automatically, Claude will:
+Claude 不会自动实现所有内容，而是会：
 
-1. Identify opportunities where you can write 5-10 lines of meaningful code
-2. Focus on business logic and design choices where your input truly matters
-3. Prepare the context and location for your contribution
-4. Explain trade-offs and guide your implementation
-5. Provide educational insights before and after writing code
+1. 识别您可以编写 5-10 行有意义的代码的机会
+2. 专注于您的输入真正重要的业务逻辑和设计选择
+3. 为您的贡献准备上下文和位置
+4. 解释权衡并指导您的实现
+5. 在编写代码前后提供教育见解
 
-## How it works
+## 工作原理
 
-The plugin uses a SessionStart hook to inject additional context into every session. This context instructs Claude to adopt an interactive teaching approach where you actively participate in writing key parts of the code.
+该插件使用 SessionStart 钩子向每个会话注入额外的上下文。此上下文指示 Claude 采用交互式教学方法，让您积极参与编写代码的关键部分。
 
-## When Claude requests contributions
+## Claude 请求贡献的情况
 
-Claude will ask you to write code for:
-- Business logic with multiple valid approaches
-- Error handling strategies
-- Algorithm implementation choices
-- Data structure decisions
-- User experience decisions
-- Design patterns and architecture choices
+Claude 会要求您编写以下代码：
+- 有多种有效方法的业务逻辑
+- 错误处理策略
+- 算法实现选择
+- 数据结构决策
+- 用户体验决策
+- 设计模式和架构选择
 
-## When Claude won't request contributions
+## Claude 不请求贡献的情况
 
-Claude will implement directly:
-- Boilerplate or repetitive code
-- Obvious implementations with no meaningful choices
-- Configuration or setup code
-- Simple CRUD operations
+Claude 将直接实现：
+- 模板或重复代码
+- 没有有意义选择的明显实现
+- 配置或设置代码
+- 简单的 CRUD 操作
 
-## Example interaction
+## 交互示例
 
-**Claude:** I've set up the authentication middleware. The session timeout behavior is a security vs. UX trade-off - should sessions auto-extend on activity, or have a hard timeout?
+**Claude：** 我已经设置了身份验证中间件。会话超时行为是安全性与用户体验的权衡 - 会话应该在活动时自动延长，还是有硬性超时？
 
-In `auth/middleware.ts`, implement the `handleSessionTimeout()` function to define the timeout behavior.
+在 `auth/middleware.ts` 中，实现 `handleSessionTimeout()` 函数以定义超时行为。
 
-Consider: auto-extending improves UX but may leave sessions open longer; hard timeouts are more secure but might frustrate active users.
+考虑：自动延长可以改善用户体验，但可能会让会话保持打开更长时间；硬性超时更安全，但可能会让活跃用户感到沮丧。
 
-**You:** [Write 5-10 lines implementing your preferred approach]
+**您：** [编写 5-10 行代码实现您喜欢的方法]
 
-## Educational insights
+## 教育见解
 
-In addition to interactive learning, Claude will provide educational insights about implementation choices using this format:
+除了交互式学习，Claude 还将使用以下格式提供关于实现选择的教育见解：
 
 ```
-`★ Insight ─────────────────────────────────────`
-[2-3 key educational points about the codebase or implementation]
+`★ 见解 ─────────────────────────────────────`
+[2-3 个关于代码库或实现的关键教育要点]
 `─────────────────────────────────────────────────`
 ```
 
-These insights focus on:
-- Specific implementation choices for your codebase
-- Patterns and conventions in your code
-- Trade-offs and design decisions
-- Codebase-specific details rather than general programming concepts
+这些见解重点关注：
 
-## Usage
+- 针对您代码库的具体实现选择
+- 代码中的模式和约定
+- 权衡和设计决策
+- 代码库特有的细节，而非通用编程概念
 
-Once installed, the plugin activates automatically at the start of every session. No additional configuration is needed.
+## 使用方法
 
-## Migration from Output Styles
+安装后，插件会在每个会话开始时自动激活。无需额外配置。
 
-This plugin combines the unshipped "Learning" output style with the deprecated "Explanatory" output style. It provides an interactive learning experience where you actively contribute code at meaningful decision points, while also receiving educational insights about implementation choices.
+## 从输出风格迁移
 
-If you previously used the explanatory-output-style plugin, this learning plugin includes all of that functionality plus interactive learning features.
+此插件将未发布的"Learning"输出风格与已弃用的"Explanatory"输出风格结合。它提供交互式学习体验，让您在有意义的决策点积极贡献代码，同时接收关于实现选择的教育见解。
 
-This SessionStart hook pattern is roughly equivalent to CLAUDE.md, but it is more flexible and allows for distribution through plugins.
+如果您之前使用过解释性输出风格插件，此学习插件包含所有这些功能以及交互式学习功能。
 
-## Managing changes
+这种 SessionStart 钩子模式大致相当于 CLAUDE.md，但它更灵活，允许通过插件进行分发。
 
-- Disable the plugin - keep the code installed on your device
-- Uninstall the plugin - remove the code from your device
-- Update the plugin - create a local copy of this plugin to personalize it
-  - Hint: Ask Claude to read https://docs.claude.com/en/docs/claude-code/plugins.md and set it up for you!
+## 管理更改
 
-## Philosophy
+- 禁用插件 - 在设备上保留已安装的代码
+- 卸载插件 - 从设备上删除代码
+- 更更新插件 - 创建此插件的本地副本以进行个性化设置
+  - 提示：让 Claude 阅读 https://docs.claude.com/en/docs/claude-code/plugins.md 并为您设置！
 
-Learning by doing is more effective than passive observation. This plugin transforms your interaction with Claude from "watch and learn" to "build and understand," ensuring you develop practical skills through hands-on coding of meaningful logic.
+## 理念
+
+在实践中学习比被动观察更有效。此插件将您与 Claude 的互动从"观察和学习"转变为"构建和理解"，确保您通过编写有意义的逻辑代码来培养实用技能。
