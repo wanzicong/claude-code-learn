@@ -1,10 +1,10 @@
-# Real-World Plugin Settings Examples
+# 真实世界的插件设置示例
 
-Detailed analysis of how production plugins use the `.claude/plugin-name.local.md` pattern.
+详细分析生产插件如何使用 `.claude/plugin-name.local.md` 模式。
 
-## multi-agent-swarm Plugin
+## multi-agent-swarm 插件
 
-### Settings File Structure
+### 设置文件结构
 
 **.claude/multi-agent-swarm.local.md:**
 
@@ -39,13 +39,13 @@ Depends on Task 3.4 (user model).
 Report status to 'team-leader' session.
 ```
 
-### How It's Used
+### 如何使用
 
-**File:** `hooks/agent-stop-notification.sh`
+**文件:** `hooks/agent-stop-notification.sh`
 
-**Purpose:** Send notifications to coordinator when agent becomes idle
+**目的:** 当代理变为空闲时向协调器发送通知
 
-**Implementation:**
+**实现:**
 
 ```bash
 #!/bin/bash
@@ -85,17 +85,17 @@ fi
 exit 0
 ```
 
-**Key patterns:**
-1. **Quick exit** (line 7-9): Returns immediately if file doesn't exist
-2. **Field extraction** (lines 11-17): Parses each frontmatter field
-3. **Enabled check** (lines 19-21): Respects enabled flag
-4. **Action based on settings** (lines 23-29): Uses coordinator_session to send notification
+**关键模式:**
+1. **快速退出** (第7-9行): 如果文件不存在立即返回
+2. **字段提取** (第11-17行): 解析每个 frontmatter 字段
+3. **启用检查** (第19-21行): 尊重启用标志
+4. **基于设置的操作** (第23-29行): 使用 coordinator_session 发送通知
 
-### Creation
+### 创建
 
-**File:** `commands/launch-swarm.md`
+**文件:** `commands/launch-swarm.md`
 
-Settings files are created during swarm launch with:
+设置文件在集群启动期间创建:
 
 ```bash
 cat > "$WORKTREE_PATH/.claude/multi-agent-swarm.local.md" <<EOF
@@ -115,9 +115,9 @@ $TASK_DETAILS
 EOF
 ```
 
-### Updates
+### 更新
 
-PR number updated after PR creation:
+PR 创建后更新 PR 编号:
 
 ```bash
 # Update pr_number field
@@ -126,9 +126,9 @@ sed "s/^pr_number: .*/pr_number: $PR_NUM/" \
 mv temp.md ".claude/multi-agent-swarm.local.md"
 ```
 
-## ralph-wiggum Plugin
+## ralph-wiggum 插件
 
-### Settings File Structure
+### 设置文件结构
 
 **.claude/ralph-loop.local.md:**
 
@@ -251,7 +251,7 @@ EOF
 echo "Ralph loop initialized: .claude/ralph-loop.local.md"
 ```
 
-## Pattern Comparison
+## 模式比较
 
 | Feature | multi-agent-swarm | ralph-wiggum |
 |---------|-------------------|--------------|
@@ -263,11 +263,11 @@ echo "Ralph loop initialized: .claude/ralph-loop.local.md"
 | **Deletion** | Manual or on completion | On loop exit |
 | **Hook** | Stop (notifications) | Stop (loop control) |
 
-## Best Practices from Real Plugins
+## 真实插件的最佳实践
 
-### 1. Quick Exit Pattern
+### 1. 快速退出模式
 
-Both plugins check file existence first:
+两个插件都先检查文件存在性:
 
 ```bash
 if [[ ! -f "$STATE_FILE" ]]; then
@@ -327,9 +327,9 @@ fi
 
 **Why:** Fails gracefully instead of crashing.
 
-## Anti-Patterns to Avoid
+## 要避免的反模式
 
-### ❌ Hardcoded Paths
+### ❌ 硬编码路径
 
 ```bash
 # BAD
@@ -383,13 +383,13 @@ sed -n '/^---$/,/^---$/{ /^---$/d; p; }'
 awk '/^---$/{i++; next} i>=2'  # For body
 ```
 
-## Conclusion
+## 结论
 
-The `.claude/plugin-name.local.md` pattern provides:
-- Simple, human-readable configuration
-- Version-control friendly (gitignored)
-- Per-project settings
-- Easy parsing with standard bash tools
-- Supports both structured config (YAML) and freeform content (markdown)
+`.claude/plugin-name.local.md` 模式提供:
+- 简单、人类可读的配置
+- 版本控制友好（gitignored）
+- 每个项目的设置
+- 使用标准 bash 工具轻松解析
+- 支持结构化配置 (YAML) 和自由格式内容 (markdown)
 
-Use this pattern for any plugin that needs user-configurable behavior or state persistence.
+对于任何需要用户可配置行为或状态持久化的插件，使用此模式。

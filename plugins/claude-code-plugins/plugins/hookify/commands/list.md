@@ -1,13 +1,13 @@
 ---
-description: List all configured hookify rules
+description: 列出所有已配置的 hookify 规则
 allowed-tools: ["Glob", "Read", "Skill"]
 ---
 
-# List Hookify Rules
+# 列出 Hookify 规则
 
-**Load hookify:writing-rules skill first** to understand rule format.
+**首先加载 hookify:writing-rules 技能**以了解规则格式。
 
-Show all configured hookify rules in the project.
+显示项目中所有已配置的 hookify 规则。
 
 ## Steps
 

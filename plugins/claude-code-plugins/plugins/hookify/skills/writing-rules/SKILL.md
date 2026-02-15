@@ -1,18 +1,18 @@
 ---
 name: Writing Hookify Rules
-description: This skill should be used when the user asks to "create a hookify rule", "write a hook rule", "configure hookify", "add a hookify rule", or needs guidance on hookify rule syntax and patterns.
+description: 当用户要求"创建 hookify 规则"、"编写钩子规则"、"配置 hookify"、"添加 hookify 规则"或需要有关 hookify 规则语法和模式的指导时，应使用此技能。
 version: 0.1.0
 ---
 
-# Writing Hookify Rules
+# 编写 Hookify 规则
 
-## Overview
+## 概述
 
-Hookify rules are markdown files with YAML frontmatter that define patterns to watch for and messages to show when those patterns match. Rules are stored in `.claude/hookify.{rule-name}.local.md` files.
+Hookify 规则是带有 YAML 前置内容的 markdown 文件，用于定义要监视的模式和匹配这些模式时显示的消息。规则存储在 `.claude/hookify.{rule-name}.local.md` 文件中。
 
-## Rule File Format
+## 规则文件格式
 
-### Basic Structure
+### 基本结构
 
 ```markdown
 ---
@@ -22,32 +22,32 @@ event: bash|file|stop|prompt|all
 pattern: regex-pattern-here
 ---
 
-Message to show Claude when this rule triggers.
-Can include markdown formatting, warnings, suggestions, etc.
+此规则触发时向 Claude 显示的消息。
+可以包含 markdown 格式、警告、建议等。
 ```
 
-### Frontmatter Fields
+### 前置内容字段
 
-**name** (required): Unique identifier for the rule
-- Use kebab-case: `warn-dangerous-rm`, `block-console-log`
-- Be descriptive and action-oriented
-- Start with verb: warn, prevent, block, require, check
+**name**（必需）：规则的唯一标识符
+- 使用 kebab-case：`warn-dangerous-rm`、`block-console-log`
+- 要具有描述性和行动导向性
+- 以动词开头：warn、prevent、block、require、check
 
-**enabled** (required): Boolean to activate/deactivate
-- `true`: Rule is active
-- `false`: Rule is disabled (won't trigger)
-- Can toggle without deleting rule
+**enabled**（必需）：布尔值以激活/停用
+- `true`：规则处于活动状态
+- `false`：规则已禁用（不会触发）
+- 可以在不删除规则的情况下切换
 
-**event** (required): Which hook event to trigger on
-- `bash`: Bash tool commands
-- `file`: Edit, Write, MultiEdit tools
-- `stop`: When agent wants to stop
-- `prompt`: When user submits a prompt
-- `all`: All events
+**event**（必需）：要触发的钩子事件
+- `bash`：Bash 工具命令
+- `file`：Edit、Write、MultiEdit 工具
+- `stop`：当代理想要停止时
+- `prompt`：当用户提交提示时
+- `all`：所有事件
 
-**action** (optional): What to do when rule matches
-- `warn`: Show message but allow operation (default)
-- `block`: Prevent operation (PreToolUse) or stop session (Stop events)
+**action**（可选）：规则匹配时要执行的操作
+- `warn`：显示消息但允许操作（默认）
+- `block`：阻止操作（PreToolUse）或停止会话（Stop 事件）
 - If omitted, defaults to `warn`
 
 **pattern** (simple format): Regex pattern to match

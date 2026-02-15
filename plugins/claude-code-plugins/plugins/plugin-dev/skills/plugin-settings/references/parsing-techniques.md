@@ -1,10 +1,10 @@
-# Settings File Parsing Techniques
+# 设置文件解析技术
 
-Complete guide to parsing `.claude/plugin-name.local.md` files in bash scripts.
+在 bash 脚本中解析 `.claude/plugin-name.local.md` 文件的完整指南。
 
-## File Structure
+## 文件结构
 
-Settings files use markdown with YAML frontmatter:
+设置文件使用带 YAML frontmatter 的 markdown:
 
 ```markdown
 ---
@@ -15,37 +15,37 @@ boolean_field: true
 list_field: ["item1", "item2", "item3"]
 ---
 
-# Markdown Content
+# Markdown 内容
 
-This body content can be extracted separately.
-It's useful for prompts, documentation, or additional context.
+此主体内容可以单独提取。
+它对提示、文档或附加上下文很有用。
 ```
 
-## Parsing Frontmatter
+## 解析 Frontmatter
 
-### Extract Frontmatter Block
+### 提取 Frontmatter 块
 
 ```bash
 #!/bin/bash
 FILE=".claude/my-plugin.local.md"
 
-# Extract everything between --- markers (excluding the markers themselves)
+# 提取 --- 标记之间的所有内容（不包括标记本身）
 FRONTMATTER=$(sed -n '/^---$/,/^---$/{ /^---$/d; p; }' "$FILE")
 ```
 
-**How it works:**
-- `sed -n` - Suppress automatic printing
-- `/^---$/,/^---$/` - Range from first `---` to second `---`
-- `{ /^---$/d; p; }` - Delete the `---` lines, print everything else
+**工作原理:**
+- `sed -n` - 抑制自动打印
+- `/^---$/,/^---$/` - 从第一个 `---` 到第二个 `---` 的范围
+- `{ /^---$/d; p; }` - 删除 `---` 行，打印其他所有内容
 
-### Extract Individual Fields
+### 提取单个字段
 
-**String fields:**
+**字符串字段:**
 ```bash
-# Simple value
+# 简单值
 VALUE=$(echo "$FRONTMATTER" | grep '^field_name:' | sed 's/field_name: *//')
 
-# Quoted value (removes surrounding quotes)
+# 带引号的值（删除周围的引号）
 VALUE=$(echo "$FRONTMATTER" | grep '^field_name:' | sed 's/field_name: *//' | sed 's/^"\(.*\)"$/\1/')
 ```
 
@@ -53,9 +53,9 @@ VALUE=$(echo "$FRONTMATTER" | grep '^field_name:' | sed 's/field_name: *//' | se
 ```bash
 ENABLED=$(echo "$FRONTMATTER" | grep '^enabled:' | sed 's/enabled: *//')
 
-# Use in condition
+# 在条件中使用
 if [[ "$ENABLED" == "true" ]]; then
-  # Enabled
+  # 已启用
 fi
 ```
 
@@ -63,11 +63,11 @@ fi
 ```bash
 MAX=$(echo "$FRONTMATTER" | grep '^max_value:' | sed 's/max_value: *//')
 
-# Validate it's a number
+# 验证它是一个数字
 if [[ "$MAX" =~ ^[0-9]+$ ]]; then
-  # Use in numeric comparison
+  # 在数字比较中使用
   if [[ $MAX -gt 100 ]]; then
-    # Too large
+    # 太大
   fi
 fi
 ```
@@ -76,49 +76,49 @@ fi
 ```bash
 # YAML: list: ["item1", "item2", "item3"]
 LIST=$(echo "$FRONTMATTER" | grep '^list:' | sed 's/list: *//')
-# Result: ["item1", "item2", "item3"]
+# 结果: ["item1", "item2", "item3"]
 
-# For simple checks:
+# 用于简单检查:
 if [[ "$LIST" == *"item1"* ]]; then
-  # List contains item1
+  # 列表包含 item1
 fi
 ```
 
 **List fields (proper parsing with jq):**
 ```bash
-# For proper list handling, use yq or convert to JSON
-# This requires yq to be installed (brew install yq)
+# 对于正确的列表处理，使用 yq 或转换为 JSON
+# 这需要安装 yq (brew install yq)
 
-# Extract list as JSON array
+# 提取列表为 JSON 数组
 LIST=$(echo "$FRONTMATTER" | yq -o json '.list' 2>/dev/null)
 
-# Iterate over items
+# 迭代项目
 echo "$LIST" | jq -r '.[]' | while read -r item; do
-  echo "Processing: $item"
+  echo "处理: $item"
 done
 ```
 
-## Parsing Markdown Body
+## 解析 Markdown 主体
 
-### Extract Body Content
+### 提取主体内容
 
 ```bash
 #!/bin/bash
 FILE=".claude/my-plugin.local.md"
 
-# Extract everything after the closing ---
-# Counts --- markers: first is opening, second is closing, everything after is body
+# 提取关闭 --- 之后的所有内容
+# 计数 --- 标记：第一个是开头，第二个是结尾，之后的都是主体
 BODY=$(awk '/^---$/{i++; next} i>=2' "$FILE")
 ```
 
-**How it works:**
-- `/^---$/` - Match `---` lines
-- `{i++; next}` - Increment counter and skip the `---` line
-- `i>=2` - Print all lines after second `---`
+**工作原理:**
+- `/^---$/` - 匹配 `---` 行
+- `{i++; next}` - 增加计数器并跳过 `---` 行
+- `i>=2` - 打印第二个 `---` 之后的所有行
 
-**Handles edge case:** If `---` appears in the markdown body, it still works because we only count the first two `---` at the start.
+**处理边缘情况:** 如果 `---` 出现在 markdown 主体中，它仍然有效，因为我们只计算开头的前两个 `---`。
 
-### Use Body as Prompt
+### 使用主体作为提示
 
 ```bash
 # Extract body

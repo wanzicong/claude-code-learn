@@ -1,21 +1,21 @@
-# Claude Opus 4.5 Migration Plugin
+# Claude Opus 4.5 迁移插件
 
-Migrate your code and prompts from Sonnet 4.x and Opus 4.1 to Opus 4.5.
+将您的代码和提示词从 Sonnet 4.x 和 Opus 4.1 迁移到 Opus 4.5。
 
-## Overview
+## 概述
 
-This skill updates your code and prompts to be compatible with Opus 4.5. It automates the migration process, handling model strings, beta headers, and other configuration details. If you run into any issues with Opus 4.5 after migration, you can continue using this skill to adjust your prompts.
+此技能将您的代码和提示词更新为与 Opus 4.5 兼容。它自动化了迁移过程，处理模型字符串、beta 头部和其他配置细节。如果在迁移后遇到 Opus 4.5 的任何问题，您可以继续使用此技能来调整提示词。
 
-## Usage
+## 使用方法
 
 ```
-"Migrate my codebase to Opus 4.5"
+"将我的代码库迁移到 Opus 4.5"
 ```
 
-## Learn More
+## 了解更多
 
-Refer to our [prompting guide](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-4-best-practices) for best practices on prompting Claude models.
+请参阅我们的[提示词指南](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-4-best-practices)，了解 Claude 模型提示词的最佳实践。
 
-## Authors
+## 作者
 
 William Hu (whu@anthropic.com)

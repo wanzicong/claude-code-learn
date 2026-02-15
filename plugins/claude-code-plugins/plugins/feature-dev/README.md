@@ -1,412 +1,412 @@
-# Feature Development Plugin
+# 功能开发插件
 
-A comprehensive, structured workflow for feature development with specialized agents for codebase exploration, architecture design, and quality review.
+一个全面、结构化的功能开发工作流程，配备专门的代理用于代码库探索、架构设计和质量审查。
 
-## Overview
+## 概述
 
-The Feature Development Plugin provides a systematic 7-phase approach to building new features. Instead of jumping straight into code, it guides you through understanding the codebase, asking clarifying questions, designing architecture, and ensuring quality—resulting in better-designed features that integrate seamlessly with your existing code.
+功能开发插件提供了一个系统化的 7 阶段方法来构建新功能。它不是直接跳入代码，而是引导您了解代码库、提出澄清问题、设计架构并确保质量——从而产生设计更好、与现有代码无缝集成的功能。
 
-## Philosophy
+## 理念
 
-Building features requires more than just writing code. You need to:
-- **Understand the codebase** before making changes
-- **Ask questions** to clarify ambiguous requirements
-- **Design thoughtfully** before implementing
-- **Review for quality** after building
+构建功能不仅仅是编写代码。您需要：
+- 在进行更改之前**了解代码库**
+- **提出问题**以澄清模糊的需求
+- 在实施之前**周到地设计**
+- 构建后**审查质量**
 
-This plugin embeds these practices into a structured workflow that runs automatically when you use the `/feature-dev` command.
+此插件将这些实践嵌入到一个结构化的工作流程中，当您使用 `/feature-dev` 命令时会自动运行。
 
-## Command: `/feature-dev`
+## 命令：`/feature-dev`
 
-Launches a guided feature development workflow with 7 distinct phases.
+启动一个包含 7 个不同阶段的引导式功能开发工作流程。
 
-**Usage:**
+**使用方法：**
 ```bash
-/feature-dev Add user authentication with OAuth
+/feature-dev 使用 OAuth 添加用户身份验证
 ```
 
-Or simply:
+或者简单地：
 ```bash
 /feature-dev
 ```
 
-The command will guide you through the entire process interactively.
+该命令将交互式地引导您完成整个过程。
 
-## The 7-Phase Workflow
+## 7 阶段工作流程
 
-### Phase 1: Discovery
+### 阶段 1：发现
 
-**Goal**: Understand what needs to be built
+**目标**：了解需要构建什么
 
-**What happens:**
-- Clarifies the feature request if it's unclear
-- Asks what problem you're solving
-- Identifies constraints and requirements
-- Summarizes understanding and confirms with you
+**发生的事情：**
+- 如果功能请求不明确，则进行澄清
+- 询问您正在解决什么问题
+- 识别约束和要求
+- 总结理解并与您确认
 
-**Example:**
+**示例：**
 ```
-You: /feature-dev Add caching
-Claude: Let me understand what you need...
-        - What should be cached? (API responses, computed values, etc.)
-        - What are your performance requirements?
-        - Do you have a preferred caching solution?
-```
-
-### Phase 2: Codebase Exploration
-
-**Goal**: Understand relevant existing code and patterns
-
-**What happens:**
-- Launches 2-3 `code-explorer` agents in parallel
-- Each agent explores different aspects (similar features, architecture, UI patterns)
-- Agents return comprehensive analyses with key files to read
-- Claude reads all identified files to build deep understanding
-- Presents comprehensive summary of findings
-
-**Agents launched:**
-- "Find features similar to [feature] and trace implementation"
-- "Map the architecture and abstractions for [area]"
-- "Analyze current implementation of [related feature]"
-
-**Example output:**
-```
-Found similar features:
-- User authentication (src/auth/): Uses JWT tokens, middleware pattern
-- Session management (src/session/): Redis-backed, 24hr expiry
-- API security (src/api/middleware/): Rate limiting, CORS
-
-Key files to understand:
-- src/auth/AuthService.ts:45 - Core authentication logic
-- src/middleware/authMiddleware.ts:12 - Request authentication
-- src/config/security.ts:8 - Security configuration
+您：/feature-dev 添加缓存
+Claude：让我了解您需要什么...
+        - 应该缓存什么？（API 响应、计算值等）
+        - 您的性能要求是什么？
+        - 您有首选的缓存解决方案吗？
 ```
 
-### Phase 3: Clarifying Questions
+### 阶段 2：代码库探索
 
-**Goal**: Fill in gaps and resolve all ambiguities
+**目标**：了解相关的现有代码和模式
 
-**What happens:**
-- Reviews codebase findings and feature request
-- Identifies underspecified aspects:
-  - Edge cases
-  - Error handling
-  - Integration points
-  - Backward compatibility
-  - Performance needs
-- Presents all questions in an organized list
-- **Waits for your answers before proceeding**
+**发生的事情：**
+- 并行启动 2-3 个 `code-explorer` 代理
+- 每个代理探索不同的方面（类似功能、架构、UI 模式）
+- 代理返回包含要阅读的关键文件的全面分析
+- Claude 阅读所有已识别的文件以建立深入理解
+- 呈现发现的全面摘要
 
-**Example:**
+**启动的代理：**
+- "查找与 [功能] 类似的功能并跟踪实现"
+- "映射 [区域] 的架构和抽象"
+- "分析 [相关功能] 的当前实现"
+
+**示例输出：**
 ```
-Before designing the architecture, I need to clarify:
+找到类似的功能：
+- 用户身份验证 (src/auth/)：使用 JWT 令牌、中间件模式
+- 会话管理 (src/session/)：Redis 支持，24 小时过期
+- API 安全 (src/api/middleware/)：速率限制、CORS
 
-1. OAuth provider: Which OAuth providers? (Google, GitHub, custom?)
-2. User data: Store OAuth tokens or just user profile?
-3. Existing auth: Replace current auth or add alongside?
-4. Sessions: Integrate with existing session management?
-5. Error handling: How to handle OAuth failures?
-```
-
-**Critical**: This phase ensures nothing is ambiguous before design begins.
-
-### Phase 4: Architecture Design
-
-**Goal**: Design multiple implementation approaches
-
-**What happens:**
-- Launches 2-3 `code-architect` agents with different focuses:
-  - **Minimal changes**: Smallest change, maximum reuse
-  - **Clean architecture**: Maintainability, elegant abstractions
-  - **Pragmatic balance**: Speed + quality
-- Reviews all approaches
-- Forms opinion on which fits best for this task
-- Presents comparison with trade-offs and recommendation
-- **Asks which approach you prefer**
-
-**Example output:**
-```
-I've designed 3 approaches:
-
-Approach 1: Minimal Changes
-- Extend existing AuthService with OAuth methods
-- Add new OAuth routes to existing auth router
-- Minimal refactoring required
-Pros: Fast, low risk
-Cons: Couples OAuth to existing auth, harder to test
-
-Approach 2: Clean Architecture
-- New OAuthService with dedicated interface
-- Separate OAuth router and middleware
-- Refactor AuthService to use common interface
-Pros: Clean separation, testable, maintainable
-Cons: More files, more refactoring
-
-Approach 3: Pragmatic Balance
-- New OAuthProvider abstraction
-- Integrate into existing AuthService
-- Minimal refactoring, good boundaries
-Pros: Balanced complexity and cleanliness
-Cons: Some coupling remains
-
-Recommendation: Approach 3 - gives you clean boundaries without
-excessive refactoring, and fits your existing architecture well.
-
-Which approach would you like to use?
+要理解的关键文件：
+- src/auth/AuthService.ts:45 - 核心身份验证逻辑
+- src/middleware/authMiddleware.ts:12 - 请求身份验证
+- src/config/security.ts:8 - 安全配置
 ```
 
-### Phase 5: Implementation
+### 阶段 3：澄清问题
 
-**Goal**: Build the feature
+**目标**：填补空白并解决所有歧义
 
-**What happens:**
-- **Waits for explicit approval** before starting
-- Reads all relevant files identified in previous phases
-- Implements following chosen architecture
-- Follows codebase conventions strictly
-- Writes clean, well-documented code
-- Updates todos as progress is made
+**发生的事情：**
+- 审查代码库发现和功能请求
+- 识别未充分指定的方面：
+  - 边缘情况
+  - 错误处理
+  - 集成点
+  - 向后兼容性
+  - 性能需求
+- 以有组织的列表呈现所有问题
+- **在继续之前等待您的答案**
 
-**Notes:**
-- Implementation only starts after you approve
-- Follows patterns discovered in Phase 2
-- Uses architecture designed in Phase 4
-- Continuously tracks progress
-
-### Phase 6: Quality Review
-
-**Goal**: Ensure code is simple, DRY, elegant, and functionally correct
-
-**What happens:**
-- Launches 3 `code-reviewer` agents in parallel with different focuses:
-  - **Simplicity/DRY/Elegance**: Code quality and maintainability
-  - **Bugs/Correctness**: Functional correctness and logic errors
-  - **Conventions/Abstractions**: Project standards and patterns
-- Consolidates findings
-- Identifies highest severity issues
-- **Presents findings and asks what you want to do**:
-  - Fix now
-  - Fix later
-  - Proceed as-is
-- Addresses issues based on your decision
-
-**Example output:**
+**示例：**
 ```
-Code Review Results:
+在设计架构之前，我需要澄清：
 
-High Priority Issues:
-1. Missing error handling in OAuth callback (src/auth/oauth.ts:67)
-2. Memory leak: OAuth state not cleaned up (src/auth/oauth.ts:89)
-
-Medium Priority:
-1. Could simplify token refresh logic (src/auth/oauth.ts:120)
-2. Consider extracting OAuth config validation
-
-All tests pass. Code follows project conventions.
-
-What would you like to do?
+1. OAuth 提供商：哪些 OAuth 提供商？（Google、GitHub、自定义？）
+2. 用户数据：存储 OAuth 令牌还是仅用户配置文件？
+3. 现有身份验证：替换当前身份验证还是并行添加？
+4. 会话：与现有会话管理集成？
+5. 错误处理：如何处理 OAuth 失败？
 ```
 
-### Phase 7: Summary
+**关键**：此阶段确保在设计开始之前没有任何歧义。
 
-**Goal**: Document what was accomplished
+### 阶段 4：架构设计
 
-**What happens:**
-- Marks all todos complete
-- Summarizes:
-  - What was built
-  - Key decisions made
-  - Files modified
-  - Suggested next steps
+**目标**：设计多种实施方法
 
-**Example:**
+**发生的事情：**
+- 启动 2-3 个具有不同重点的 `code-architect` 代理：
+  - **最小更改**：最小更改，最大重用
+  - **清洁架构**：可维护性，优雅的抽象
+  - **务实平衡**：速度 + 质量
+- 审查所有方法
+- 形成对哪种方法最适合此任务的意见
+- 呈现权衡比较和建议
+- **询问您更喜欢哪种方法**
+
+**示例输出：**
 ```
-Feature Complete: OAuth Authentication
+我设计了 3 种方法：
 
-What was built:
-- OAuth provider abstraction supporting Google and GitHub
-- OAuth routes and middleware integrated with existing auth
-- Token refresh and session integration
-- Error handling for all OAuth flows
+方法 1：最小更改
+- 使用 OAuth 方法扩展现有 AuthService
+- 向现有 auth 路由器添加新的 OAuth 路由
+- 需要最少的重构
+优点：快速，低风险
+缺点：将 OAuth 耦合到现有身份验证，更难测试
 
-Key decisions:
-- Used pragmatic approach with OAuthProvider abstraction
-- Integrated with existing session management
-- Added OAuth state to prevent CSRF
+方法 2：清洁架构
+- 具有专用接口的新 OAuthService
+- 单独的 OAuth 路由器和中间件
+- 重构 AuthService 以使用通用接口
+优点：清晰分离，可测试，可维护
+缺点：更多文件，更多重构
 
-Files modified:
-- src/auth/OAuthProvider.ts (new)
+方法 3：务实平衡
+- 新的 OAuthProvider 抽象
+- 集成到现有 AuthService 中
+- 最少的重构，良好的边界
+优点：平衡的复杂性和清洁度
+缺点：仍存在一些耦合
+
+建议：方法 3 - 在不过度重构的情况下为您提供清晰的边界，并且
+很好地适合您现有的架构。
+
+您想使用哪种方法？
+```
+
+### 阶段 5：实施
+
+**目标**：构建功能
+
+**发生的事情：**
+- **在开始之前等待明确批准**
+- 阅读在前几个阶段中识别的所有相关文件
+- 按照选择的架构实施
+- 严格遵循代码库约定
+- 编写清晰、文档完善的代码
+- 随着进度更新待办事项
+
+**注意事项：**
+- 仅在您批准后才开始实施
+- 遵循阶段 2 中发现的模式
+- 使用阶段 4 中设计的架构
+- 持续跟踪进度
+
+### 阶段 6：质量审查
+
+**目标**：确保代码简单、DRY、优雅且功能正确
+
+**发生的事情：**
+- 并行启动 3 个具有不同重点的 `code-reviewer` 代理：
+  - **简单性/DRY/优雅**：代码质量和可维护性
+  - **错误/正确性**：功能正确性和逻辑错误
+  - **约定/抽象**：项目标准和模式
+- 整合发现
+- 识别最高严重性问题
+- **呈现发现并询问您想要做什么**：
+  - 现在修复
+  - 以后修复
+  - 按原样继续
+- 根据您的决定解决问题
+
+**示例输出：**
+```
+代码审查结果：
+
+高优先级问题：
+1. OAuth 回调中缺少错误处理 (src/auth/oauth.ts:67)
+2. 内存泄漏：OAuth 状态未清理 (src/auth/oauth.ts:89)
+
+中等优先级：
+1. 可以简化令牌刷新逻辑 (src/auth/oauth.ts:120)
+2. 考虑提取 OAuth 配置验证
+
+所有测试通过。代码遵循项目约定。
+
+您想要做什么？
+```
+
+### 阶段 7：总结
+
+**目标**：记录完成的内容
+
+**发生的事情：**
+- 将所有待办事项标记为完成
+- 总结：
+  - 构建了什么
+  - 做出的关键决策
+  - 修改的文件
+  - 建议的后续步骤
+
+**示例：**
+```
+功能完成：OAuth 身份验证
+
+构建了什么：
+- 支持 Google 和 GitHub 的 OAuth 提供商抽象
+- 与现有身份验证集成的 OAuth 路由和中间件
+- 令牌刷新和会话集成
+- 所有 OAuth 流程的错误处理
+
+关键决策：
+- 使用 OAuthProvider 抽象的务实方法
+- 与现有会话管理集成
+- 添加 OAuth 状态以防止 CSRF
+
+修改的文件：
+- src/auth/OAuthProvider.ts（新建）
 - src/auth/AuthService.ts
 - src/routes/auth.ts
 - src/middleware/authMiddleware.ts
 
-Suggested next steps:
-- Add tests for OAuth flows
-- Add more OAuth providers (Microsoft, Apple)
-- Update documentation
+建议的后续步骤：
+- 为 OAuth 流程添加测试
+- 添加更多 OAuth 提供商（Microsoft、Apple）
+- 更新文档
 ```
 
-## Agents
+## 代理
 
 ### `code-explorer`
 
-**Purpose**: Deeply analyzes existing codebase features by tracing execution paths
+**目的**：通过跟踪执行路径深入分析现有代码库功能
 
-**Focus areas:**
-- Entry points and call chains
-- Data flow and transformations
-- Architecture layers and patterns
-- Dependencies and integrations
-- Implementation details
+**关注领域：**
+- 入口点和调用链
+- 数据流和转换
+- 架构层和模式
+- 依赖项和集成
+- 实施细节
 
-**When triggered:**
-- Automatically in Phase 2
-- Can be invoked manually when exploring code
+**触发时机：**
+- 在阶段 2 中自动触发
+- 在探索代码时可以手动调用
 
-**Output:**
-- Entry points with file:line references
-- Step-by-step execution flow
-- Key components and responsibilities
-- Architecture insights
-- List of essential files to read
+**输出：**
+- 带有文件:行引用的入口点
+- 分步执行流程
+- 关键组件和职责
+- 架构洞察
+- 要阅读的基本文件列表
 
 ### `code-architect`
 
-**Purpose**: Designs feature architectures and implementation blueprints
+**目的**：设计功能架构和实施蓝图
 
-**Focus areas:**
-- Codebase pattern analysis
-- Architecture decisions
-- Component design
-- Implementation roadmap
-- Data flow and build sequence
+**关注领域：**
+- 代码库模式分析
+- 架构决策
+- 组件设计
+- 实施路线图
+- 数据流和构建序列
 
-**When triggered:**
-- Automatically in Phase 4
-- Can be invoked manually for architecture design
+**触发时机：**
+- 在阶段 4 中自动触发
+- 可以手动调用以进行架构设计
 
-**Output:**
-- Patterns and conventions found
-- Architecture decision with rationale
-- Complete component design
-- Implementation map with specific files
-- Build sequence with phases
+**输出：**
+- 发现的模式和约定
+- 带有理由的架构决策
+- 完整的组件设计
+- 带有特定文件的实施地图
+- 带有阶段的构建序列
 
 ### `code-reviewer`
 
-**Purpose**: Reviews code for bugs, quality issues, and project conventions
+**目的**：审查代码中的错误、质量问题和项目约定
 
-**Focus areas:**
-- Project guideline compliance (CLAUDE.md)
-- Bug detection
-- Code quality issues
-- Confidence-based filtering (only reports high-confidence issues ≥80)
+**关注领域：**
+- 项目指南合规性 (CLAUDE.md)
+- 错误检测
+- 代码质量问题
+- 基于置信度的过滤（仅报告高置信度问题 ≥80）
 
-**When triggered:**
-- Automatically in Phase 6
-- Can be invoked manually after writing code
+**触发时机：**
+- 在阶段 6 中自动触发
+- 在编写代码后可以手动调用
 
-**Output:**
-- Critical issues (confidence 75-100)
-- Important issues (confidence 50-74)
-- Specific fixes with file:line references
-- Project guideline references
+**输出：**
+- 关键问题（置信度 75-100）
+- 重要问题（置信度 50-74）
+- 带有文件:行引用的特定修复
+- 项目指南参考
 
-## Usage Patterns
+## 使用模式
 
-### Full workflow (recommended for new features):
+### 完整工作流程（推荐用于新功能）：
 ```bash
-/feature-dev Add rate limiting to API endpoints
+/feature-dev 为 API 端点添加速率限制
 ```
 
-Let the workflow guide you through all 7 phases.
+让工作流程引导您完成所有 7 个阶段。
 
-### Manual agent invocation:
+### 手动代理调用：
 
-**Explore a feature:**
+**探索功能：**
 ```
-"Launch code-explorer to trace how authentication works"
-```
-
-**Design architecture:**
-```
-"Launch code-architect to design the caching layer"
+"启动 code-explorer 来跟踪身份验证的工作原理"
 ```
 
-**Review code:**
+**设计架构：**
 ```
-"Launch code-reviewer to check my recent changes"
+"启动 code-architect 来设计缓存层"
 ```
 
-## Best Practices
+**审查代码：**
+```
+"启动 code-reviewer 来检查我最近的更改"
+```
 
-1. **Use the full workflow for complex features**: The 7 phases ensure thorough planning
-2. **Answer clarifying questions thoughtfully**: Phase 3 prevents future confusion
-3. **Choose architecture deliberately**: Phase 4 gives you options for a reason
-4. **Don't skip code review**: Phase 6 catches issues before they reach production
-5. **Read the suggested files**: Phase 2 identifies key files—read them to understand context
+## 最佳实践
 
-## When to Use This Plugin
+1. **对复杂功能使用完整工作流程**：7 个阶段确保彻底规划
+2. **周到地回答澄清问题**：阶段 3 防止未来的混淆
+3. **慎重选择架构**：阶段 4 为您提供选项是有原因的
+4. **不要跳过代码审查**：阶段 6 在问题到达生产之前捕获它们
+5. **阅读建议的文件**：阶段 2 识别关键文件 — 阅读它们以了解上下文
 
-**Use for:**
-- New features that touch multiple files
-- Features requiring architectural decisions
-- Complex integrations with existing code
-- Features where requirements are somewhat unclear
+## 何时使用此插件
 
-**Don't use for:**
-- Single-line bug fixes
-- Trivial changes
-- Well-defined, simple tasks
-- Urgent hotfixes
+**适用于：**
+- 涉及多个文件的新功能
+- 需要架构决策的功能
+- 与现有代码的复杂集成
+- 需求有些不明确的功能
 
-## Requirements
+**不适用于：**
+- 单行错误修复
+- 琐碎的更改
+- 定义明确的简单任务
+- 紧急热修复
 
-- Claude Code installed
-- Git repository (for code review)
-- Project with existing codebase (workflow assumes existing code to learn from)
+## 要求
 
-## Troubleshooting
+- 已安装 Claude Code
+- Git 仓库（用于代码审查）
+- 具有现有代码库的项目（工作流程假设有现有代码可供学习）
 
-### Agents take too long
+## 故障排除
 
-**Issue**: Code exploration or architecture agents are slow
+### 代理耗时过长
 
-**Solution**:
-- This is normal for large codebases
-- Agents run in parallel when possible
-- The thoroughness pays off in better understanding
+**问题**：代码探索或架构代理速度慢
 
-### Too many clarifying questions
+**解决方案**：
+- 对于大型代码库这是正常的
+- 代理在可能的情况下并行运行
+- 彻底性在更好的理解中得到回报
 
-**Issue**: Phase 3 asks too many questions
+### 澄清问题过多
 
-**Solution**:
-- Be more specific in your initial feature request
-- Provide context about constraints upfront
-- Say "whatever you think is best" if truly no preference
+**问题**：阶段 3 提出的问题太多
 
-### Architecture options overwhelming
+**解决方案**：
+- 在初始功能请求中更具体
+- 提前提供有关约束的上下文
+- 如果真的没有偏好，说"您认为最好的任何内容"
 
-**Issue**: Too many architecture options in Phase 4
+### 架构选项过多
 
-**Solution**:
-- Trust the recommendation—it's based on codebase analysis
-- If still unsure, ask for more explanation
-- Pick the pragmatic option when in doubt
+**问题**：阶段 4 中的架构选项太多
 
-## Tips
+**解决方案**：
+- 相信建议 — 它基于代码库分析
+- 如果仍不确定，请要求更多解释
+- 如有疑问，选择务实的选项
 
-- **Be specific in your feature request**: More detail = fewer clarifying questions
-- **Trust the process**: Each phase builds on the previous one
-- **Review agent outputs**: Agents provide valuable insights about your codebase
-- **Don't skip phases**: Each phase serves a purpose
-- **Use for learning**: The exploration phase teaches you about your own codebase
+## 提示
 
-## Author
+- **在功能请求中要具体**：更多细节 = 更少的澄清问题
+- **相信流程**：每个阶段都建立在前一个阶段的基础上
+- **审查代理输出**：代理提供有关您的代码库的宝贵见解
+- **不要跳过阶段**：每个阶段都有其目的
+- **用于学习**：探索阶段教您了解自己的代码库
+
+## 作者
 
 Sid Bidasaria (sbidasaria@anthropic.com)
 
-## Version
+## 版本
 
 1.0.0

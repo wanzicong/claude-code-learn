@@ -1,13 +1,13 @@
 ---
-description: Enable or disable hookify rules interactively
+description: 交互式启用或禁用 hookify 规则
 allowed-tools: ["Glob", "Read", "Edit", "AskUserQuestion", "Skill"]
 ---
 
-# Configure Hookify Rules
+# 配置 Hookify 规则
 
-**Load hookify:writing-rules skill first** to understand rule format.
+**首先加载 hookify:writing-rules 技能**以了解规则格式。
 
-Enable or disable existing hookify rules using an interactive interface.
+使用交互式界面启用或禁用现有的 hookify 规则。
 
 ## Steps
 

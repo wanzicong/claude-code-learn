@@ -1,15 +1,15 @@
 ---
-description: Get help with the hookify plugin
+description: 获取 hookify 插件帮助
 allowed-tools: ["Read"]
 ---
 
-# Hookify Plugin Help
+# Hookify 插件帮助
 
-Explain how the hookify plugin works and how to use it.
+解释 hookify 插件的工作原理和使用方法。
 
-## Overview
+## 概述
 
-The hookify plugin makes it easy to create custom hooks that prevent unwanted behaviors. Instead of editing `hooks.json` files, users create simple markdown configuration files that define patterns to watch for.
+hookify 插件使创建防止不需要行为的自定义钩子变得容易。用户无需编辑 `hooks.json` 文件，而是创建定义要监视的模式的简单 markdown 配置文件。
 
 ## How It Works
 

@@ -9,10 +9,10 @@ conditions:
     pattern: \.env$|\.env\.|credentials|secrets
 ---
 
-🔐 **Sensitive file detected**
+🔐 **检测到敏感文件**
 
-You're editing a file that may contain sensitive data:
-- Ensure credentials are not hardcoded
-- Use environment variables for secrets
-- Verify this file is in .gitignore
-- Consider using a secrets manager
+您正在编辑可能包含敏感数据的文件：
+- 确保凭据未硬编码
+- 对机密使用环境变量
+- 验证此文件在 .gitignore 中
+- 考虑使用机密管理器

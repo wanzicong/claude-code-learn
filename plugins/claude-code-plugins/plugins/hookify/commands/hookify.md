@@ -1,14 +1,14 @@
 ---
-description: Create hooks to prevent unwanted behaviors from conversation analysis or explicit instructions
-argument-hint: Optional specific behavior to address
+description: 通过对话分析或明确指令创建钩子以防止不需要的行为
+argument-hint: 要解决的可选特定行为
 allowed-tools: ["Read", "Write", "AskUserQuestion", "Task", "Grep", "TodoWrite", "Skill"]
 ---
 
-# Hookify - Create Hooks from Unwanted Behaviors
+# Hookify - 从不需要的行为创建钩子
 
-**FIRST: Load the hookify:writing-rules skill** using the Skill tool to understand rule file format and syntax.
+**首先：使用 Skill 工具加载 hookify:writing-rules 技能**以了解规则文件格式和语法。
 
-Create hook rules to prevent problematic behaviors by analyzing the conversation or from explicit user instructions.
+通过分析对话或根据明确的用户指令创建钩子规则以防止问题行为。
 
 ## Your Task
 

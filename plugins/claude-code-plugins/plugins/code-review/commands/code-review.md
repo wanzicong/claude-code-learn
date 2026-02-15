@@ -1,104 +1,104 @@
 ---
 allowed-tools: Bash(gh issue view:*), Bash(gh search:*), Bash(gh issue list:*), Bash(gh pr comment:*), Bash(gh pr diff:*), Bash(gh pr view:*), Bash(gh pr list:*), mcp__github_inline_comment__create_inline_comment
-description: Code review a pull request
+description: 对拉取请求进行代码审查
 ---
 
-Provide a code review for the given pull request.
+为给定的拉取请求提供代码审查。
 
-**Agent assumptions (applies to all agents and subagents):**
-- All tools are functional and will work without error. Do not test tools or make exploratory calls. Make sure this is clear to every subagent that is launched.
-- Only call a tool if it is required to complete the task. Every tool call should have a clear purpose.
+**代理假设（适用于所有代理和子代理）：**
+- 所有工具都可正常工作且不会出错。不要测试工具或进行探索性调用。确保向每个启动的子代理明确说明这一点。
+- 只有在完成任务所需时才调用工具。每个工具调用都应有明确的目的。
 
-To do this, follow these steps precisely:
+为此，请精确遵循以下步骤：
 
-1. Launch a haiku agent to check if any of the following are true:
-   - The pull request is closed
-   - The pull request is a draft
-   - The pull request does not need code review (e.g. automated PR, trivial change that is obviously correct)
-   - Claude has already commented on this PR (check `gh pr view <PR> --comments` for comments left by claude)
+1. 启动一个 haiku 代理来检查以下任何条件是否为真：
+   - 拉取请求已关闭
+   - 拉取请求是草稿
+   - 拉取请求不需要代码审查（例如自动化 PR、明显正确的琐碎更改）
+   - Claude 已经在此 PR 上发表了评论（检查 `gh pr view <PR> --comments` 中 claude 留下的评论）
 
-   If any condition is true, stop and do not proceed.
+   如果任何条件为真，则停止且不继续进行。
 
-Note: Still review Claude generated PR's.
+注意：仍然审查 Claude 生成的 PR。
 
-2. Launch a haiku agent to return a list of file paths (not their contents) for all relevant CLAUDE.md files including:
-   - The root CLAUDE.md file, if it exists
-   - Any CLAUDE.md files in directories containing files modified by the pull request
+2. 启动一个 haiku 代理来返回所有相关 CLAUDE.md 文件的文件路径列表（不是其内容），包括：
+   - 根目录的 CLAUDE.md 文件（如果存在）
+   - 包含拉取请求修改的文件的目录中的任何 CLAUDE.md 文件
 
-3. Launch a sonnet agent to view the pull request and return a summary of the changes
+3. 启动一个 sonnet 代理来查看拉取请求并返回更改摘要
 
-4. Launch 4 agents in parallel to independently review the changes. Each agent should return the list of issues, where each issue includes a description and the reason it was flagged (e.g. "CLAUDE.md adherence", "bug"). The agents should do the following:
+4. 并行启动 4 个代理来独立审查更改。每个代理应返回问题列表，其中每个问题包括描述和被标记的原因（例如"CLAUDE.md 遵守"、"错误"）。代理应执行以下操作：
 
-   Agents 1 + 2: CLAUDE.md compliance sonnet agents
-   Audit changes for CLAUDE.md compliance in parallel. Note: When evaluating CLAUDE.md compliance for a file, you should only consider CLAUDE.md files that share a file path with the file or parents.
+   代理 1 + 2：CLAUDE.md 合规性 sonnet 代理
+   并行审核更改的 CLAUDE.md 合规性。注意：在评估文件的 CLAUDE.md 合规性时，您应该只考虑与该文件或其父级共享文件路径的 CLAUDE.md 文件。
 
-   Agent 3: Opus bug agent (parallel subagent with agent 4)
-   Scan for obvious bugs. Focus only on the diff itself without reading extra context. Flag only significant bugs; ignore nitpicks and likely false positives. Do not flag issues that you cannot validate without looking at context outside of the git diff.
+   代理 3：Opus 错误代理（与代理 4 并行的子代理）
+   扫描明显的错误。仅关注差异本身，不阅读额外的上下文。仅标记重要的错误；忽略吹毛求疵和可能的误报。不要标记您在不查看 git diff 之外的上下文的情况下无法验证的问题。
 
-   Agent 4: Opus bug agent (parallel subagent with agent 3)
-   Look for problems that exist in the introduced code. This could be security issues, incorrect logic, etc. Only look for issues that fall within the changed code.
+   代理 4：Opus 错误代理（与代理 3 并行的子代理）
+   查找引入的代码中存在的问题。这可能是安全问题、不正确的逻辑等。仅查找落在更改代码范围内的问题。
 
-   **CRITICAL: We only want HIGH SIGNAL issues.** Flag issues where:
-   - The code will fail to compile or parse (syntax errors, type errors, missing imports, unresolved references)
-   - The code will definitely produce wrong results regardless of inputs (clear logic errors)
-   - Clear, unambiguous CLAUDE.md violations where you can quote the exact rule being broken
+   **关键：我们只想要高信号问题。** 在以下情况下标记问题：
+   - 代码将无法编译或解析（语法错误、类型错误、缺少导入、未解决的引用）
+   - 代码无论输入如何都肯定会产生错误的结果（明显的逻辑错误）
+   - 明确、无歧义的 CLAUDE.md 违规，您可以引用被违反的确切规则
 
-   Do NOT flag:
-   - Code style or quality concerns
-   - Potential issues that depend on specific inputs or state
-   - Subjective suggestions or improvements
+   不要标记：
+   - 代码风格或质量问题
+   - 依赖于特定输入或状态的潜在问题
+   - 主观建议或改进
 
-   If you are not certain an issue is real, do not flag it. False positives erode trust and waste reviewer time.
+   如果您不确定问题是否真实存在，请不要标记它。误报会侵蚀信任并浪费审查者的时间。
 
-   In addition to the above, each subagent should be told the PR title and description. This will help provide context regarding the author's intent.
+   除上述内容外，应向每个子代理告知 PR 标题和描述。这将有助于提供有关作者意图的上下文。
 
-5. For each issue found in the previous step by agents 3 and 4, launch parallel subagents to validate the issue. These subagents should get the PR title and description along with a description of the issue. The agent's job is to review the issue to validate that the stated issue is truly an issue with high confidence. For example, if an issue such as "variable is not defined" was flagged, the subagent's job would be to validate that is actually true in the code. Another example would be CLAUDE.md issues. The agent should validate that the CLAUDE.md rule that was violated is scoped for this file and is actually violated. Use Opus subagents for bugs and logic issues, and sonnet agents for CLAUDE.md violations.
+5. 对于代理 3 和 4 在前一步中发现的每个问题，启动并行子代理来验证该问题。这些子代理应获得 PR 标题和描述以及问题描述。代理的工作是审查问题，以高置信度验证所述问题确实是一个问题。例如，如果标记了诸如"变量未定义"之类的问题，子代理的工作将是验证代码中确实如此。另一个例子是 CLAUDE.md 问题。代理应验证被违反的 CLAUDE.md 规则是否适用于此文件并且确实被违反了。对错误和逻辑问题使用 Opus 子代理，对 CLAUDE.md 违规使用 sonnet 代理。
 
-6. Filter out any issues that were not validated in step 5. This step will give us our list of high signal issues for our review.
+6. 过滤掉步骤 5 中未验证的任何问题。这一步将为我们提供审查的高信号问题列表。
 
-7. If issues were found, skip to step 8 to post inline comments directly.
+7. 如果发现问题，跳到步骤 8 直接发布内联评论。
 
-   If NO issues were found, post a summary comment using `gh pr comment` (if `--comment` argument is provided):
-   "No issues found. Checked for bugs and CLAUDE.md compliance."
+   如果未发现问题，使用 `gh pr comment` 发布摘要评论（如果提供了 `--comment` 参数）：
+   "未发现问题。已检查错误和 CLAUDE.md 合规性。"
 
-8. Create a list of all comments that you plan on leaving. This is only for you to make sure you are comfortable with the comments. Do not post this list anywhere.
+8. 创建您计划留下的所有评论的列表。这仅供您自己确保对评论感到满意。不要在任何地方发布此列表。
 
-9. Post inline comments for each issue using `mcp__github_inline_comment__create_inline_comment`. For each comment:
-   - Provide a brief description of the issue
-   - For small, self-contained fixes, include a committable suggestion block
-   - For larger fixes (6+ lines, structural changes, or changes spanning multiple locations), describe the issue and suggested fix without a suggestion block
-   - Never post a committable suggestion UNLESS committing the suggestion fixes the issue entirely. If follow up steps are required, do not leave a committable suggestion.
+9. 使用 `mcp__github_inline_comment__create_inline_comment` 为每个问题发布内联评论。对于每条评论：
+   - 提供问题的简要描述
+   - 对于小型、独立的修复，包括可提交的建议块
+   - 对于较大的修复（6 行以上、结构性更改或跨越多个位置的更改），描述问题和建议的修复，不包括建议块
+   - 除非提交建议可以完全修复问题，否则永远不要发布可提交的建议。如果需要后续步骤，请不要留下可提交的建议。
 
-   **IMPORTANT: Only post ONE comment per unique issue. Do not post duplicate comments.**
+   **重要提示：每个唯一问题只发布一条评论。不要发布重复的评论。**
 
-Use this list when evaluating issues in Steps 4 and 5 (these are false positives, do NOT flag):
+在步骤 4 和 5 中评估问题时使用此列表（这些是误报，不要标记）：
 
-- Pre-existing issues
-- Something that appears to be a bug but is actually correct
-- Pedantic nitpicks that a senior engineer would not flag
-- Issues that a linter will catch (do not run the linter to verify)
-- General code quality concerns (e.g., lack of test coverage, general security issues) unless explicitly required in CLAUDE.md
-- Issues mentioned in CLAUDE.md but explicitly silenced in the code (e.g., via a lint ignore comment)
+- 预先存在的问题
+- 看起来像错误但实际上是正确的东西
+- 资深工程师不会标记的迂腐吹毛求疵
+- linter 会捕获的问题（不要运行 linter 来验证）
+- 一般的代码质量问题（例如，缺乏测试覆盖率、一般的安全问题），除非在 CLAUDE.md 中明确要求
+- 在 CLAUDE.md 中提到但在代码中明确消除的问题（例如，通过 lint 忽略注释）
 
-Notes:
+注意事项：
 
-- Use gh CLI to interact with GitHub (e.g., fetch pull requests, create comments). Do not use web fetch.
-- Create a todo list before starting.
-- You must cite and link each issue in inline comments (e.g., if referring to a CLAUDE.md, include a link to it).
-- If no issues are found, post a comment with the following format:
-
----
-
-## Code review
-
-No issues found. Checked for bugs and CLAUDE.md compliance.
+- 使用 gh CLI 与 GitHub 交互（例如，获取拉取请求、创建评论）。不要使用 web fetch。
+- 开始之前创建待办事项列表。
+- 您必须在内联评论中引用并链接每个问题（例如，如果引用 CLAUDE.md，请包含指向它的链接）。
+- 如果未发现问题，请以以下格式发布评论：
 
 ---
 
-- When linking to code in inline comments, follow the following format precisely, otherwise the Markdown preview won't render correctly: https://github.com/anthropics/claude-code/blob/c21d3c10bc8e898b7ac1a2d745bdc9bc4e423afe/package.json#L10-L15
-  - Requires full git sha
-  - You must provide the full sha. Commands like `https://github.com/owner/repo/blob/$(git rev-parse HEAD)/foo/bar` will not work, since your comment will be directly rendered in Markdown.
-  - Repo name must match the repo you're code reviewing
-  - # sign after the file name
-  - Line range format is L[start]-L[end]
-  - Provide at least 1 line of context before and after, centered on the line you are commenting about (eg. if you are commenting about lines 5-6, you should link to `L4-7`)
+## 代码审查
+
+未发现问题。已检查错误和 CLAUDE.md 合规性。
+
+---
+
+- 在内联评论中链接到代码时，请精确遵循以下格式，否则 Markdown 预览将无法正确呈现：https://github.com/anthropics/claude-code/blob/c21d3c10bc8e898b7ac1a2d745bdc9bc4e423afe/package.json#L10-L15
+  - 需要完整的 git sha
+  - 您必须提供完整的 sha。像 `https://github.com/owner/repo/blob/$(git rev-parse HEAD)/foo/bar` 这样的命令将不起作用，因为您的评论将直接在 Markdown 中呈现。
+  - 仓库名称必须与您正在审查的仓库匹配
+  - 文件名后加 # 符号
+  - 行范围格式为 L[开始]-L[结束]
+  - 在您评论的行之前和之后至少提供 1 行上下文，以该行为中心（例如，如果您要评论第 5-6 行，您应该链接到 `L4-7`）

@@ -1,10 +1,10 @@
-# Agent Triggering Examples: Best Practices
+# 代理触发示例：最佳实践
 
-Complete guide to writing effective `<example>` blocks in agent descriptions for reliable triggering.
+编写有效的代理描述中的 `<example>` 块以实现可靠触发的完整指南。
 
-## Example Block Format
+## 示例块格式
 
-The standard format for triggering examples:
+触发示例的标准格式：
 
 ```markdown
 <example>

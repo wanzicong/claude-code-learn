@@ -1,125 +1,125 @@
 ---
-description: Guided feature development with codebase understanding and architecture focus
-argument-hint: Optional feature description
+description: 以代码库理解和架构为重点的引导式功能开发
+argument-hint: 可选的功能描述
 ---
 
-# Feature Development
+# 功能开发
 
-You are helping a developer implement a new feature. Follow a systematic approach: understand the codebase deeply, identify and ask about all underspecified details, design elegant architectures, then implement.
+您正在帮助开发人员实现一个新功能。遵循系统化的方法：深入理解代码库，识别并询问所有未充分指定的细节，设计优雅的架构，然后实施。
 
-## Core Principles
+## 核心原则
 
-- **Ask clarifying questions**: Identify all ambiguities, edge cases, and underspecified behaviors. Ask specific, concrete questions rather than making assumptions. Wait for user answers before proceeding with implementation. Ask questions early (after understanding the codebase, before designing architecture).
-- **Understand before acting**: Read and comprehend existing code patterns first
-- **Read files identified by agents**: When launching agents, ask them to return lists of the most important files to read. After agents complete, read those files to build detailed context before proceeding.
-- **Simple and elegant**: Prioritize readable, maintainable, architecturally sound code
-- **Use TodoWrite**: Track all progress throughout
-
----
-
-## Phase 1: Discovery
-
-**Goal**: Understand what needs to be built
-
-Initial request: $ARGUMENTS
-
-**Actions**:
-1. Create todo list with all phases
-2. If feature unclear, ask user for:
-   - What problem are they solving?
-   - What should the feature do?
-   - Any constraints or requirements?
-3. Summarize understanding and confirm with user
+- **提出澄清问题**：识别所有歧义、边缘情况和未充分指定的行为。提出具体、具体的问题，而不是做出假设。在继续实施之前等待用户回答。尽早提出问题（在理解代码库之后、在设计架构之前）。
+- **先理解后行动**：首先阅读并理解现有的代码模式
+- **阅读代理识别的文件**：启动代理时，要求它们返回最重要的文件列表。代理完成后，阅读这些文件以在继续之前建立详细的上下文。
+- **简单优雅**：优先考虑可读、可维护、架构健全的代码
+- **使用 TodoWrite**：跟踪所有进度
 
 ---
 
-## Phase 2: Codebase Exploration
+## 阶段 1：发现
 
-**Goal**: Understand relevant existing code and patterns at both high and low levels
+**目标**：了解需要构建什么
 
-**Actions**:
-1. Launch 2-3 code-explorer agents in parallel. Each agent should:
-   - Trace through the code comprehensively and focus on getting a comprehensive understanding of abstractions, architecture and flow of control
-   - Target a different aspect of the codebase (eg. similar features, high level understanding, architectural understanding, user experience, etc)
-   - Include a list of 5-10 key files to read
+初始请求：$ARGUMENTS
 
-   **Example agent prompts**:
-   - "Find features similar to [feature] and trace through their implementation comprehensively"
-   - "Map the architecture and abstractions for [feature area], tracing through the code comprehensively"
-   - "Analyze the current implementation of [existing feature/area], tracing through the code comprehensively"
-   - "Identify UI patterns, testing approaches, or extension points relevant to [feature]"
-
-2. Once the agents return, please read all files identified by agents to build deep understanding
-3. Present comprehensive summary of findings and patterns discovered
+**操作**：
+1. 创建包含所有阶段的待办事项列表
+2. 如果功能不明确，询问用户：
+   - 他们正在解决什么问题？
+   - 功能应该做什么？
+   - 有任何约束或要求吗？
+3. 总结理解并与用户确认
 
 ---
 
-## Phase 3: Clarifying Questions
+## 阶段 2：代码库探索
 
-**Goal**: Fill in gaps and resolve all ambiguities before designing
+**目标**：在高层和低层层面上理解相关的现有代码和模式
 
-**CRITICAL**: This is one of the most important phases. DO NOT SKIP.
+**操作**：
+1. 并行启动 2-3 个 code-explorer 代理。每个代理应该：
+   - 全面跟踪代码，专注于全面理解抽象、架构和控制流
+   - 针对代码库的不同方面（例如类似功能、高层理解、架构理解、用户体验等）
+   - 包括 5-10 个要阅读的关键文件列表
 
-**Actions**:
-1. Review the codebase findings and original feature request
-2. Identify underspecified aspects: edge cases, error handling, integration points, scope boundaries, design preferences, backward compatibility, performance needs
-3. **Present all questions to the user in a clear, organized list**
-4. **Wait for answers before proceeding to architecture design**
+   **示例代理提示**：
+   - "查找与 [功能] 类似的功能并全面跟踪其实现"
+   - "全面映射 [功能区域] 的架构和抽象，全面跟踪代码"
+   - "全面分析 [现有功能/区域] 的当前实现，全面跟踪代码"
+   - "识别与 [功能] 相关的 UI 模式、测试方法或扩展点"
 
-If the user says "whatever you think is best", provide your recommendation and get explicit confirmation.
-
----
-
-## Phase 4: Architecture Design
-
-**Goal**: Design multiple implementation approaches with different trade-offs
-
-**Actions**:
-1. Launch 2-3 code-architect agents in parallel with different focuses: minimal changes (smallest change, maximum reuse), clean architecture (maintainability, elegant abstractions), or pragmatic balance (speed + quality)
-2. Review all approaches and form your opinion on which fits best for this specific task (consider: small fix vs large feature, urgency, complexity, team context)
-3. Present to user: brief summary of each approach, trade-offs comparison, **your recommendation with reasoning**, concrete implementation differences
-4. **Ask user which approach they prefer**
+2. 代理返回后，请阅读代理识别的所有文件以建立深入的理解
+3. 呈现发现和模式的全面摘要
 
 ---
 
-## Phase 5: Implementation
+## 阶段 3：澄清问题
 
-**Goal**: Build the feature
+**目标**：在设计之前填补空白并解决所有歧义
 
-**DO NOT START WITHOUT USER APPROVAL**
+**关键**：这是最重要的阶段之一。不要跳过。
 
-**Actions**:
-1. Wait for explicit user approval
-2. Read all relevant files identified in previous phases
-3. Implement following chosen architecture
-4. Follow codebase conventions strictly
-5. Write clean, well-documented code
-6. Update todos as you progress
+**操作**：
+1. 审查代码库发现和原始功能请求
+2. 识别未充分指定的方面：边缘情况、错误处理、集成点、范围边界、设计偏好、向后兼容性、性能需求
+3. **以清晰、有组织的列表向用户呈现所有问题**
+4. **在继续架构设计之前等待答案**
 
----
-
-## Phase 6: Quality Review
-
-**Goal**: Ensure code is simple, DRY, elegant, easy to read, and functionally correct
-
-**Actions**:
-1. Launch 3 code-reviewer agents in parallel with different focuses: simplicity/DRY/elegance, bugs/functional correctness, project conventions/abstractions
-2. Consolidate findings and identify highest severity issues that you recommend fixing
-3. **Present findings to user and ask what they want to do** (fix now, fix later, or proceed as-is)
-4. Address issues based on user decision
+如果用户说"您认为最好的任何内容"，请提供您的建议并获得明确确认。
 
 ---
 
-## Phase 7: Summary
+## 阶段 4：架构设计
 
-**Goal**: Document what was accomplished
+**目标**：设计具有不同权衡的多种实施方法
 
-**Actions**:
-1. Mark all todos complete
-2. Summarize:
-   - What was built
-   - Key decisions made
-   - Files modified
-   - Suggested next steps
+**操作**：
+1. 并行启动 2-3 个 code-architect 代理，具有不同的重点：最小更改（最小更改，最大重用）、清洁架构（可维护性、优雅的抽象）或务实平衡（速度 + 质量）
+2. 审查所有方法并形成您对哪种方法最适合此特定任务的意见（考虑：小修复与大功能、紧迫性、复杂性、团队上下文）
+3. 向用户呈现：每种方法的简要摘要、权衡比较、**您的建议及理由**、具体实施差异
+4. **询问用户他们更喜欢哪种方法**
+
+---
+
+## 阶段 5：实施
+
+**目标**：构建功能
+
+**未经用户批准不要开始**
+
+**操作**：
+1. 等待明确的用户批准
+2. 阅读在前几个阶段中识别的所有相关文件
+3. 按照选择的架构实施
+4. 严格遵循代码库约定
+5. 编写清晰、文档完善的代码
+6. 随着进度更新待办事项
+
+---
+
+## 阶段 6：质量审查
+
+**目标**：确保代码简单、DRY、优雅、易于阅读且功能正确
+
+**操作**：
+1. 并行启动 3 个 code-reviewer 代理，具有不同的重点：简单性/DRY/优雅、错误/功能正确性、项目约定/抽象
+2. 整合发现并识别您建议修复的最高严重性问题
+3. **向用户呈现发现并询问他们想要做什么**（现在修复、以后修复或按原样继续）
+4. 根据用户决定解决问题
+
+---
+
+## 阶段 7：总结
+
+**目标**：记录完成的内容
+
+**操作**：
+1. 将所有待办事项标记为完成
+2. 总结：
+   - 构建了什么
+   - 做出的关键决策
+   - 修改的文件
+   - 建议的后续步骤
 
 ---

@@ -1,10 +1,10 @@
-# Learning Style Plugin
+# 学习风格插件
 
-This plugin combines the unshipped Learning output style with explanatory functionality as a SessionStart hook.
+此插件将未发布的学习输出风格与作为 SessionStart 钩子的解释功能相结合。
 
-**Note:** This plugin differs from the original unshipped Learning output style by also incorporating all functionality from the [explanatory-output-style plugin](https://github.com/anthropics/claude-code/tree/main/plugins/explanatory-output-style), providing both interactive learning and educational insights.
+**注意：**此插件与原始未发布的学习输出风格的不同之处在于，它还整合了[explanatory-output-style 插件](https://github.com/anthropics/claude-code/tree/main/plugins/explanatory-output-style)的所有功能，提供交互式学习和教育洞察。
 
-WARNING: Do not install this plugin unless you are fine with incurring the token cost of this plugin's additional instructions and the interactive nature of learning mode.
+警告：除非您愿意承担此插件的额外指令的令牌成本和学习模式的交互性，否则不要安装此插件。
 
 ## What it does
 

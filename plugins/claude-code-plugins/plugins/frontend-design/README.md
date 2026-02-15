@@ -1,31 +1,31 @@
-# Frontend Design Plugin
+# 前端设计插件
 
-Generates distinctive, production-grade frontend interfaces that avoid generic AI aesthetics.
+生成独特的、生产级的前端界面，避免通用的 AI 美学。
 
-## What It Does
+## 它的作用
 
-Claude automatically uses this skill for frontend work. Creates production-ready code with:
+Claude 自动将此技能用于前端工作。创建生产就绪的代码，具有：
 
-- Bold aesthetic choices
-- Distinctive typography and color palettes
-- High-impact animations and visual details
-- Context-aware implementation
+- 大胆的美学选择
+- 独特的排版和调色板
+- 高影响力的动画和视觉细节
+- 上下文感知的实施
 
-## Usage
+## 使用方法
 
 ```
-"Create a dashboard for a music streaming app"
-"Build a landing page for an AI security startup"
-"Design a settings panel with dark mode"
+"为音乐流媒体应用创建一个仪表板"
+"为 AI 安全初创公司构建一个着陆页"
+"设计一个带有深色模式的设置面板"
 ```
 
-Claude will choose a clear aesthetic direction and implement production code with meticulous attention to detail.
+Claude 将选择一个清晰的美学方向并实施生产代码，细致关注细节。
 
-## Learn More
+## 了解更多
 
-See the [Frontend Aesthetics Cookbook](https://github.com/anthropics/claude-cookbooks/blob/main/coding/prompting_for_frontend_aesthetics.ipynb) for detailed guidance on prompting for high-quality frontend design.
+请参阅[前端美学手册](https://github.com/anthropics/claude-cookbooks/blob/main/coding/prompting_for_frontend_aesthetics.ipynb)，以获取有关提示高质量前端设计的详细指南。
 
-## Authors
+## 作者
 
 Prithvi Rajasekaran (prithvi@anthropic.com)
 Alexander Bricken (alexander@anthropic.com)

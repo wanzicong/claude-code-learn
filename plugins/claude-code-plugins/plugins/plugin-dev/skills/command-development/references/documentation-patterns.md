@@ -1,14 +1,14 @@
-# Command Documentation Patterns
+# 命令文档模式
 
-Strategies for creating self-documenting, maintainable commands with excellent user experience.
+创建自说明、可维护且具有出色用户体验的命令的策略。
 
-## Overview
+## 概述
 
-Well-documented commands are easier to use, maintain, and distribute. Documentation should be embedded in the command itself, making it immediately accessible to users and maintainers.
+文档完善的命令更易于使用、维护和分发。文档应嵌入在命令本身中，使用户和维护者可以立即访问。
 
-## Self-Documenting Command Structure
+## 自说明命令结构
 
-### Complete Command Template
+### 完整命令模板
 
 ```markdown
 ---
@@ -70,52 +70,52 @@ CHANGELOG:
 [Provide clear output...]
 ```
 
-### Documentation Comment Sections
+### 文档注释部分
 
-**PURPOSE**: Why the command exists
-- Problem it solves
-- Use cases
-- When to use vs when not to use
+**PURPOSE(目的)**: 命令存在的原因
+- 解决的问题
+- 使用场景
+- 何时使用与何时不使用
 
-**USAGE**: Basic syntax
-- Command invocation pattern
-- Required vs optional arguments
-- Default values
+**USAGE(用法)**: 基本语法
+- 命令调用模式
+- 必需参数与可选参数
+- 默认值
 
-**ARGUMENTS**: Detailed argument documentation
-- Each argument described
-- Type information
-- Valid values/ranges
-- Defaults
+**ARGUMENTS(参数)**: 详细的参数文档
+- 每个参数的描述
+- 类型信息
+- 有效值/范围
+- 默认值
 
-**EXAMPLES**: Concrete usage examples
-- Common use cases
-- Edge cases
-- Expected outputs
+**EXAMPLES(示例)**: 具体的使用示例
+- 常见用例
+- 边界情况
+- 预期输出
 
-**REQUIREMENTS**: Prerequisites
-- Dependencies
-- Permissions
-- Environmental setup
+**REQUIREMENTS(要求)**: 前置条件
+- 依赖项
+- 权限
+- 环境设置
 
-**RELATED COMMANDS**: Connections
-- Similar commands
-- Complementary commands
-- Alternative approaches
+**RELATED COMMANDS(相关命令)**: 关联
+- 类似命令
+- 互补命令
+- 替代方法
 
-**TROUBLESHOOTING**: Common issues
-- Known problems
-- Solutions
-- Workarounds
+**TROUBLESHOOTING(故障排除)**: 常见问题
+- 已知问题
+- 解决方案
+- 变通方法
 
-**CHANGELOG**: Version history
-- What changed when
-- Breaking changes highlighted
-- Migration guidance
+**CHANGELOG(更新日志)**: 版本历史
+- 何时更改了什么
+- 突出重大更改
+- 迁移指南
 
-## In-Line Documentation Patterns
+## 内联文档模式
 
-### Commented Sections
+### 带注释的部分
 
 ```markdown
 ---
@@ -144,7 +144,7 @@ Based on analysis, recommend:
 <!-- END: Next steps for user -->
 ```
 
-### Inline Explanations
+### 内联说明
 
 ```markdown
 ---
@@ -190,7 +190,7 @@ Deployment complete!
 3. Notify team: /notify-deployment $1
 ```
 
-### Decision Point Documentation
+### 决策点文档
 
 ```markdown
 ---
@@ -224,11 +224,11 @@ Review the above configuration.
 Proceeding with deployment...
 ```
 
-## Help Text Patterns
+## 帮助文本模式
 
-### Built-in Help Command
+### 内置帮助命令
 
-Create a help subcommand for complex commands:
+为复杂命令创建帮助子命令:
 
 ```markdown
 ---
@@ -266,9 +266,9 @@ fi
 [Regular command processing...]
 ```
 
-### Contextual Help
+### 上下文帮助
 
-Provide help based on context:
+根据上下文提供帮助:
 
 ```markdown
 ---
@@ -301,9 +301,9 @@ fi
 [Command continues if operation provided...]
 ```
 
-## Error Message Documentation
+## 错误消息文档
 
-### Helpful Error Messages
+### 有用的错误消息
 
 ```markdown
 ---
@@ -349,7 +349,7 @@ fi
 [Command continues if validation passes...]
 ```
 
-### Error Recovery Guidance
+### 错误恢复指南
 
 ```markdown
 ---
@@ -363,36 +363,36 @@ Running operation...
 !`risky-operation.sh`
 
 if [ $? -ne 0 ]; then
-  ❌ OPERATION FAILED
+  ❌ 操作失败
 
-  The operation encountered an error and could not complete.
+  操作遇到错误，无法完成。
 
-  WHAT HAPPENED:
-  The risky-operation.sh script returned a non-zero exit code.
+  发生了什么:
+  risky-operation.sh 脚本返回了非零退出代码。
 
-  WHAT THIS MEANS:
-  - Changes may be partially applied
-  - System may be in inconsistent state
-  - Manual intervention may be needed
+  这意味着什么:
+  - 更改可能部分应用
+  - 系统可能处于不一致状态
+  - 可能需要手动干预
 
-  RECOVERY STEPS:
-  1. Check operation logs: cat /tmp/operation.log
-  2. Verify system state: /check-state
-  3. If needed, rollback: /rollback-operation
-  4. Fix underlying issue
-  5. Retry operation: /retry-operation
+  恢复步骤:
+  1. 检查操作日志: cat /tmp/operation.log
+  2. 验证系统状态: /check-state
+  3. 如果需要，回滚: /rollback-operation
+  4. 修复潜在问题
+  5. 重试操作: /retry-operation
 
-  NEED HELP?
-  - Check troubleshooting guide: /help troubleshooting
-  - Contact support with error code: ERR_OP_FAILED_001
+  需要帮助?
+  - 查看故障排除指南: /help troubleshooting
+  - 联系支持并提供错误代码: ERR_OP_FAILED_001
 
   Exit.
 fi
 ```
 
-## Usage Example Documentation
+## 使用示例文档
 
-### Embedded Examples
+### 嵌入式示例
 
 ```markdown
 ---
@@ -449,7 +449,7 @@ Now processing your request...
 [Command implementation...]
 ```
 
-### Example-Driven Documentation
+### 示例驱动的文档
 
 ```markdown
 ---
@@ -507,9 +507,9 @@ Format: $2
 [Perform transformation...]
 ```
 
-## Maintenance Documentation
+## 维护文档
 
-### Version and Changelog
+### 版本和更新日志
 
 ```markdown
 <!--
@@ -554,7 +554,7 @@ KNOWN ISSUES:
 -->
 ```
 
-### Maintenance Notes
+### 维护说明
 
 ```markdown
 <!--
@@ -598,9 +598,9 @@ RELATED FILES:
 -->
 ```
 
-## README Documentation
+## README 文档
 
-Commands should have companion README files:
+命令应该有配套的 README 文件:
 
 ```markdown
 # Command Name
@@ -686,54 +686,54 @@ MIT License - See [LICENSE](LICENSE).
 - Email: support@example.com
 ```
 
-## Best Practices
+## 最佳实践
 
-### Documentation Principles
+### 文档原则
 
-1. **Write for your future self**: Assume you'll forget details
-2. **Examples before explanations**: Show, then tell
-3. **Progressive disclosure**: Basic info first, details available
-4. **Keep it current**: Update docs when code changes
-5. **Test your docs**: Verify examples actually work
+1. **为未来的自己编写**: 假设你会忘记细节
+2. **示例先于解释**: 先展示，再说明
+3. **渐进式披露**: 基本信息优先，详细信息可用
+4. **保持更新**: 代码更改时更新文档
+5. **测试文档**: 验证示例确实有效
 
-### Documentation Locations
+### 文档位置
 
-1. **In command file**: Core usage, examples, inline explanations
-2. **README**: Installation, configuration, troubleshooting
-3. **Separate docs**: Detailed guides, tutorials, API reference
-4. **Comments**: Implementation details for maintainers
+1. **在命令文件中**: 核心用法、示例、内联说明
+2. **README**: 安装、配置、故障排除
+3. **单独文档**: 详细指南、教程、API 参考
+4. **注释**: 维护者的实现细节
 
-### Documentation Style
+### 文档风格
 
-1. **Clear and concise**: No unnecessary words
-2. **Active voice**: "Run the command" not "The command can be run"
-3. **Consistent terminology**: Use same terms throughout
-4. **Formatted well**: Use headings, lists, code blocks
-5. **Accessible**: Assume reader is beginner
+1. **清晰简洁**: 没有多余的词
+2. **主动语态**: "运行命令"而不是"命令可以被运行"
+3. **术语一致**: 全文使用相同术语
+4. **格式良好**: 使用标题、列表、代码块
+5. **易于理解**: 假设读者是初学者
 
-### Documentation Maintenance
+### 文档维护
 
-1. **Version everything**: Track what changed when
-2. **Deprecate gracefully**: Warn before removing features
-3. **Migration guides**: Help users upgrade
-4. **Archive old docs**: Keep old versions accessible
-5. **Review regularly**: Ensure docs match reality
+1. **版本化所有内容**: 跟踪何时更改了什么
+2. **优雅地弃用**: 在删除功能之前发出警告
+3. **迁移指南**: 帮助用户升级
+4. **归档旧文档**: 保持旧版本可访问
+5. **定期审查**: 确保文档与实际情况匹配
 
-## Documentation Checklist
+## 文档检查清单
 
-Before releasing a command:
+发布命令之前:
 
-- [ ] Description in frontmatter is clear
-- [ ] argument-hint documents all arguments
-- [ ] Usage examples in comments
-- [ ] Common use cases shown
-- [ ] Error messages are helpful
-- [ ] Requirements documented
-- [ ] Related commands listed
-- [ ] Changelog maintained
-- [ ] Version number updated
-- [ ] README created/updated
-- [ ] Examples actually work
-- [ ] Troubleshooting section complete
+- [ ] frontmatter 中的描述清晰
+- [ ] argument-hint 记录所有参数
+- [ ] 注释中的使用示例
+- [ ] 显示常见用例
+- [ ] 错误消息有帮助
+- [ ] 文档化的要求
+- [ ] 列出相关命令
+- [ ] 维护更新日志
+- [ ] 更新版本号
+- [ ] 创建/更新 README
+- [ ] 示例确实有效
+- [ ] 故障排除部分完整
 
-With good documentation, commands become self-service, reducing support burden and improving user experience.
+有了良好的文档，命令变得可以自助使用，减少支持负担并改善用户体验。

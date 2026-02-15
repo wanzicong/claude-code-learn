@@ -1,82 +1,82 @@
-# Prompt Snippets for Opus 4.5
+# Opus 4.5 提示词片段
 
-Only apply these snippets if the user explicitly requests them or reports a specific issue. By default, the migration should only update model strings.
+仅在用户明确请求或报告特定问题时应用这些片段。默认情况下，迁移应仅更新模型字符串。
 
-## 1. Tool Overtriggering
+## 1. 工具过度触发
 
-**Problem**: Prompts designed to reduce undertriggering on previous models may cause Opus 4.5 to overtrigger.
+**问题**：为减少之前模型触发不足而设计的提示词可能导致 Opus 4.5 过度触发。
 
-**When to add**: User reports tools being called too frequently or unnecessarily.
+**何时添加**：用户报告工具被过于频繁或不必要地调用。
 
-**Solution**: Replace aggressive language with normal phrasing.
+**解决方案**：用正常措辞替换激进语言。
 
-| Before | After |
+| 之前 | 之后 |
 |--------|-------|
 | `CRITICAL: You MUST use this tool when...` | `Use this tool when...` |
 | `ALWAYS call the search function before...` | `Call the search function before...` |
 | `You are REQUIRED to...` | `You should...` |
 | `NEVER skip this step` | `Don't skip this step` |
 
-## 2. Over-Engineering Prevention
+## 2. 防止过度工程
 
-**Problem**: Opus 4.5 may create extra files, add unnecessary abstractions, or build unrequested flexibility.
+**问题**：Opus 4.5 可能创建额外的文件、添加不必要的抽象或构建未请求的灵活性。
 
-**When to add**: User reports unwanted files, excessive abstraction, or unrequested features.
+**何时添加**：用户报告不需要的文件、过度抽象或未请求的功能。
 
-**Snippet to add to system prompt**:
-
-```
-- Avoid over-engineering. Only make changes that are directly requested or clearly necessary. Keep solutions simple and focused.
-- Don't add features, refactor code, or make "improvements" beyond what was asked. A bug fix doesn't need surrounding code cleaned up. A simple feature doesn't need extra configurability.
-- Don't add error handling, fallbacks, or validation for scenarios that can't happen. Trust internal code and framework guarantees. Only validate at system boundaries (user input, external APIs). Don't use backwards-compatibility shims when you can just change the code.
-- Don't create helpers, utilities, or abstractions for one-time operations. Don't design for hypothetical future requirements. The right amount of complexity is the minimum needed for the current task. Reuse existing abstractions where possible and follow the DRY principle.
-```
-
-## 3. Code Exploration
-
-**Problem**: Opus 4.5 may propose solutions without reading code or make assumptions about unread files.
-
-**When to add**: User reports the model proposing fixes without inspecting relevant code.
-
-**Snippet to add to system prompt**:
+**要添加到系统提示词的片段**：
 
 ```
-ALWAYS read and understand relevant files before proposing code edits. Do not speculate about code you have not inspected. If the user references a specific file/path, you MUST open and inspect it before explaining or proposing fixes. Be rigorous and persistent in searching code for key facts. Thoroughly review the style, conventions, and abstractions of the codebase before implementing new features or abstractions.
+- 避免过度工程。只进行直接请求或明确必要的更改。保持解决方案简单且专注。
+- 不要添加功能、重构代码或进行超出要求的"改进"。错误修复不需要清理周围的代码。简单的功能不需要额外的可配置性。
+- 不要为不可能发生的场景添加错误处理、回退或验证。信任内部代码和框架保证。仅在系统边界（用户输入、外部 API）进行验证。当您可以直接更改代码时，不要使用向后兼容性填充程序。
+- 不要为一次性操作创建帮助器、实用程序或抽象。不要为假设的未来需求设计。正确的复杂度是当前任务所需的最小值。尽可能重用现有抽象并遵循 DRY 原则。
 ```
 
-## 4. Frontend Design Quality
+## 3. 代码探索
 
-**Problem**: Default frontend outputs may look generic ("AI slop" aesthetic).
+**问题**：Opus 4.5 可能在不阅读代码的情况下提出解决方案或对未读文件做出假设。
 
-**When to add**: User requests improved frontend design quality or reports generic-looking outputs.
+**何时添加**：用户报告模型在未检查相关代码的情况下提出修复方案。
 
-**Snippet to add to system prompt**:
+**要添加到系统提示词的片段**：
+
+```
+在提出代码编辑之前，始终阅读并理解相关文件。不要对您未检查的代码进行推测。如果用户引用特定文件/路径，您必须在解释或提出修复之前打开并检查它。在搜索代码的关键事实时要严格和持久。在实现新功能或抽象之前，彻底审查代码库的风格、约定和抽象。
+```
+
+## 4. 前端设计质量
+
+**问题**：默认的前端输出可能看起来很通用（"AI 垃圾"美学）。
+
+**何时添加**：用户请求改进前端设计质量或报告输出看起来很通用。
+
+**要添加到系统提示词的片段**：
 
 ```xml
 <frontend_aesthetics>
-You tend to converge toward generic, "on distribution" outputs. In frontend design, this creates what users call the "AI slop" aesthetic. Avoid this: make creative, distinctive frontends that surprise and delight.
+您倾向于收敛到通用的、"分布上"的输出。在前端设计中，这会创建用户所说的"AI 垃圾"美学。避免这种情况：制作有创意、独特的前端，让人惊喜和愉悦。
 
-Focus on:
-- Typography: Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts like Arial and Inter; opt instead for distinctive choices that elevate the frontend's aesthetics.
-- Color & Theme: Commit to a cohesive aesthetic. Use CSS variables for consistency. Dominant colors with sharp accents outperform timid, evenly-distributed palettes. Draw from IDE themes and cultural aesthetics for inspiration.
-- Motion: Use animations for effects and micro-interactions. Prioritize CSS-only solutions for HTML. Use Motion library for React when available. Focus on high-impact moments: one well-orchestrated page load with staggered reveals (animation-delay) creates more delight than scattered micro-interactions.
-- Backgrounds: Create atmosphere and depth rather than defaulting to solid colors. Layer CSS gradients, use geometric patterns, or add contextual effects that match the overall aesthetic.
+关注：
+- 排版：选择美丽、独特且有趣的字体。避免使用 Arial 和 Inter 等通用字体；选择提升前端美学的独特选择。
+- 颜色和主题：致力于连贯的美学。使用 CSS 变量以保持一致性。具有鲜明重点的主导色优于胆小、均匀分布的调色板。从 IDE 主题和文化美学中汲取灵感。
+- 动效：为效果和微交互使用动画。优先考虑 HTML 的纯 CSS 解决方案。在可用时为 React 使用 Motion 库。专注于高影响力的时刻：一个精心编排的页面加载与交错显示（animation-delay）比分散的微交互创造更多愉悦。
+- 背景：创造氛围和深度，而不是默认使用纯色。分层 CSS 渐变、使用几何图案或添加与整体美学匹配的上下文效果。
 
-Avoid generic AI-generated aesthetics:
-- Overused font families (Inter, Roboto, Arial, system fonts)
-- Clichéd color schemes (particularly purple gradients on white backgrounds)
-- Predictable layouts and component patterns
-- Cookie-cutter design that lacks context-specific character
+避免通用的 AI 生成美学：
+- 过度使用的字体系列（Inter、Roboto、Arial、系统字体）
+- 陈词滥调的配色方案（特别是白色背景上的紫色渐变）
+- 可预测的布局和组件模式
+- 缺乏上下文特定特征的千篇一律的设计
 
-Interpret creatively and make unexpected choices that feel genuinely designed for the context. Vary between light and dark themes, different fonts, different aesthetics. You still tend to converge on common choices (Space Grotesk, for example) across generations. Avoid this: it is critical that you think outside the box!
+创造性地解释并做出意外的选择，让人感觉是真正为上下文设计的。在明暗主题、不同字体、不同美学之间变化。您仍然倾向于在各代中收敛到常见的选择（例如 Space Grotesk）。避免这种情况：跳出框框思考至关重要！
 </frontend_aesthetics>
 ```
 
-## 5. Thinking Sensitivity
+## 5. 思考敏感性
 
-**Problem**: When extended thinking is not enabled (the default), Opus 4.5 is particularly sensitive to the word "think" and its variants.
+**问题**：当未启用扩展思考（默认情况）时，Opus 4.5 对"think"一词及其变体特别敏感。
 
-Extended thinking is not enabled by default. It is only enabled if the API request contains a `thinking` parameter:
+默认情况下不启用扩展思考。仅当 API 请求包含 `thinking` 参数时才启用：
 ```json
 "thinking": {
     "type": "enabled",
@@ -84,11 +84,11 @@ Extended thinking is not enabled by default. It is only enabled if the API reque
 }
 ```
 
-**When to apply**: User reports issues related to "thinking" while extended thinking is not enabled (no `thinking` parameter in their request).
+**何时应用**：用户在未启用扩展思考时（请求中没有 `thinking` 参数）报告与"thinking"相关的问题。
 
-**Solution**: Replace "think" with alternative words.
+**解决方案**：用替代词替换"think"。
 
-| Before | After |
+| 之前 | 之后 |
 |--------|-------|
 | `think about` | `consider` |
 | `think through` | `evaluate` |
@@ -96,11 +96,11 @@ Extended thinking is not enabled by default. It is only enabled if the API reque
 | `think carefully` | `consider carefully` |
 | `thinking` | `reasoning` / `considering` |
 
-## Usage Guidelines
+## 使用指南
 
-1. **Integrate thoughtfully** - Don't just append snippets; weave them into the existing prompt structure
-2. **Use XML tags** - Wrap additions in descriptive tags (e.g., `<coding_guidelines>`, `<tool_behavior>`) that match or complement existing prompt structure
-3. **Match prompt style** - If the prompt is concise, trim the snippet; if verbose, keep full detail
-4. **Place logically** - Put coding snippets near other coding instructions, tool guidance near tool definitions, etc.
-5. **Preserve existing content** - Insert snippets without removing functional content
-6. **Summarize changes** - After migration, list all model string updates and prompt modifications made
+1. **周到地集成** - 不要只是附加片段；将它们编织到现有的提示词结构中
+2. **使用 XML 标签** - 用描述性标签（例如 `<coding_guidelines>`、`<tool_behavior>`）包装添加内容，这些标签与现有提示词结构匹配或补充
+3. **匹配提示词风格** - 如果提示词简洁，则修剪片段；如果冗长，则保留完整细节
+4. **逻辑放置** - 将编码片段放在其他编码说明附近，将工具指导放在工具定义附近，等等
+5. **保留现有内容** - 插入片段而不删除功能性内容
+6. **总结更改** - 迁移后，列出所有模型字符串更新和提示词修改

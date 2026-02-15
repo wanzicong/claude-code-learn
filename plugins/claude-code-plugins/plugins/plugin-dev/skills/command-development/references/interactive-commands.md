@@ -1,37 +1,37 @@
-# Interactive Command Patterns
+# 交互式命令模式
 
-Comprehensive guide to creating commands that gather user feedback and make decisions through the AskUserQuestion tool.
+通过 AskUserQuestion 工具创建收集用户反馈和做出决策的命令的综合指南。
 
-## Overview
+## 概述
 
-Some commands need user input that doesn't work well with simple arguments. For example:
-- Choosing between multiple complex options with trade-offs
-- Selecting multiple items from a list
-- Making decisions that require explanation
-- Gathering preferences or configuration interactively
+某些命令需要用户输入，而简单的参数不太适用。例如：
+- 在多个复杂选项之间进行权衡选择
+- 从列表中选择多个项目
+- 做出需要解释的决策
+- 交互式收集偏好或配置
 
-For these cases, use the **AskUserQuestion tool** within command execution rather than relying on command arguments.
+对于这些情况，请在命令执行中使用 **AskUserQuestion 工具**，而不是依赖命令参数。
 
-## When to Use AskUserQuestion
+## 何时使用 AskUserQuestion
 
-### Use AskUserQuestion When:
+### 在以下情况使用 AskUserQuestion:
 
-1. **Multiple choice decisions** with explanations needed
-2. **Complex options** that require context to choose
-3. **Multi-select scenarios** (choosing multiple items)
-4. **Preference gathering** for configuration
-5. **Interactive workflows** that adapt based on answers
+1. **多项选择决策** 需要解释
+2. **复杂选项** 需要上下文来选择
+3. **多选场景**（选择多个项目）
+4. **偏好收集** 用于配置
+5. **交互式工作流** 根据答案进行调整
 
-### Use Command Arguments When:
+### 在以下情况使用命令参数:
 
-1. **Simple values** (file paths, numbers, names)
-2. **Known inputs** user already has
-3. **Scriptable workflows** that should be automatable
-4. **Fast invocations** where prompting would slow down
+1. **简单值**（文件路径、数字、名称）
+2. **已知输入** 用户已经拥有
+3. **可脚本化的工作流** 应该是可自动化的
+4. **快速调用** 提示会减慢速度的情况
 
-## AskUserQuestion Basics
+## AskUserQuestion 基础
 
-### Tool Parameters
+### 工具参数
 
 ```typescript
 {
@@ -59,15 +59,15 @@ For these cases, use the **AskUserQuestion tool** within command execution rathe
 }
 ```
 
-**Key points:**
-- Users can always choose "Other" to provide custom input (automatic)
-- `multiSelect: true` allows selecting multiple options
-- Options should be 2-4 choices (not more)
-- Can ask 1-4 questions per tool call
+**关键点:**
+- 用户始终可以选择 "Other" 提供自定义输入（自动）
+- `multiSelect: true` 允许选择多个选项
+- 选项应为2-4个选择（不超过）
+- 每次工具调用可以询问1-4个问题
 
-## Command Pattern for User Interaction
+## 用户交互的命令模式
 
-### Basic Interactive Command
+### 基本交互式命令
 
 ```markdown
 ---
@@ -146,7 +146,7 @@ Environments: [environments]
 Confirm configuration created and guide user on next steps.
 ```
 
-### Multi-Stage Interactive Workflow
+### 多阶段交互式工作流
 
 ```markdown
 ---
@@ -156,51 +156,51 @@ allowed-tools: AskUserQuestion, Read, Write, Bash
 
 # Multi-Stage Deployment Setup
 
-This command walks through deployment setup in stages, adapting based on your answers.
+此命令分阶段引导部署设置，根据您的答案进行调整。
 
-## Stage 1: Basic Configuration
+## 阶段 1: 基本配置
 
-Use AskUserQuestion to ask about deployment basics.
+使用 AskUserQuestion 询问部署基础信息。
 
-Based on answers, determine which additional questions to ask.
+根据答案，确定要询问哪些其他问题。
 
-## Stage 2: Advanced Options (Conditional)
+## 阶段 2: 高级选项（条件性）
 
-If user selected "Advanced" deployment in Stage 1:
+如果用户在阶段 1 中选择了 "Advanced" 部署:
 
-Use AskUserQuestion to ask about:
-- Load balancing strategy
-- Caching configuration
-- Security hardening options
+使用 AskUserQuestion 询问:
+- 负载均衡策略
+- 缓存配置
+- 安全加固选项
 
-If user selected "Simple" deployment:
-- Skip advanced questions
-- Use sensible defaults
+如果用户选择了 "Simple" 部署:
+- 跳过高级问题
+- 使用合理的默认值
 
-## Stage 3: Confirmation
+## 阶段 3: 确认
 
-Show summary of all selections.
+显示所有选择的摘要。
 
-Use AskUserQuestion for final confirmation:
+使用 AskUserQuestion 进行最终确认:
 - header: "Confirm"
-- question: "Does this configuration look correct?"
+- question: "此配置看起来正确吗?"
 - options:
-  - Yes (Proceed with setup)
-  - No (Start over)
-  - Modify (Let me adjust specific settings)
+  - Yes (继续设置)
+  - No (重新开始)
+  - Modify (让我调整特定设置)
 
-If "Modify", ask which specific setting to change.
+如果选择 "Modify"，询问要更改哪个具体设置。
 
-## Stage 4: Execute Setup
+## 阶段 4: 执行设置
 
-Based on confirmed configuration, execute setup steps.
+根据确认的配置，执行设置步骤。
 ```
 
-## Interactive Question Design
+## 交互式问题设计
 
-### Question Structure
+### 问题结构
 
-**Good questions:**
+**良好的问题:**
 ```markdown
 Question: "Which database should we use for this project?"
 Header: "Database"
@@ -210,7 +210,7 @@ Options:
   - Redis (In-memory, fast, best for caching and sessions)
 ```
 
-**Poor questions:**
+**不好的问题:**
 ```markdown
 Question: "Database?"  // Too vague
 Header: "DB"  // Unclear abbreviation
@@ -219,28 +219,28 @@ Options:
   - Option 2
 ```
 
-### Option Design Best Practices
+### 选项设计最佳实践
 
-**Clear labels:**
-- Use 1-5 words
-- Specific and descriptive
-- No jargon without context
+**清晰的标签:**
+- 使用1-5个词
+- 具体且描述性
+- 没有上下文不使用行话
 
-**Helpful descriptions:**
-- Explain what the option means
-- Mention key benefits or trade-offs
-- Help user make informed decision
-- Keep to 1-2 sentences
+**有用的描述:**
+- 解释选项的含义
+- 提及关键优势或权衡
+- 帮助用户做出明智的决定
+- 保持在1-2句话
 
-**Appropriate number:**
-- 2-4 options per question
-- Don't overwhelm with too many choices
-- Group related options
-- "Other" automatically provided
+**适当的数量:**
+- 每个问题2-4个选项
+- 不要用太多选择让用户不知所措
+- 分组相关选项
+- "Other" 自动提供
 
-### Multi-Select Questions
+### 多选问题
 
-**When to use multiSelect:**
+**何时使用 multiSelect:**
 
 ```markdown
 Use AskUserQuestion for enabling features:
@@ -255,20 +255,20 @@ Options:
   - Backups (Automatic backups)
 ```
 
-User can select any combination: none, some, or all.
+用户可以选择任意组合: 无、部分或全部。
 
-**When NOT to use multiSelect:**
+**何时不使用 multiSelect:**
 
 ```markdown
 Question: "Which authentication method?"
 multiSelect: false  // Only one auth method makes sense
 ```
 
-Mutually exclusive choices should not use multiSelect.
+互斥选择不应使用 multiSelect。
 
-## Command Patterns with AskUserQuestion
+## 使用 AskUserQuestion 的命令模式
 
-### Pattern 1: Simple Yes/No Decision
+### 模式 1: 简单的是/否决策
 
 ```markdown
 ---
@@ -297,7 +297,7 @@ If user selects "No":
   Exit without changes
 ```
 
-### Pattern 2: Multiple Configuration Questions
+### 模式 2: 多个配置问题
 
 ```markdown
 ---
@@ -336,7 +336,7 @@ Use AskUserQuestion with multiple questions in one call:
 Process all answers together to generate cohesive configuration.
 ```
 
-### Pattern 3: Conditional Question Flow
+### 模式 3: 条件性问题流程
 
 ```markdown
 ---
@@ -378,7 +378,7 @@ If answer is "Complex":
 Generate configuration appropriate for selected complexity level.
 ```
 
-### Pattern 4: Iterative Collection
+### 模式 4: 迭代收集
 
 ```markdown
 ---
@@ -424,7 +424,7 @@ Store each member's information.
 After collecting all N members, create team configuration file with all members and their roles.
 ```
 
-### Pattern 5: Dependency Selection
+### 模式 5: 依赖项选择
 
 ```markdown
 ---
@@ -459,17 +459,17 @@ For each selected library:
 - Update documentation
 ```
 
-## Best Practices for Interactive Commands
+## 交互式命令的最佳实践
 
-### Question Design
+### 问题设计
 
-1. **Clear and specific**: Question should be unambiguous
-2. **Concise header**: Max 12 characters for clean display
-3. **Helpful options**: Labels are clear, descriptions explain trade-offs
-4. **Appropriate count**: 2-4 options per question, 1-4 questions per call
-5. **Logical order**: Questions flow naturally
+1. **清晰具体**: 问题应该明确无误
+2. **简洁的标题**: 最多12个字符以便清晰显示
+3. **有用的选项**: 标签清晰，描述解释权衡
+4. **适当的数量**: 每个问题2-4个选项，每次调用1-4个问题
+5. **逻辑顺序**: 问题自然流畅
 
-### Error Handling
+### 错误处理
 
 ```markdown
 # Handle AskUserQuestion Responses
@@ -488,7 +488,7 @@ If answers look correct:
   Process as expected
 ```
 
-### Progressive Disclosure
+### 渐进式披露
 
 ```markdown
 # Start Simple, Get Detailed as Needed
@@ -515,9 +515,9 @@ If "Guided":
   Provide recommendations along the way
 ```
 
-### Multi-Select Guidelines
+### 多选指南
 
-**Good multi-select use:**
+**良好的多选使用:**
 ```markdown
 Question: "Which features do you want to enable?"
 multiSelect: true
@@ -530,7 +530,7 @@ Options:
 Reason: User might want any combination
 ```
 
-**Bad multi-select use:**
+**不好的多选使用:**
 ```markdown
 Question: "Which database engine?"
 multiSelect: true  // ❌ Should be single-select
@@ -538,9 +538,9 @@ multiSelect: true  // ❌ Should be single-select
 Reason: Can only use one database engine
 ```
 
-## Advanced Patterns
+## 高级模式
 
-### Validation Loop
+### 验证循环
 
 ```markdown
 ---
@@ -576,7 +576,7 @@ If validation fails:
   Based on answer, retry or proceed or exit.
 ```
 
-### Build Configuration Incrementally
+### 增量构建配置
 
 ```markdown
 ---
@@ -621,7 +621,7 @@ Options:
   - Modify (Edit specific settings)
 ```
 
-### Dynamic Options Based on Context
+### 基于上下文的动态选项
 
 ```markdown
 ---
@@ -665,9 +665,9 @@ If language is Python:
 Questions adapt to project context.
 ```
 
-## Real-World Example: Multi-Agent Swarm Launch
+## 实际示例: 多代理集群启动
 
-**From multi-agent-swarm plugin:**
+**来自 multi-agent-swarm 插件:**
 
 ```markdown
 ---
@@ -777,43 +777,43 @@ After collecting all agent task details:
 5. Proceed with launch using generated task list
 ```
 
-## Best Practices
+## 最佳实践
 
-### Question Writing
+### 问题编写
 
-1. **Be specific**: "Which database?" not "Choose option?"
-2. **Explain trade-offs**: Describe pros/cons in option descriptions
-3. **Provide context**: Question text should stand alone
-4. **Guide decisions**: Help user make informed choice
-5. **Keep concise**: Header max 12 chars, descriptions 1-2 sentences
+1. **要具体**: "哪个数据库?" 而不是 "选择选项?"
+2. **解释权衡**: 在选项描述中描述优缺点
+3. **提供上下文**: 问题文本应该独立存在
+4. **引导决策**: 帮助用户做出明智的选择
+5. **保持简洁**: 标题最多12个字符，描述1-2句话
 
-### Option Design
+### 选项设计
 
-1. **Meaningful labels**: Specific, clear names
-2. **Informative descriptions**: Explain what each option does
-3. **Show trade-offs**: Help user understand implications
-4. **Consistent detail**: All options equally explained
-5. **2-4 options**: Not too few, not too many
+1. **有意义的标签**: 具体、清晰的名称
+2. **信息丰富的描述**: 解释每个选项的作用
+3. **显示权衡**: 帮助用户理解影响
+4. **一致的细节**: 所有选项同等程度地解释
+5. **2-4个选项**: 不太少，也不太多
 
-### Flow Design
+### 流程设计
 
-1. **Logical order**: Questions flow naturally
-2. **Build on previous**: Later questions use earlier answers
-3. **Minimize questions**: Ask only what's needed
-4. **Group related**: Ask related questions together
-5. **Show progress**: Indicate where in flow
+1. **逻辑顺序**: 问题自然流畅
+2. **基于之前的**: 后面的问题使用之前的答案
+3. **最小化问题**: 只询问所需的内容
+4. **分组相关**: 一起询问相关问题
+5. **显示进度**: 指示在流程中的位置
 
-### User Experience
+### 用户体验
 
-1. **Set expectations**: Tell user what to expect
-2. **Explain why**: Help user understand purpose
-3. **Provide defaults**: Suggest recommended options
-4. **Allow escape**: Let user cancel or restart
-5. **Confirm actions**: Summarize before executing
+1. **设定期望**: 告诉用户期待什么
+2. **解释原因**: 帮助用户理解目的
+3. **提供默认值**: 建议推荐选项
+4. **允许退出**: 让用户取消或重新开始
+5. **确认操作**: 在执行之前总结
 
-## Common Patterns
+## 常见模式
 
-### Pattern: Feature Selection
+### 模式: 功能选择
 
 ```markdown
 Use AskUserQuestion:
@@ -828,7 +828,7 @@ Options:
   - Caching
 ```
 
-### Pattern: Environment Configuration
+### 模式: 环境配置
 
 ```markdown
 Use AskUserQuestion:
@@ -841,7 +841,7 @@ Options:
   - Production (Live environment)
 ```
 
-### Pattern: Priority Selection
+### 模式: 优先级选择
 
 ```markdown
 Use AskUserQuestion:
@@ -855,7 +855,7 @@ Options:
   - Low (Nice to have)
 ```
 
-### Pattern: Scope Selection
+### 模式: 范围选择
 
 ```markdown
 Use AskUserQuestion:
@@ -868,11 +868,11 @@ Options:
   - Entire project (Full codebase scan)
 ```
 
-## Combining Arguments and Questions
+## 结合参数和问题
 
-### Use Both Appropriately
+### 适当使用两者
 
-**Arguments for known values:**
+**已知值使用参数:**
 ```markdown
 ---
 argument-hint: [project-name]
@@ -886,7 +886,7 @@ Now gather additional configuration...
 Use AskUserQuestion for options that require explanation.
 ```
 
-**Questions for complex choices:**
+**复杂选择使用问题:**
 ```markdown
 Project name from argument: $1
 
@@ -898,23 +898,23 @@ Now use AskUserQuestion to choose:
 These require explanation, so questions work better than arguments.
 ```
 
-## Troubleshooting
+## 故障排除
 
-**Questions not appearing:**
-- Verify AskUserQuestion in allowed-tools
-- Check question format is correct
-- Ensure options array has 2-4 items
+**问题未出现:**
+- 验证 allowed-tools 中有 AskUserQuestion
+- 检查问题格式是否正确
+- 确保选项数组有2-4个项目
 
-**User can't make selection:**
-- Check option labels are clear
-- Verify descriptions are helpful
-- Consider if too many options
-- Ensure multiSelect setting is correct
+**用户无法进行选择:**
+- 检查选项标签是否清晰
+- 验证描述是否有帮助
+- 考虑是否选项太多
+- 确保 multiSelect 设置正确
 
-**Flow feels confusing:**
-- Reduce number of questions
-- Group related questions
-- Add explanation between stages
-- Show progress through workflow
+**流程感觉混乱:**
+- 减少问题数量
+- 分组相关问题
+- 在阶段之间添加解释
+- 通过工作流显示进度
 
-With AskUserQuestion, commands become interactive wizards that guide users through complex decisions while maintaining the clarity that simple arguments provide for straightforward inputs.
+使用 AskUserQuestion，命令成为交互式向导，引导用户完成复杂决策，同时保持简单参数为直接输入提供的清晰度。

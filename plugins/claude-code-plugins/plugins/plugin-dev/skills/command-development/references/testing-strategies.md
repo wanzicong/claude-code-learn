@@ -1,21 +1,21 @@
-# Command Testing Strategies
+# 命令测试策略
 
-Comprehensive strategies for testing slash commands before deployment and distribution.
+部署和分发前测试斜杠命令的综合策略。
 
-## Overview
+## 概述
 
-Testing commands ensures they work correctly, handle edge cases, and provide good user experience. A systematic testing approach catches issues early and builds confidence in command reliability.
+测试命令确保它们正确工作，处理边界情况，并提供良好的用户体验。系统的测试方法可以早期发现问题并建立对命令可靠性的信心。
 
-## Testing Levels
+## 测试级别
 
-### Level 1: Syntax and Structure Validation
+### 级别 1: 语法和结构验证
 
-**What to test:**
-- YAML frontmatter syntax
-- Markdown format
-- File location and naming
+**测试内容:**
+- YAML frontmatter 语法
+- Markdown 格式
+- 文件位置和命名
 
-**How to test:**
+**如何测试:**
 
 ```bash
 # Validate YAML frontmatter
@@ -31,7 +31,7 @@ ls .claude/commands/*.md
 test -f .claude/commands/my-command.md && echo "Found" || echo "Missing"
 ```
 
-**Automated validation script:**
+**自动化验证脚本:**
 
 ```bash
 #!/bin/bash

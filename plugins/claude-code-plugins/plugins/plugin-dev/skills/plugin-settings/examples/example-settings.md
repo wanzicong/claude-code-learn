@@ -1,6 +1,6 @@
-# Example Plugin Settings File
+# 插件设置文件示例
 
-## Template: Basic Configuration
+## 模板: 基本配置
 
 **.claude/my-plugin.local.md:**
 
@@ -10,12 +10,12 @@ enabled: true
 mode: standard
 ---
 
-# My Plugin Configuration
+# 我的插件配置
 
-Plugin is active in standard mode.
+插件在标准模式下处于激活状态。
 ```
 
-## Template: Advanced Configuration
+## 模板: 高级配置
 
 **.claude/my-plugin.local.md:**
 
@@ -32,21 +32,21 @@ timeout_seconds: 60
 custom_path: "/path/to/data"
 ---
 
-# My Plugin Advanced Configuration
+# 我的插件高级配置
 
-This project uses custom plugin configuration with:
-- Standard validation mode
-- 1MB file size limit
-- JavaScript/TypeScript files allowed
-- Info-level logging
-- 3 retry attempts
+此项目使用自定义插件配置:
+- 标准验证模式
+- 1MB 文件大小限制
+- 允许 JavaScript/TypeScript 文件
+- Info 级别日志记录
+- 3 次重试尝试
 
-## Additional Notes
+## 附加说明
 
-Contact @team-lead with questions about this configuration.
+有关此配置的问题请联系 @team-lead。
 ```
 
-## Template: Agent State File
+## 模板: 代理状态文件
 
 **.claude/multi-agent-swarm.local.md:**
 
@@ -61,34 +61,34 @@ dependencies: ["Task 3.5", "Task 4.1"]
 additional_instructions: "Use PostgreSQL, not MySQL"
 ---
 
-# Task Assignment: Database Schema Implementation
+# 任务分配: 数据库架构实现
 
-Implement the database schema for the new features module.
+为新功能模块实现数据库架构。
 
-## Requirements
+## 要求
 
-- Create migration files
-- Add indexes for performance
-- Write tests for constraints
-- Document schema in README
+- 创建迁移文件
+- 添加性能索引
+- 为约束编写测试
+- 在 README 中记录架构
 
-## Success Criteria
+## 成功标准
 
-- Migrations run successfully
-- All tests pass
-- PR created with CI green
-- Schema documented
+- 迁移成功运行
+- 所有测试通过
+- 创建 PR 并且 CI 通过
+- 架构已记录
 
-## Coordination
+## 协调
 
-Depends on:
-- Task 3.5: API endpoint definitions
-- Task 4.1: Data model design
+依赖于:
+- 任务 3.5: API 端点定义
+- 任务 4.1: 数据模型设计
 
-Report status to coordinator session 'team-leader'.
+向协调者会话 'team-leader' 报告状态。
 ```
 
-## Template: Feature Flag Pattern
+## 模板: 功能标志模式
 
 **.claude/experimental-features.local.md:**
 
@@ -102,19 +102,19 @@ features:
 experimental_mode: false
 ---
 
-# Experimental Features Configuration
+# 实验功能配置
 
-Current enabled features:
-- AI-powered code suggestions
-- Automatic code formatting
-- Advanced refactoring tools
+当前启用的功能:
+- AI 驱动的代码建议
+- 自动代码格式化
+- 高级重构工具
 
-Experimental mode is OFF (stable features only).
+实验模式已关闭（仅稳定功能）。
 ```
 
-## Usage in Hooks
+## 在钩子中使用
 
-These templates can be read by hooks:
+这些模板可以被钩子读取:
 
 ```bash
 # Check if plugin is configured
@@ -135,7 +135,7 @@ fi
 
 ## Gitignore
 
-Always add to project `.gitignore`:
+始终添加到项目 `.gitignore`:
 
 ```gitignore
 # Plugin settings (user-local, not committed)
@@ -143,9 +143,9 @@ Always add to project `.gitignore`:
 .claude/*.local.json
 ```
 
-## Editing Settings
+## 编辑设置
 
-Users can edit settings files manually:
+用户可以手动编辑设置文件:
 
 ```bash
 # Edit settings
@@ -156,4 +156,4 @@ exit  # Exit Claude Code
 claude  # Restart
 ```
 
-Changes require Claude Code restart - hooks can't be hot-swapped.
+更改需要重启 Claude Code - 钩子无法热交换。

@@ -1,8 +1,8 @@
-# Advanced Plugin Example
+# 高级插件示例
 
-A complex, enterprise-grade plugin with MCP integration and advanced organization.
+具有 MCP 集成和高级组织的复杂企业级插件。
 
-## Directory Structure
+## 目录结构
 
 ```
 enterprise-devops/

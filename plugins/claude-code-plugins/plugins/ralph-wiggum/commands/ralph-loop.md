@@ -5,14 +5,14 @@ allowed-tools: ["Bash(${CLAUDE_PLUGIN_ROOT}/scripts/setup-ralph-loop.sh:*)"]
 hide-from-slash-command-tool: "true"
 ---
 
-# Ralph Loop Command
+# Ralph 循环命令
 
-Execute the setup script to initialize the Ralph loop:
+执行设置脚本以初始化 Ralph 循环：
 
 ```!
 "${CLAUDE_PLUGIN_ROOT}/scripts/setup-ralph-loop.sh" $ARGUMENTS
 ```
 
-Please work on the task. When you try to exit, the Ralph loop will feed the SAME PROMPT back to you for the next iteration. You'll see your previous work in files and git history, allowing you to iterate and improve.
+请处理任务。当你尝试退出时，Ralph 循环将把相同的提示词反馈给你进行下一次迭代。你将在文件和 git 历史记录中看到之前的工作，从而能够不断迭代和改进。
 
-CRITICAL RULE: If a completion promise is set, you may ONLY output it when the statement is completely and unequivocally TRUE. Do not output false promises to escape the loop, even if you think you're stuck or should exit for other reasons. The loop is designed to continue until genuine completion.
+关键规则：如果设置了完成承诺，你只能在该陈述完全且毫不含糊地为真时才能输出它。即使你认为自己卡住了或应该因其他原因退出，也不要输出虚假承诺来逃避循环。该循环被设计为持续运行直到真正完成。

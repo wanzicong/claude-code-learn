@@ -1,20 +1,20 @@
-# Plugin-Specific Command Features Reference
+# 插件特定命令功能参考
 
-This reference covers features and patterns specific to commands bundled in Claude Code plugins.
+本参考涵盖了 Claude Code 插件中捆绑的命令特定的功能和模式。
 
-## Table of Contents
+## 目录
 
-- [Plugin Command Discovery](#plugin-command-discovery)
-- [CLAUDE_PLUGIN_ROOT Environment Variable](#claude_plugin_root-environment-variable)
-- [Plugin Command Patterns](#plugin-command-patterns)
-- [Integration with Plugin Components](#integration-with-plugin-components)
-- [Validation Patterns](#validation-patterns)
+- [插件命令发现](#plugin-command-discovery)
+- [CLAUDE_PLUGIN_ROOT 环境变量](#claude_plugin_root-environment-variable)
+- [插件命令模式](#plugin-command-patterns)
+- [与插件组件的集成](#integration-with-plugin-components)
+- [验证模式](#validation-patterns)
 
-## Plugin Command Discovery
+## 插件命令发现
 
-### Auto-Discovery
+### 自动发现
 
-Claude Code automatically discovers commands in plugins using the following locations:
+Claude Code 使用以下位置自动发现插件中的命令:
 
 ```
 plugin-name/
@@ -24,15 +24,15 @@ plugin-name/
 └── plugin.json           # Plugin manifest
 ```
 
-**Key points:**
-- Commands are discovered at plugin load time
-- No manual registration required
-- Commands appear in `/help` with "(plugin:plugin-name)" label
-- Subdirectories create namespaces
+**关键点:**
+- 命令在插件加载时发现
+- 无需手动注册
+- 命令在 `/help` 中显示为 "(plugin:plugin-name)" 标签
+- 子目录创建命名空间
 
-### Namespaced Plugin Commands
+### 命名空间插件命令
 
-Organize commands in subdirectories for logical grouping:
+在子目录中组织命令以进行逻辑分组:
 
 ```
 plugin-name/
@@ -45,19 +45,19 @@ plugin-name/
         └── prod.md        # /prod (plugin:plugin-name:deploy)
 ```
 
-**Namespace behavior:**
-- Subdirectory name becomes namespace
-- Shown as "(plugin:plugin-name:namespace)" in `/help`
-- Helps organize related commands
-- Use when plugin has 5+ commands
+**命名空间行为:**
+- 子目录名称成为命名空间
+- 在 `/help` 中显示为 "(plugin:plugin-name:namespace)"
+- 帮助组织相关命令
+- 当插件有5个以上命令时使用
 
-### Command Naming Conventions
+### 命令命名约定
 
-**Plugin command names should:**
-1. Be descriptive and action-oriented
-2. Avoid conflicts with common command names
-3. Use hyphens for multi-word names
-4. Consider prefixing with plugin name for uniqueness
+**插件命令名称应该:**
+1. 具有描述性和面向操作
+2. 避免与常见命令名称冲突
+3. 对多词名称使用连字符
+4. 考虑使用插件名称前缀以确保唯一性
 
 **Examples:**
 ```
@@ -72,21 +72,21 @@ Avoid:
 - /do-stuff           (not descriptive)
 ```
 
-## CLAUDE_PLUGIN_ROOT Environment Variable
+## CLAUDE_PLUGIN_ROOT 环境变量
 
-### Purpose
+### 目的
 
-`${CLAUDE_PLUGIN_ROOT}` is a special environment variable available in plugin commands that resolves to the absolute path of the plugin directory.
+`${CLAUDE_PLUGIN_ROOT}` 是插件命令中可用的特殊环境变量，解析为插件目录的绝对路径。
 
-**Why it matters:**
-- Enables portable paths within plugin
-- Allows referencing plugin files and scripts
-- Works across different installations
-- Essential for multi-file plugin operations
+**为什么重要:**
+- 在插件内启用可移植路径
+- 允许引用插件文件和脚本
+- 跨不同安装工作
+- 对多文件插件操作至关重要
 
-### Basic Usage
+### 基本用法
 
-Reference files within your plugin:
+引用插件内的文件:
 
 ```markdown
 ---
